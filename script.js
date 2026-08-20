@@ -4,9 +4,9 @@
    ========================================================= */
 
 
-/* =========================
-   GLOBAL DATA
-========================= */
+const STORAGE_KEY =
+    "sp_media_works_bills";
+
 
 let services = [];
 
@@ -14,100 +14,130 @@ let currentBillId = null;
 
 let billStatus = "DUE";
 
-const STORAGE_KEY = "sp_media_works_bills";
 
-
-/* =========================
+/* =========================================================
    INITIALIZATION
-========================= */
+========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    initializeBill();
+        initializeBill();
 
-    addService();
+        addService();
 
-    updatePreview();
+        updatePreview();
 
-});
+    }
+);
 
 
-/* =========================
-   BILL INITIALIZATION
-========================= */
+/* =========================================================
+   INITIAL BILL
+========================================================= */
 
 function initializeBill() {
 
-    document.getElementById("billNumber").value =
-        generateBillNumber();
+    document.getElementById(
+        "billNumber"
+    ).value = generateBillNumber();
 
-    document.getElementById("billDate").value =
-        getToday();
+
+    document.getElementById(
+        "billDate"
+    ).value = getToday();
 
 }
 
 
-/* =========================
+/* =========================================================
    DATE
-========================= */
+========================================================= */
 
 function getToday() {
 
-    const today = new Date();
+    const date =
+        new Date();
 
-    return today.toISOString().split("T")[0];
+    return date
+        .toISOString()
+        .split("T")[0];
 
 }
 
 
 function formatDate(date) {
 
-    if (!date) return "—";
+    if (!date) {
 
-    const d = new Date(date);
+        return "—";
 
-    return d.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
-    });
+    }
+
+    const d =
+        new Date(date);
+
+    return d.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
 
 }
 
 
-/* =========================
+/* =========================================================
    BILL NUMBER
-========================= */
+========================================================= */
 
 function generateBillNumber() {
 
-    const bills = getBills();
+    const bills =
+        getBills();
 
     let maxNumber = 0;
 
-    bills.forEach(bill => {
 
-        const match =
-            String(bill.billNumber || "").match(/(\d+)$/);
+    bills.forEach(
+        function (bill) {
 
-        if (match) {
+            const match =
+                String(
+                    bill.billNumber || ""
+                ).match(/(\d+)$/);
 
-            maxNumber =
-                Math.max(maxNumber, Number(match[1]));
+
+            if (match) {
+
+                maxNumber =
+                    Math.max(
+                        maxNumber,
+                        Number(match[1])
+                    );
+
+            }
 
         }
+    );
 
-    });
 
-    return "SPMW-" +
-        String(maxNumber + 1).padStart(4, "0");
+    return (
+        "SPMW-" +
+        String(
+            maxNumber + 1
+        ).padStart(4, "0")
+    );
 
 }
 
 
-/* =========================
-   SERVICE MANAGEMENT
-========================= */
+/* =========================================================
+   ADD SERVICE
+========================================================= */
 
 function addService(
     description = "",
@@ -116,10 +146,18 @@ function addService(
 ) {
 
     services.push({
-        description,
-        qty,
-        rate
+
+        description:
+            description,
+
+        qty:
+            qty,
+
+        rate:
+            rate
+
     });
+
 
     renderServices();
 
@@ -127,22 +165,37 @@ function addService(
 
 }
 
+
+/* =========================================================
+   REMOVE SERVICE
+========================================================= */
 
 function removeService(index) {
 
-    if (services.length === 1) {
+    if (
+        services.length === 1
+    ) {
 
         services[0] = {
+
             description: "",
+
             qty: 1,
+
             rate: 0
+
         };
 
-    } else {
+    }
+    else {
 
-        services.splice(index, 1);
+        services.splice(
+            index,
+            1
+        );
 
     }
+
 
     renderServices();
 
@@ -150,95 +203,285 @@ function removeService(index) {
 
 }
 
+
+/* =========================================================
+   RENDER SERVICES
+
+   IMPORTANT:
+   This function creates the input fields only when rows
+   are added/removed/opened.
+
+   It DOES NOT run on every keystroke.
+
+   This fixes the cursor/focus bug.
+========================================================= */
 
 function renderServices() {
 
     const list =
-        document.getElementById("serviceList");
+        document.getElementById(
+            "serviceList"
+        );
+
 
     list.innerHTML = "";
 
-    services.forEach((service, index) => {
 
-        const row =
-            document.createElement("div");
+    services.forEach(
+        function (service, index) {
 
-        row.className = "service-row";
 
-        row.innerHTML = `
+            const row =
+                document.createElement(
+                    "div"
+                );
 
-            <input
-                type="text"
-                placeholder="Service / description"
-                value="${escapeHTML(service.description)}"
-                oninput="changeService(${index}, 'description', this.value)"
-            >
 
-            <input
-                type="number"
-                min="1"
-                value="${service.qty}"
-                oninput="changeService(${index}, 'qty', this.value)"
-            >
+            row.className =
+                "service-row";
 
-            <input
-                type="number"
-                min="0"
-                value="${service.rate}"
-                oninput="changeService(${index}, 'rate', this.value)"
-            >
 
-            <div
-                class="service-amount"
-                id="serviceAmount${index}">
-                ${money(service.qty * service.rate)}
-            </div>
+            row.innerHTML = `
 
-            <button
-                class="remove-service"
-                onclick="removeService(${index})">
-                ×
-            </button>
+                <input
+                    type="text"
+                    class="service-description"
+                    placeholder="Service / description"
+                >
 
-        `;
+                <input
+                    type="number"
+                    class="service-qty"
+                    min="1"
+                >
 
-        list.appendChild(row);
+                <input
+                    type="number"
+                    class="service-rate"
+                    min="0"
+                >
 
-    });
+                <div class="service-amount">
+                    ₹0
+                </div>
+
+                <button
+                    class="remove-service"
+                    type="button"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            const description =
+                row.querySelector(
+                    ".service-description"
+                );
+
+
+            const qty =
+                row.querySelector(
+                    ".service-qty"
+                );
+
+
+            const rate =
+                row.querySelector(
+                    ".service-rate"
+                );
+
+
+            const remove =
+                row.querySelector(
+                    ".remove-service"
+                );
+
+
+            /* -------------------------
+               SET VALUES
+            ------------------------- */
+
+            description.value =
+                service.description;
+
+
+            qty.value =
+                service.qty;
+
+
+            rate.value =
+                service.rate;
+
+
+            updateServiceAmount(
+                row,
+                index
+            );
+
+
+            /* -------------------------
+               DESCRIPTION INPUT
+            ------------------------- */
+
+            description.addEventListener(
+                "input",
+                function () {
+
+                    services[index]
+                        .description =
+                        this.value;
+
+                    updatePreview();
+
+                }
+            );
+
+
+            /* -------------------------
+               QUANTITY INPUT
+            ------------------------- */
+
+            qty.addEventListener(
+                "input",
+                function () {
+
+                    services[index]
+                        .qty =
+                        Number(
+                            this.value
+                        ) || 0;
+
+
+                    updateServiceAmount(
+                        row,
+                        index
+                    );
+
+
+                    updatePreview();
+
+                }
+            );
+
+
+            /* -------------------------
+               RATE INPUT
+            ------------------------- */
+
+            rate.addEventListener(
+                "input",
+                function () {
+
+                    services[index]
+                        .rate =
+                        Number(
+                            this.value
+                        ) || 0;
+
+
+                    updateServiceAmount(
+                        row,
+                        index
+                    );
+
+
+                    updatePreview();
+
+                }
+            );
+
+
+            /* -------------------------
+               REMOVE
+            ------------------------- */
+
+            remove.addEventListener(
+                "click",
+                function () {
+
+                    removeService(
+                        index
+                    );
+
+                }
+            );
+
+
+            list.appendChild(row);
+
+        }
+    );
 
 }
 
 
-function changeService(index, field, value) {
+/* =========================================================
+   UPDATE SERVICE AMOUNT
+========================================================= */
 
-    if (field === "qty" ||
-        field === "rate") {
+function updateServiceAmount(
+    row,
+    index
+) {
 
-        value = Number(value) || 0;
+    const amount =
 
-    }
+        (
+            Number(
+                services[index].qty
+            ) || 0
+        )
 
-    services[index][field] = value;
+        *
 
-    renderServices();
+        (
+            Number(
+                services[index].rate
+            ) || 0
+        );
 
-    updatePreview();
+
+    const box =
+        row.querySelector(
+            ".service-amount"
+        );
+
+
+    box.textContent =
+        money(amount);
 
 }
 
 
-/* =========================
+/* =========================================================
    CALCULATIONS
-========================= */
+========================================================= */
 
 function calculateSubtotal() {
 
     return services.reduce(
-        (total, service) => {
+        function (
+            total,
+            service
+        ) {
 
             return total +
-                (Number(service.qty) || 0) *
-                (Number(service.rate) || 0);
+
+                (
+                    Number(
+                        service.qty
+                    ) || 0
+                )
+
+                *
+
+                (
+                    Number(
+                        service.rate
+                    ) || 0
+                );
 
         },
         0
@@ -252,10 +495,14 @@ function calculateTotal() {
     const subtotal =
         calculateSubtotal();
 
+
     const discount =
         Number(
-            document.getElementById("discount").value
+            document.getElementById(
+                "discount"
+            ).value
         ) || 0;
+
 
     return Math.max(
         0,
@@ -265,9 +512,9 @@ function calculateTotal() {
 }
 
 
-/* =========================
+/* =========================================================
    MONEY
-========================= */
+========================================================= */
 
 function money(amount) {
 
@@ -278,58 +525,99 @@ function money(amount) {
             currency: "INR",
             maximumFractionDigits: 0
         }
-    ).format(Number(amount) || 0);
+    ).format(
+        Number(amount) || 0
+    );
 
 }
 
 
-/* =========================
-   PREVIEW
-========================= */
+/* =========================================================
+   UPDATE PREVIEW
+========================================================= */
 
 function updatePreview() {
 
+
     const client =
-        document.getElementById("clientName").value
-        || "Client Name";
+        document.getElementById(
+            "clientName"
+        ).value
+        ||
+        "Client Name";
+
 
     const company =
-        document.getElementById("company").value
-        || "Company / Business";
+        document.getElementById(
+            "company"
+        ).value
+        ||
+        "Company / Business";
+
 
     const phone =
-        document.getElementById("phone").value
-        || "+91 XXXXX XXXXX";
+        document.getElementById(
+            "phone"
+        ).value
+        ||
+        "+91 XXXXX XXXXX";
+
 
     const location =
-        document.getElementById("location").value
-        || "Vijayawada, Andhra Pradesh";
+        document.getElementById(
+            "location"
+        ).value
+        ||
+        "Vijayawada, Andhra Pradesh";
+
 
     const billNumber =
-        document.getElementById("billNumber").value
-        || "SPMW-0001";
+        document.getElementById(
+            "billNumber"
+        ).value
+        ||
+        "SPMW-0001";
+
 
     const date =
-        document.getElementById("billDate").value;
+        document.getElementById(
+            "billDate"
+        ).value;
+
 
     const dueDate =
-        document.getElementById("dueDate").value;
+        document.getElementById(
+            "dueDate"
+        ).value;
+
 
     const upi =
-        document.getElementById("upi").value
-        || "yourupi@upi";
+        document.getElementById(
+            "upi"
+        ).value
+        ||
+        "yourupi@upi";
+
 
     const notes =
-        document.getElementById("notes").value
-        || "Thank you for choosing SP Media Works.";
+        document.getElementById(
+            "notes"
+        ).value
+        ||
+        "Thank you for choosing SP Media Works.";
+
 
     const subtotal =
         calculateSubtotal();
 
+
     const discount =
         Number(
-            document.getElementById("discount").value
+            document.getElementById(
+                "discount"
+            ).value
         ) || 0;
+
 
     const total =
         calculateTotal();
@@ -339,85 +627,114 @@ function updatePreview() {
 
     document.getElementById(
         "previewClient"
-    ).textContent = client;
+    ).textContent =
+        client;
+
 
     document.getElementById(
         "previewCompany"
-    ).textContent = company;
+    ).textContent =
+        company;
+
 
     document.getElementById(
         "previewPhone"
-    ).textContent = phone;
+    ).textContent =
+        phone;
+
 
     document.getElementById(
         "previewLocation"
-    ).textContent = location;
+    ).textContent =
+        location;
 
 
     /* BILL */
 
     document.getElementById(
         "previewBillNumber"
-    ).textContent = "#" + billNumber;
+    ).textContent =
+        "#" + billNumber;
+
 
     document.getElementById(
         "previewDate"
-    ).textContent = formatDate(date);
+    ).textContent =
+        formatDate(date);
+
 
     document.getElementById(
         "previewDueDate"
-    ).textContent = formatDate(dueDate);
+    ).textContent =
+        formatDate(dueDate);
 
 
     /* PAYMENT */
 
     document.getElementById(
         "previewUPI"
-    ).textContent = upi;
+    ).textContent =
+        upi;
+
 
     document.getElementById(
         "previewNotes"
-    ).textContent = notes;
+    ).textContent =
+        notes;
 
 
-    /* TOTALS */
+    /* EDITOR TOTALS */
 
     document.getElementById(
         "editorSubtotal"
-    ).textContent = money(subtotal);
+    ).textContent =
+        money(subtotal);
+
 
     document.getElementById(
         "editorDiscount"
-    ).textContent = "- " + money(discount);
+    ).textContent =
+        "- " +
+        money(discount);
+
 
     document.getElementById(
         "editorTotal"
-    ).textContent = money(total);
+    ).textContent =
+        money(total);
+
+
+    /* INVOICE TOTALS */
 
     document.getElementById(
         "previewSubtotal"
-    ).textContent = money(subtotal);
+    ).textContent =
+        money(subtotal);
+
 
     document.getElementById(
         "previewDiscount"
-    ).textContent = "- " + money(discount);
+    ).textContent =
+        "- " +
+        money(discount);
+
 
     document.getElementById(
         "previewTotal"
-    ).textContent = money(total);
+    ).textContent =
+        money(total);
 
-
-    /* STATUS */
 
     updateStatus();
-
-
-    /* TABLE */
 
     renderInvoiceItems();
 
 }
 
+
+/* =========================================================
+   INVOICE ITEMS
+========================================================= */
 
 function renderInvoiceItems() {
 
@@ -426,22 +743,46 @@ function renderInvoiceItems() {
             "invoiceItems"
         );
 
+
     tbody.innerHTML = "";
 
+
     services.forEach(
-        (service, index) => {
+        function (
+            service,
+            index
+        ) {
+
 
             const amount =
-                (Number(service.qty) || 0) *
-                (Number(service.rate) || 0);
+
+                (
+                    Number(
+                        service.qty
+                    ) || 0
+                )
+
+                *
+
+                (
+                    Number(
+                        service.rate
+                    ) || 0
+                );
+
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
+
 
             row.innerHTML = `
 
                 <td>
-                    ${String(index + 1).padStart(2, "0")}
+                    ${String(
+                        index + 1
+                    ).padStart(2, "0")}
                 </td>
 
                 <td>
@@ -458,16 +799,23 @@ function renderInvoiceItems() {
                 </td>
 
                 <td>
-                    ${money(service.rate)}
+                    ${money(
+                        service.rate
+                    )}
                 </td>
 
                 <td>
-                    ${money(amount)}
+                    ${money(
+                        amount
+                    )}
                 </td>
 
             `;
 
-            tbody.appendChild(row);
+
+            tbody.appendChild(
+                row
+            );
 
         }
     );
@@ -475,9 +823,9 @@ function renderInvoiceItems() {
 }
 
 
-/* =========================
+/* =========================================================
    STATUS
-========================= */
+========================================================= */
 
 function updateStatus() {
 
@@ -486,10 +834,12 @@ function updateStatus() {
             "previewStatus"
         );
 
+
     const heading =
         document.getElementById(
             "invoiceType"
         );
+
 
     const footer =
         document.getElementById(
@@ -497,19 +847,32 @@ function updateStatus() {
         );
 
 
-    if (billStatus === "PAID") {
+    const paidButton =
+        document.getElementById(
+            "markPaidButton"
+        );
+
+
+    if (
+        billStatus === "PAID"
+    ) {
+
 
         status.textContent =
             "PAID";
 
+
         status.className =
             "status paid";
+
 
         heading.textContent =
             "PAYMENT RECEIPT";
 
+
         footer.className =
             "invoice-footer paid";
+
 
         footer.innerHTML = `
 
@@ -523,23 +886,30 @@ function updateStatus() {
 
         `;
 
-        document.getElementById(
-            "markPaidButton"
-        ).style.display = "none";
 
-    } else {
+        paidButton.style.display =
+            "none";
+
+
+    }
+    else {
+
 
         status.textContent =
             "PAYMENT DUE";
 
+
         status.className =
             "status due";
+
 
         heading.textContent =
             "PAYMENT BILL";
 
+
         footer.className =
             "invoice-footer";
+
 
         footer.innerHTML = `
 
@@ -554,9 +924,8 @@ function updateStatus() {
 
         `;
 
-        document.getElementById(
-            "markPaidButton"
-        ).style.display =
+
+        paidButton.style.display =
             "inline-flex";
 
     }
@@ -564,75 +933,117 @@ function updateStatus() {
 }
 
 
-/* =========================
-   MARK AS PAID
-========================= */
+/* =========================================================
+   MARK PAID
+========================================================= */
 
 function markPaid() {
 
-    billStatus = "PAID";
+    billStatus =
+        "PAID";
 
-    saveBill();
+
+    saveBill(
+        true
+    );
+
 
     updateStatus();
 
 }
 
 
-/* =========================
+/* =========================================================
    SAVE BILL
-========================= */
+========================================================= */
 
-function saveBill() {
+function saveBill(
+    silent = false
+) {
 
-    const bill = collectBillData();
+    const bill =
+        collectBillData();
 
-    const bills = getBills();
 
-    if (currentBillId) {
+    const bills =
+        getBills();
+
+
+    if (
+        currentBillId
+    ) {
+
 
         const index =
             bills.findIndex(
-                b => b.id === currentBillId
+                function (b) {
+
+                    return (
+                        b.id ===
+                        currentBillId
+                    );
+
+                }
             );
 
-        if (index !== -1) {
 
-            bills[index] = bill;
+        if (
+            index !== -1
+        ) {
 
-        } else {
+            bills[index] =
+                bill;
 
-            bills.unshift(bill);
+        }
+        else {
+
+            bills.unshift(
+                bill
+            );
 
         }
 
-    } else {
+    }
+    else {
 
-        bills.unshift(bill);
+        bills.unshift(
+            bill
+        );
 
     }
 
+
     localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify(bills)
+        JSON.stringify(
+            bills
+        )
     );
 
-    currentBillId = bill.id;
 
-    alert(
-        billStatus === "PAID"
-            ? "Paid receipt saved successfully."
-            : "Bill saved successfully."
-    );
+    currentBillId =
+        bill.id;
+
+
+    if (!silent) {
+
+        alert(
+            billStatus === "PAID"
+                ? "Paid receipt saved successfully."
+                : "Bill saved successfully."
+        );
+
+    }
+
 
     renderHistory();
 
 }
 
 
-/* =========================
+/* =========================================================
    COLLECT BILL
-========================= */
+========================================================= */
 
 function collectBillData() {
 
@@ -642,23 +1053,28 @@ function collectBillData() {
             currentBillId ||
             Date.now().toString(),
 
+
         billNumber:
             document.getElementById(
                 "billNumber"
             ).value,
+
 
         date:
             document.getElementById(
                 "billDate"
             ).value,
 
+
         dueDate:
             document.getElementById(
                 "dueDate"
             ).value,
 
+
         status:
             billStatus,
+
 
         client: {
 
@@ -689,8 +1105,31 @@ function collectBillData() {
 
         },
 
+
         services:
-            services,
+            services.map(
+                function (service) {
+
+                    return {
+
+                        description:
+                            service.description,
+
+                        qty:
+                            Number(
+                                service.qty
+                            ) || 0,
+
+                        rate:
+                            Number(
+                                service.rate
+                            ) || 0
+
+                    };
+
+                }
+            ),
+
 
         discount:
             Number(
@@ -699,15 +1138,18 @@ function collectBillData() {
                 ).value
             ) || 0,
 
+
         upi:
             document.getElementById(
                 "upi"
             ).value,
 
+
         paymentReference:
             document.getElementById(
                 "paymentReference"
             ).value,
+
 
         notes:
             document.getElementById(
@@ -719,24 +1161,28 @@ function collectBillData() {
 }
 
 
-/* =========================
+/* =========================================================
    GET BILLS
-========================= */
+========================================================= */
 
 function getBills() {
 
     return JSON.parse(
+
         localStorage.getItem(
             STORAGE_KEY
-        ) || "[]"
+        )
+        ||
+        "[]"
+
     );
 
 }
 
 
-/* =========================
+/* =========================================================
    HISTORY
-========================= */
+========================================================= */
 
 function renderHistory() {
 
@@ -745,30 +1191,46 @@ function renderHistory() {
             "billHistory"
         );
 
+
     const search =
         (
             document.getElementById(
                 "searchBills"
-            )?.value || ""
+            )?.value
+            ||
+            ""
         ).toLowerCase();
 
+
     const bills =
-        getBills().filter(bill => {
+        getBills().filter(
+            function (bill) {
 
-            return (
-                String(
-                    bill.billNumber
-                ).toLowerCase().includes(search)
-                ||
-                String(
-                    bill.client?.name
-                ).toLowerCase().includes(search)
-            );
+                return (
 
-        });
+                    String(
+                        bill.billNumber
+                    )
+                    .toLowerCase()
+                    .includes(search)
+
+                    ||
+
+                    String(
+                        bill.client?.name
+                    )
+                    .toLowerCase()
+                    .includes(search)
+
+                );
+
+            }
+        );
 
 
-    if (!bills.length) {
+    if (
+        !bills.length
+    ) {
 
         container.innerHTML = `
 
@@ -785,221 +1247,300 @@ function renderHistory() {
     }
 
 
-    container.innerHTML = "";
-
-    bills.forEach(bill => {
-
-        const subtotal =
-            (bill.services || []).reduce(
-                (sum, item) => {
-
-                    return sum +
-                        (Number(item.qty) || 0) *
-                        (Number(item.rate) || 0);
-
-                },
-                0
-            );
-
-        const total =
-            Math.max(
-                0,
-                subtotal -
-                (Number(bill.discount) || 0)
-            );
+    container.innerHTML =
+        "";
 
 
-        const row =
-            document.createElement("div");
-
-        row.className =
-            "history-row";
+    bills.forEach(
+        function (bill) {
 
 
-        row.innerHTML = `
+            const subtotal =
+                (
+                    bill.services ||
+                    []
+                ).reduce(
+                    function (
+                        sum,
+                        item
+                    ) {
 
-            <div>
+                        return sum +
 
-                <strong>
-                    ${escapeHTML(
-                        bill.billNumber
+                            (
+                                Number(
+                                    item.qty
+                                ) || 0
+                            )
+
+                            *
+
+                            (
+                                Number(
+                                    item.rate
+                                ) || 0
+                            );
+
+                    },
+                    0
+                );
+
+
+            const total =
+                Math.max(
+                    0,
+                    subtotal -
+                    (
+                        Number(
+                            bill.discount
+                        ) || 0
+                    )
+                );
+
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "history-row";
+
+
+            row.innerHTML = `
+
+                <div>
+
+                    <strong>
+                        ${escapeHTML(
+                            bill.billNumber
+                        )}
+                    </strong>
+
+                    <small>
+                        ${escapeHTML(
+                            bill.client?.name ||
+                            "Unnamed client"
+                        )}
+                    </small>
+
+                </div>
+
+
+                <div>
+
+                    <small>
+                        ${formatDate(
+                            bill.date
+                        )}
+                    </small>
+
+                </div>
+
+
+                <div class="history-total">
+
+                    ${money(
+                        total
                     )}
-                </strong>
 
-                <small>
-                    ${escapeHTML(
-                        bill.client?.name ||
-                        "Unnamed client"
-                    )}
-                </small>
-
-            </div>
+                </div>
 
 
-            <div>
-                <small>
-                    ${formatDate(bill.date)}
-                </small>
-            </div>
+                <div>
 
-
-            <div class="history-total">
-                ${money(total)}
-            </div>
-
-
-            <div>
-
-                <span class="status ${
-                    bill.status === "PAID"
-                        ? "paid"
-                        : "due"
-                }">
-
-                    ${
+                    <span class="status ${
                         bill.status === "PAID"
-                            ? "PAID"
-                            : "DUE"
-                    }
+                            ? "paid"
+                            : "due"
+                    }">
 
-                </span>
+                        ${
+                            bill.status === "PAID"
+                                ? "PAID"
+                                : "DUE"
+                        }
 
-            </div>
+                    </span>
 
-
-            <button
-                class="history-open"
-                onclick="openBill('${bill.id}')">
-
-                Open
-
-            </button>
+                </div>
 
 
-            <button
-                class="history-delete"
-                onclick="deleteBill('${bill.id}')">
+                <button
+                    class="history-open"
+                    onclick="openBill('${bill.id}')"
+                >
+                    Open
+                </button>
 
-                ×
 
-            </button>
+                <button
+                    class="history-delete"
+                    onclick="deleteBill('${bill.id}')"
+                >
+                    ×
+                </button>
 
-        `;
+            `;
 
-        container.appendChild(row);
 
-    });
+            container.appendChild(
+                row
+            );
+
+        }
+    );
 
 }
 
 
-/* =========================
+/* =========================================================
    OPEN BILL
-========================= */
+========================================================= */
 
 function openBill(id) {
 
     const bills =
         getBills();
 
+
     const bill =
         bills.find(
-            b => b.id === id
+            function (b) {
+
+                return b.id === id;
+
+            }
         );
 
-    if (!bill) return;
+
+    if (!bill) {
+
+        return;
+
+    }
 
 
     currentBillId =
         bill.id;
 
+
     billStatus =
-        bill.status || "DUE";
+        bill.status ||
+        "DUE";
 
 
     document.getElementById(
         "clientName"
     ).value =
-        bill.client?.name || "";
+        bill.client?.name ||
+        "";
+
 
     document.getElementById(
         "company"
     ).value =
-        bill.client?.company || "";
+        bill.client?.company ||
+        "";
+
 
     document.getElementById(
         "phone"
     ).value =
-        bill.client?.phone || "";
+        bill.client?.phone ||
+        "";
+
 
     document.getElementById(
         "email"
     ).value =
-        bill.client?.email || "";
+        bill.client?.email ||
+        "";
+
 
     document.getElementById(
         "location"
     ).value =
-        bill.client?.location || "";
+        bill.client?.location ||
+        "";
+
 
     document.getElementById(
         "billNumber"
     ).value =
         bill.billNumber;
 
+
     document.getElementById(
         "billDate"
     ).value =
-        bill.date || "";
+        bill.date ||
+        "";
+
 
     document.getElementById(
         "dueDate"
     ).value =
-        bill.dueDate || "";
+        bill.dueDate ||
+        "";
+
 
     document.getElementById(
         "discount"
     ).value =
-        bill.discount || 0;
+        bill.discount ||
+        0;
+
 
     document.getElementById(
         "upi"
     ).value =
-        bill.upi || "";
+        bill.upi ||
+        "";
+
 
     document.getElementById(
         "paymentReference"
     ).value =
-        bill.paymentReference || "";
+        bill.paymentReference ||
+        "";
+
 
     document.getElementById(
         "notes"
     ).value =
-        bill.notes || "";
+        bill.notes ||
+        "";
 
 
     services =
-        bill.services || [];
+        bill.services ||
+        [];
 
 
     renderServices();
 
     updatePreview();
 
-    showPage("create");
+    showPage(
+        "create"
+    );
 
 }
 
 
-/* =========================
+/* =========================================================
    DELETE BILL
-========================= */
+========================================================= */
 
 function deleteBill(id) {
 
-    if (!confirm(
-        "Are you sure you want to delete this bill?"
-    )) {
+    if (
+        !confirm(
+            "Are you sure you want to delete this bill?"
+        )
+    ) {
 
         return;
 
@@ -1009,15 +1550,22 @@ function deleteBill(id) {
     let bills =
         getBills();
 
+
     bills =
         bills.filter(
-            bill => bill.id !== id
+            function (bill) {
+
+                return bill.id !== id;
+
+            }
         );
 
 
     localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify(bills)
+        JSON.stringify(
+            bills
+        )
     );
 
 
@@ -1026,57 +1574,79 @@ function deleteBill(id) {
 }
 
 
-/* =========================
+/* =========================================================
    NEW BILL
-========================= */
+========================================================= */
 
 function newBill() {
 
-    currentBillId = null;
+    currentBillId =
+        null;
 
-    billStatus = "DUE";
+
+    billStatus =
+        "DUE";
+
 
     document.getElementById(
         "clientName"
-    ).value = "";
+    ).value =
+        "";
+
 
     document.getElementById(
         "company"
-    ).value = "";
+    ).value =
+        "";
+
 
     document.getElementById(
         "phone"
-    ).value = "";
+    ).value =
+        "";
+
 
     document.getElementById(
         "email"
-    ).value = "";
+    ).value =
+        "";
+
 
     document.getElementById(
         "location"
-    ).value = "";
+    ).value =
+        "";
+
 
     document.getElementById(
         "billNumber"
     ).value =
         generateBillNumber();
 
+
     document.getElementById(
         "billDate"
     ).value =
         getToday();
 
+
     document.getElementById(
         "dueDate"
-    ).value = "";
+    ).value =
+        "";
+
 
     document.getElementById(
         "discount"
-    ).value = 0;
+    ).value =
+        0;
+
 
     document.getElementById(
         "paymentReference"
-    ).value = "";
+    ).value =
+        "";
+
 
     document.getElementById(
         "notes"
@@ -1086,18 +1656,23 @@ function newBill() {
 
     services = [];
 
+
     addService();
+
 
     updatePreview();
 
-    showPage("create");
+
+    showPage(
+        "create"
+    );
 
 }
 
 
-/* =========================
-   PAGE SWITCHING
-========================= */
+/* =========================================================
+   PAGE SWITCH
+========================================================= */
 
 function showPage(page) {
 
@@ -1106,10 +1681,12 @@ function showPage(page) {
             "createPage"
         );
 
+
     const historyPage =
         document.getElementById(
             "historyPage"
         );
+
 
     const pageTitle =
         document.getElementById(
@@ -1117,68 +1694,81 @@ function showPage(page) {
         );
 
 
-    if (page === "history") {
-
-        createPage.classList.add(
-            "hidden"
+    const navButtons =
+        document.querySelectorAll(
+            ".nav-btn"
         );
 
-        historyPage.classList.remove(
-            "hidden"
-        );
 
-        pageTitle.textContent =
-            "Bill History";
-
-        renderHistory();
-
-    } else {
-
-        historyPage.classList.add(
-            "hidden"
-        );
-
-        createPage.classList.remove(
-            "hidden"
-        );
-
-        pageTitle.textContent =
-            "Create Bill";
-
-    }
-
-
-    document
-        .querySelectorAll(".nav-btn")
-        .forEach(button => {
+    navButtons.forEach(
+        function (button) {
 
             button.classList.remove(
                 "active"
             );
 
-        });
+        }
+    );
 
 
-    if (page === "history") {
+    if (
+        page === "history"
+    ) {
 
-        document
-            .querySelectorAll(".nav-btn")[1]
-            .classList.add("active");
 
-    } else {
+        createPage.classList.add(
+            "hidden"
+        );
 
-        document
-            .querySelectorAll(".nav-btn")[0]
-            .classList.add("active");
+
+        historyPage.classList.remove(
+            "hidden"
+        );
+
+
+        pageTitle.textContent =
+            "Bill History";
+
+
+        navButtons[1]
+            .classList.add(
+                "active"
+            );
+
+
+        renderHistory();
+
+    }
+    else {
+
+
+        historyPage.classList.add(
+            "hidden"
+        );
+
+
+        createPage.classList.remove(
+            "hidden"
+        );
+
+
+        pageTitle.textContent =
+            "Create Bill";
+
+
+        navButtons[0]
+            .classList.add(
+                "active"
+            );
 
     }
 
 }
 
 
-/* =========================
-   DOWNLOAD PDF
-========================= */
+/* =========================================================
+   DOWNLOAD EXACT A4 PDF
+========================================================= */
 
 async function downloadPDF() {
 
@@ -1188,117 +1778,146 @@ async function downloadPDF() {
         );
 
 
-    const canvas =
-        await html2canvas(
-            invoice,
-            {
-                scale: 2,
+    try {
 
-                backgroundColor:
-                    "#ffffff",
 
-                useCORS: true
-            }
+        const canvas =
+            await html2canvas(
+                invoice,
+                {
+
+                    scale: 2,
+
+                    useCORS: true,
+
+                    backgroundColor:
+                        "#ffffff",
+
+                    width:
+                        invoice.offsetWidth,
+
+                    height:
+                        invoice.offsetHeight
+
+                }
+            );
+
+
+        const image =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+
+        const {
+            jsPDF
+        } =
+            window.jspdf;
+
+
+        /* EXACT A4 */
+
+        const pdf =
+            new jsPDF(
+                {
+                    orientation: "portrait",
+
+                    unit: "mm",
+
+                    format: "a4",
+
+                    compress: true
+                }
+            );
+
+
+        const pageWidth =
+            210;
+
+
+        const pageHeight =
+            297;
+
+
+        const margin =
+            0;
+
+
+        pdf.addImage(
+            image,
+            "PNG",
+            margin,
+            margin,
+            pageWidth,
+            pageHeight,
+            undefined,
+            "FAST"
         );
 
 
-    const image =
-        canvas.toDataURL(
-            "image/png"
+        const number =
+            document.getElementById(
+                "billNumber"
+            ).value ||
+            "SPMW-BILL";
+
+
+        const suffix =
+            billStatus === "PAID"
+                ? "PAID"
+                : "PAYMENT-DUE";
+
+
+        pdf.save(
+            `${number}-${suffix}.pdf`
         );
 
-
-    const {
-        jsPDF
-    } = window.jspdf;
-
-
-    const pdf =
-        new jsPDF(
-            "p",
-            "mm",
-            "a4"
-        );
-
-
-    const pageWidth =
-        pdf.internal.pageSize.getWidth();
-
-    const pageHeight =
-        pdf.internal.pageSize.getHeight();
-
-
-    const margin = 8;
-
-    const availableWidth =
-        pageWidth -
-        margin * 2;
-
-
-    const ratio =
-        canvas.height /
-        canvas.width;
-
-
-    const imageHeight =
-        availableWidth *
-        ratio;
-
-
-    let height =
-        imageHeight;
-
-
-    if (height >
-        pageHeight - margin * 2) {
-
-        height =
-            pageHeight - margin * 2;
 
     }
+    catch (error) {
+
+        console.error(
+            error
+        );
 
 
-    pdf.addImage(
-        image,
-        "PNG",
-        margin,
-        margin,
-        availableWidth,
-        height
-    );
+        alert(
+            "PDF generation failed. Please try again."
+        );
 
-
-    const number =
-        document.getElementById(
-            "billNumber"
-        ).value ||
-        "SPMW-BILL";
-
-
-    const suffix =
-        billStatus === "PAID"
-            ? "PAID"
-            : "PAYMENT-DUE";
-
-
-    pdf.save(
-        `${number}-${suffix}.pdf`
-    );
+    }
 
 }
 
 
-/* =========================
-   SECURITY / TEXT
-========================= */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function escapeHTML(value) {
 
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    return String(
+        value
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
