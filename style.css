@@ -1,86 +1,87 @@
 /* =========================================================
    SP MEDIA WORKS — BILL GENERATOR
-   PROFESSIONAL UI + CONTENT-SIZED PRINT
+   CLEAN / PROFESSIONAL / RESPONSIVE
 ========================================================= */
 
 :root {
     --orange: #ff6a00;
-    --orange-dark: #e85d00;
     --black: #111111;
-    --dark: #181818;
-    --gray: #666;
-    --light-gray: #f5f5f5;
-    --border: #dddddd;
     --white: #ffffff;
+    --border: #dedede;
+    --muted: #777777;
+    --bg: #f3f3f3;
 }
 
 * {
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
+html,
 body {
     margin: 0;
+    padding: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: #f2f2f2;
-    color: #171717;
+    background: var(--bg);
+    color: #111;
 }
 
 
 /* =========================================================
-   APP LAYOUT
+   MAIN APPLICATION
 ========================================================= */
 
 .app {
     display: flex;
+    width: 100%;
     min-height: 100vh;
-}
-
-.sidebar {
-    width: 250px;
-    min-height: 100vh;
-    background: #111;
-    color: #fff;
-    padding: 25px 18px;
 }
 
 .main {
     flex: 1;
     min-width: 0;
-    padding: 25px;
+    padding: 22px;
 }
 
 
 /* =========================================================
-   TOP BAR
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    width: 280px;
+    min-width: 280px;
+    min-height: 100vh;
+    background: #111;
+}
+
+
+/* =========================================================
+   TOP HEADER
 ========================================================= */
 
 .topbar {
-    height: 64px;
+    width: 100%;
     background: #fff;
-    border-radius: 14px;
+    border-radius: 18px;
+    padding: 16px 26px;
+    margin-bottom: 22px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 0 22px;
-    margin-bottom: 20px;
-    border: 1px solid #e5e5e5;
+    align-items: center;
+    border: 1px solid #ddd;
 }
 
 .topbar h1 {
     margin: 0;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .topbar button {
-    border: 0;
     background: var(--orange);
-    color: #fff;
-    padding: 11px 18px;
-    border-radius: 8px;
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
 }
@@ -92,9 +93,10 @@ body {
 
 .workspace {
     display: grid;
-    grid-template-columns: minmax(520px, 1fr) minmax(500px, 0.95fr);
-    gap: 24px;
+    grid-template-columns: minmax(520px, 1fr) minmax(500px, 1fr);
+    gap: 26px;
     align-items: start;
+    width: 100%;
 }
 
 .editor {
@@ -103,34 +105,31 @@ body {
 
 .preview-area {
     min-width: 0;
-    position: sticky;
-    top: 20px;
+    width: 100%;
 }
 
 
 /* =========================================================
-   CARDS
+   FORM CARDS
 ========================================================= */
 
 .card {
     background: #fff;
-    border: 1px solid #e2e2e2;
+    border: 1px solid #dedede;
     border-radius: 18px;
-    padding: 24px;
-    margin-bottom: 20px;
+    padding: 26px;
+    margin-bottom: 22px;
 }
 
 .card-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 0 0 22px;
-    font-size: 18px;
+    font-size: 19px;
+    margin: 0 0 20px;
+    font-weight: 700;
 }
 
 .card-title .number {
     color: var(--orange);
-    font-weight: 800;
+    margin-right: 8px;
 }
 
 
@@ -140,7 +139,7 @@ body {
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 16px;
 }
 
@@ -154,12 +153,10 @@ body {
 
 label {
     display: block;
-    margin-bottom: 7px;
     font-size: 12px;
     font-weight: 700;
+    margin-bottom: 7px;
     color: #444;
-    text-transform: uppercase;
-    letter-spacing: .4px;
 }
 
 input,
@@ -167,14 +164,13 @@ textarea,
 select {
     width: 100%;
     border: 1px solid #d7d7d7;
-    background: #fff;
-    border-radius: 9px;
-    padding: 12px 14px;
-    font-family: inherit;
+    border-radius: 10px;
+    background: white;
+    padding: 13px 14px;
     font-size: 14px;
+    font-family: inherit;
     color: #111;
     outline: none;
-    transition: border-color .15s ease, box-shadow .15s ease;
 }
 
 input:focus,
@@ -185,8 +181,8 @@ select:focus {
 }
 
 textarea {
-    min-height: 100px;
     resize: vertical;
+    min-height: 100px;
 }
 
 
@@ -194,20 +190,20 @@ textarea {
    SERVICES
 ========================================================= */
 
-.services-header {
+.services-header,
+.service-row {
     display: grid;
-    grid-template-columns: minmax(180px, 1fr) 74px 110px 100px 25px;
+    grid-template-columns: minmax(180px, 1fr) 75px 110px 100px 28px;
     gap: 10px;
     align-items: center;
+}
+
+.services-header {
     margin-bottom: 8px;
 }
 
 .service-row {
-    display: grid;
-    grid-template-columns: minmax(180px, 1fr) 74px 110px 100px 25px;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 9px;
+    margin-bottom: 10px;
 }
 
 .service-row input {
@@ -221,24 +217,22 @@ textarea {
 }
 
 .remove-service {
-    border: 0;
-    background: transparent;
-    color: #e60000;
+    background: none;
+    border: none;
+    color: #ed1c24;
     font-size: 20px;
     cursor: pointer;
-    padding: 4px;
 }
 
 .add-service {
     width: 100%;
-    margin-top: 8px;
+    margin-top: 5px;
     padding: 11px;
+    border: 1px dashed #ccc;
     background: #fff;
-    border: 1px dashed #cfcfcf;
     border-radius: 9px;
     cursor: pointer;
     font-weight: 700;
-    color: #333;
 }
 
 .add-service:hover {
@@ -266,15 +260,13 @@ textarea {
 .total-line {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 10px;
-    font-size: 14px;
 }
 
 .total-line.grand {
-    margin-top: 14px;
-    padding-top: 14px;
     border-top: 1px solid #222;
+    padding-top: 13px;
+    margin-top: 12px;
     font-size: 20px;
 }
 
@@ -288,18 +280,15 @@ textarea {
 ========================================================= */
 
 .qr-upload {
-    border: 1px dashed #cfcfcf;
+    border: 1px dashed #ccc;
     border-radius: 10px;
     padding: 12px;
 }
 
-.qr-upload input[type="file"] {
-    padding: 8px;
-}
-
 .qr-preview {
-    max-width: 150px;
-    max-height: 150px;
+    display: block;
+    width: 130px;
+    height: 130px;
     object-fit: contain;
     margin-top: 10px;
 }
@@ -311,18 +300,17 @@ textarea {
 
 .upi-real-logos {
     display: flex;
-    align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
+    align-items: center;
+    gap: 14px;
     margin-top: 12px;
 }
 
 .upi-logo {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     font-size: 12px;
-    font-weight: 600;
     white-space: nowrap;
 }
 
@@ -330,7 +318,6 @@ textarea {
     width: 23px;
     height: 23px;
     object-fit: contain;
-    display: block;
 }
 
 
@@ -345,12 +332,11 @@ textarea {
 }
 
 .btn {
-    border: 0;
+    border: none;
     border-radius: 9px;
     padding: 12px 18px;
     cursor: pointer;
     font-weight: 700;
-    font-size: 14px;
 }
 
 .btn-primary {
@@ -364,45 +350,53 @@ textarea {
 }
 
 .btn-light {
-    background: #f1f1f1;
-    color: #222;
+    background: #eee;
+    color: #111;
 }
 
 
 /* =========================================================
-   BILL PREVIEW
+   LIVE PREVIEW CONTAINER
 ========================================================= */
 
 .preview-wrapper {
     width: 100%;
     overflow: auto;
-    background: #5f6368;
-    padding: 25px;
-    border-radius: 14px;
+    background: #555;
+    padding: 20px;
+    border-radius: 12px;
 }
 
+
+/* =========================================================
+   INVOICE
+========================================================= */
+
 /*
-   IMPORTANT:
-   This is the visual A4-width invoice.
-   Do NOT give it a forced 297mm height.
+IMPORTANT:
+
+Do NOT force 210mm width in live preview.
+
+The invoice automatically fits inside the
+available preview panel.
+
+Actual A4 width is applied ONLY during print.
 */
 
 .invoice {
-    width: 210mm;
+    width: 100%;
+    max-width: 794px;
     height: auto;
     min-height: 0;
-    max-height: none;
-
     margin: 0 auto;
 
     background: #fff;
+
+    padding: 38px;
+
     color: #111;
 
-    padding: 10mm;
-
-    box-sizing: border-box;
-
-    box-shadow: 0 3px 18px rgba(0, 0, 0, .18);
+    box-shadow: 0 3px 18px rgba(0, 0, 0, .20);
 
     overflow: visible;
 }
@@ -416,33 +410,32 @@ textarea {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-
-    padding-bottom: 7px;
     border-bottom: 2px solid var(--orange);
+    padding-bottom: 12px;
 }
 
 .invoice-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .invoice-brand img {
-    width: 34px;
-    height: 34px;
+    width: 42px;
+    height: 42px;
     object-fit: contain;
 }
 
 .invoice-brand-name {
-    font-size: 15px;
+    font-size: 19px;
     font-weight: 800;
 }
 
 .invoice-brand-subtitle {
-    font-size: 6px;
-    letter-spacing: 1.5px;
+    margin-top: 3px;
+    font-size: 7px;
+    letter-spacing: 2px;
     color: #999;
-    margin-top: 2px;
 }
 
 .invoice-title {
@@ -452,58 +445,56 @@ textarea {
 .invoice-title h2 {
     margin: 0;
     color: var(--orange);
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 800;
 }
 
 .invoice-title small {
     display: block;
-    margin-top: 8px;
-    font-size: 7px;
-    color: #444;
+    margin-top: 9px;
+    font-size: 8px;
 }
 
 
 /* =========================================================
-   BILL TO / META
+   CLIENT / META
 ========================================================= */
 
 .invoice-meta {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
-
-    padding: 9px 0;
+    gap: 30px;
+    padding: 15px 0;
 }
 
 .bill-to-title,
 .meta-label,
 .section-label {
     color: var(--orange);
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .bill-to-name {
-    margin-top: 5px;
-    font-size: 11px;
+    margin-top: 6px;
+    font-size: 13px;
     font-weight: 700;
 }
 
 .bill-to-details {
-    font-size: 7px;
+    margin-top: 3px;
     color: #777;
-    line-height: 1.45;
+    font-size: 8px;
+    line-height: 1.5;
 }
 
 .invoice-meta-right {
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 5px 15px;
-    align-content: start;
-    font-size: 7px;
+    gap: 7px 15px;
+    font-size: 8px;
 }
 
 .invoice-meta-right .label {
@@ -511,8 +502,8 @@ textarea {
 }
 
 .invoice-meta-right .value {
-    font-weight: 700;
     text-align: right;
+    font-weight: 700;
 }
 
 
@@ -522,11 +513,11 @@ textarea {
 
 .status-badge {
     display: inline-block;
+    background: #fff0e6;
+    color: var(--orange);
     padding: 4px 7px;
     border-radius: 4px;
-    background: #fff1e8;
-    color: var(--orange);
-    font-size: 6px;
+    font-size: 7px;
     font-weight: 800;
 }
 
@@ -544,43 +535,43 @@ textarea {
 .invoice-table th {
     background: #111;
     color: #fff;
-    padding: 6px 7px;
-    font-size: 6px;
+    padding: 7px 8px;
+    font-size: 7px;
     text-align: left;
-    text-transform: uppercase;
 }
 
 .invoice-table td {
-    padding: 6px 7px;
+    padding: 7px 8px;
     border-bottom: 1px solid #e5e5e5;
-    font-size: 7px;
+    font-size: 8px;
+    word-wrap: break-word;
 }
 
 .invoice-table th:nth-child(1),
 .invoice-table td:nth-child(1) {
-    width: 6%;
+    width: 7%;
 }
 
 .invoice-table th:nth-child(2),
 .invoice-table td:nth-child(2) {
-    width: 48%;
+    width: 45%;
 }
 
 .invoice-table th:nth-child(3),
 .invoice-table td:nth-child(3) {
-    width: 10%;
+    width: 12%;
     text-align: center;
 }
 
 .invoice-table th:nth-child(4),
 .invoice-table td:nth-child(4) {
-    width: 16%;
+    width: 17%;
     text-align: right;
 }
 
 .invoice-table th:nth-child(5),
 .invoice-table td:nth-child(5) {
-    width: 20%;
+    width: 19%;
     text-align: right;
 }
 
@@ -592,25 +583,25 @@ textarea {
 .invoice-total-area {
     display: flex;
     justify-content: flex-end;
-    margin-top: 7px;
+    margin-top: 10px;
 }
 
 .invoice-totals {
-    width: 165px;
+    width: 190px;
 }
 
 .invoice-total-line {
     display: flex;
     justify-content: space-between;
-    font-size: 7px;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    font-size: 8px;
 }
 
 .invoice-total-line.total {
-    padding-top: 6px;
-    margin-top: 5px;
     border-top: 1px solid #222;
-    font-size: 10px;
+    padding-top: 7px;
+    margin-top: 6px;
+    font-size: 12px;
     font-weight: 800;
 }
 
@@ -624,152 +615,155 @@ textarea {
 ========================================================= */
 
 .amount-words {
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 .amount-words-label {
     color: var(--orange);
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .amount-words-value {
-    margin-top: 3px;
-    font-size: 7px;
+    margin-top: 4px;
+    font-size: 8px;
     font-weight: 600;
 }
 
 
 /* =========================================================
-   PAYMENT / NOTES / TERMS
+   PAYMENT / NOTES
 ========================================================= */
 
 .payment-notes {
-    margin-top: 10px;
-    border: 1px solid #dedede;
-    border-radius: 9px;
-    padding: 10px;
+    margin-top: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px;
 }
 
 .payment-notes-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px;
-}
-
-.payment-column {
-    min-width: 0;
+    gap: 18px;
 }
 
 .payment-title {
     color: var(--orange);
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 }
 
 .payment-subtitle {
-    font-size: 7px;
+    font-size: 8px;
     font-weight: 800;
     margin-bottom: 5px;
 }
 
 .upi-id {
-    font-size: 7px;
-    color: #444;
+    font-size: 8px;
     word-break: break-word;
 }
 
 .qr-section {
     display: flex;
-    gap: 12px;
     align-items: center;
+    gap: 15px;
 }
 
 .qr-section img {
-    width: 42mm;
-    height: 42mm;
+    width: 110px;
+    height: 110px;
     object-fit: contain;
 }
 
 .scan-text {
-    font-size: 6.5px;
+    font-size: 7px;
     color: #777;
-    line-height: 1.4;
+    line-height: 1.5;
+}
+
+.notes-block {
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #e5e5e5;
 }
 
 .notes-text,
 .terms-text {
-    font-size: 6.5px;
-    line-height: 1.4;
+    font-size: 7px;
     color: #666;
+    line-height: 1.5;
 }
 
 .terms-text ul {
     margin: 4px 0 0;
-    padding-left: 12px;
+    padding-left: 13px;
 }
 
 .terms-text li {
     margin-bottom: 2px;
 }
 
-.notes-block {
-    padding-bottom: 8px;
-    border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 8px;
-}
-
 
 /* =========================================================
-   PAYMENT DUE / PAID FOOTER
+   PAYMENT FOOTER
 ========================================================= */
 
 .payment-footer {
-    margin-top: 10px;
+    margin-top: 12px;
     background: #111;
     color: #fff;
-    padding: 7px 9px;
+
+    padding: 8px 10px;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    font-size: 6px;
+    font-size: 7px;
 }
 
 .payment-footer strong {
     color: var(--orange);
-    font-size: 7px;
+    font-size: 8px;
 }
 
 .generated-time {
     color: #aaa;
-    font-size: 6px;
+    font-size: 7px;
 }
-
-
-/* =========================================================
-   COMPUTER GENERATED NOTE
-========================================================= */
 
 .computer-generated {
     margin-top: 4px;
     text-align: center;
+    font-size: 7px;
     color: #888;
-    font-size: 6px;
 }
 
 
 /* =========================================================
-   RESPONSIVE EDITOR
+   RESPONSIVE
 ========================================================= */
 
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
+
+    .workspace {
+        grid-template-columns: minmax(480px, 1fr) minmax(450px, 1fr);
+    }
+
+    .invoice {
+        padding: 30px;
+    }
+}
+
+
+@media (max-width: 1100px) {
 
     .workspace {
         grid-template-columns: 1fr;
@@ -778,13 +772,29 @@ textarea {
     .preview-area {
         position: static;
     }
+
+    .preview-wrapper {
+        max-width: 100%;
+    }
+
+    .invoice {
+        max-width: 794px;
+    }
 }
 
 
 @media (max-width: 700px) {
 
+    .sidebar {
+        display: none;
+    }
+
     .main {
-        padding: 12px;
+        padding: 10px;
+    }
+
+    .topbar {
+        padding: 14px;
     }
 
     .form-grid {
@@ -795,29 +805,27 @@ textarea {
         grid-column: auto;
     }
 
+    .card {
+        padding: 16px;
+    }
+
     .services-header {
         display: none;
     }
 
     .service-row {
-        grid-template-columns: 1fr 70px 90px 80px 25px;
-        gap: 6px;
+        grid-template-columns: 1fr 60px 85px 80px 25px;
+        gap: 5px;
     }
 
-    .card {
-        padding: 16px;
-    }
-
-    .preview-wrapper {
-        padding: 10px;
+    .invoice {
+        padding: 22px;
     }
 }
 
 
 /* =========================================================
-   PRINT
-   IMPORTANT:
-   Do NOT force 297mm height.
+   PRINT / PDF
 ========================================================= */
 
 @media print {
@@ -839,29 +847,34 @@ textarea {
         overflow: visible !important;
     }
 
+    /*
+       Hide editor UI
+    */
+
     .sidebar,
     .topbar,
     .editor,
-    .preview-title,
-    .history-page,
+    button,
     .action-bar,
-    button {
+    .preview-title {
         display: none !important;
     }
 
     .app {
         display: block !important;
+        width: 210mm !important;
         min-height: 0 !important;
     }
 
     .main {
         width: 210mm !important;
-        margin: 0 !important;
         padding: 0 !important;
+        margin: 0 !important;
     }
 
     .workspace {
         display: block !important;
+        width: 210mm !important;
         margin: 0 !important;
         padding: 0 !important;
     }
@@ -875,16 +888,22 @@ textarea {
 
     .preview-wrapper {
         width: 210mm !important;
-        margin: 0 !important;
         padding: 0 !important;
+        margin: 0 !important;
         background: #fff !important;
         overflow: visible !important;
     }
 
+    /*
+       IMPORTANT:
+       A4 WIDTH ONLY.
+       HEIGHT IS AUTOMATIC.
+    */
+
     .invoice {
         width: 210mm !important;
+        max-width: none !important;
 
-        /* KEY FIX */
         height: auto !important;
         min-height: 0 !important;
         max-height: none !important;
@@ -892,22 +911,21 @@ textarea {
         margin: 0 !important;
         padding: 10mm !important;
 
-        background: #fff !important;
-
         box-shadow: none !important;
-        border: 0 !important;
+        border: none !important;
 
         overflow: visible !important;
+
+        background: #fff !important;
 
         page-break-after: avoid !important;
         break-after: avoid-page !important;
     }
 
-    .invoice-table tr,
     .payment-notes,
     .payment-footer,
-    .computer-generated {
-        break-inside: avoid !important;
+    .invoice-table tr {
         page-break-inside: avoid !important;
+        break-inside: avoid !important;
     }
 }
