@@ -16,8 +16,11 @@ let billStatus = "DUE";
 
 document.addEventListener("DOMContentLoaded", () => {
     initializeBill();
+
     services = [];
+
     addService();
+
     updatePreview();
 });
 
@@ -46,10 +49,8 @@ function initializeBill() {
 
 function getToday() {
     const date = new Date();
-
     return date.toISOString().split("T")[0];
 }
-
 
 function formatDate(date) {
     if (!date) return "—";
@@ -74,7 +75,9 @@ function generateBillNumber() {
     let maxNumber = 0;
 
     bills.forEach(bill => {
-        const match = String(bill.billNumber || "").match(/(\d+)$/);
+        const match = String(
+            bill.billNumber || ""
+        ).match(/(\d+)$/);
 
         if (match) {
             maxNumber = Math.max(
@@ -84,7 +87,8 @@ function generateBillNumber() {
         }
     });
 
-    return "SPMW-" + String(maxNumber + 1).padStart(4, "0");
+    return "SPMW-" +
+        String(maxNumber + 1).padStart(4, "0");
 }
 
 
@@ -92,7 +96,11 @@ function generateBillNumber() {
    ADD SERVICE
 ========================================================= */
 
-function addService(description = "", qty = 1, rate = 0) {
+function addService(
+    description = "",
+    qty = 1,
+    rate = 0
+) {
 
     services.push({
         description: description,
@@ -100,23 +108,9 @@ function addService(description = "", qty = 1, rate = 0) {
         rate: rate
     });
 
-    /*
-       IMPORTANT:
-       renderServices() is called ONLY when a row
-       is actually added.
-
-       It is NOT called while typing.
-    */
-
     renderServices();
 
     updatePreview();
-
-
-    /*
-       Automatically focus the newly added
-       service description field.
-    */
 
     setTimeout(() => {
 
@@ -125,20 +119,16 @@ function addService(description = "", qty = 1, rate = 0) {
                 ".service-description"
             );
 
-        if (inputs.length > 0) {
+        if (inputs.length) {
 
-            const lastInput =
+            const input =
                 inputs[inputs.length - 1];
 
-            lastInput.focus();
+            input.focus();
 
-            /*
-               Put cursor at the end.
-            */
-
-            lastInput.setSelectionRange(
-                lastInput.value.length,
-                lastInput.value.length
+            input.setSelectionRange(
+                input.value.length,
+                input.value.length
             );
         }
 
@@ -167,229 +157,202 @@ function removeService(index) {
     }
 
     renderServices();
+
     updatePreview();
 }
 
 
 /* =========================================================
-   RENDER SERVICE ROWS
+   RENDER SERVICES
 ========================================================= */
 
 function renderServices() {
 
     const list =
-        document.getElementById("serviceList");
+        document.getElementById(
+            "serviceList"
+        );
 
     if (!list) return;
 
-
-    /*
-       This function completely creates the rows.
-
-       NEVER call this function from an input event.
-    */
-
     list.innerHTML = "";
 
+    services.forEach(
+        (service, index) => {
 
-    services.forEach((service, index) => {
+            const row =
+                document.createElement("div");
 
-        const row =
-            document.createElement("div");
+            row.className =
+                "service-row";
 
-        row.className = "service-row";
 
+            /* DESCRIPTION */
 
-        /* -----------------------------------------
-           DESCRIPTION
-        ----------------------------------------- */
+            const description =
+                document.createElement("input");
 
-        const description =
-            document.createElement("input");
+            description.type = "text";
 
-        description.type = "text";
+            description.className =
+                "service-description";
 
-        description.className =
-            "service-description";
+            description.placeholder =
+                "Service / description";
 
-        description.placeholder =
-            "Service / description";
+            description.value =
+                service.description || "";
 
-        description.value =
-            service.description || "";
 
+            /* QUANTITY */
 
-        /* -----------------------------------------
-           QUANTITY
-        ----------------------------------------- */
+            const qty =
+                document.createElement("input");
 
-        const qty =
-            document.createElement("input");
+            qty.type = "number";
 
-        qty.type = "number";
+            qty.className =
+                "service-qty";
 
-        qty.className =
-            "service-qty";
+            qty.min = "1";
 
-        qty.min = "1";
+            qty.value =
+                service.qty ?? 1;
 
-        qty.value =
-            service.qty ?? 1;
 
+            /* RATE */
 
-        /* -----------------------------------------
-           RATE
-        ----------------------------------------- */
+            const rate =
+                document.createElement("input");
 
-        const rate =
-            document.createElement("input");
+            rate.type = "number";
 
-        rate.type = "number";
+            rate.className =
+                "service-rate";
 
-        rate.className =
-            "service-rate";
+            rate.min = "0";
 
-        rate.min = "0";
+            rate.value =
+                service.rate ?? 0;
 
-        rate.value =
-            service.rate ?? 0;
 
+            /* AMOUNT */
 
-        /* -----------------------------------------
-           AMOUNT
-        ----------------------------------------- */
+            const amount =
+                document.createElement("div");
 
-        const amount =
-            document.createElement("div");
+            amount.className =
+                "service-amount";
 
-        amount.className =
-            "service-amount";
 
+            /* DELETE */
 
-        /* -----------------------------------------
-           REMOVE BUTTON
-        ----------------------------------------- */
+            const remove =
+                document.createElement("button");
 
-        const remove =
-            document.createElement("button");
+            remove.type = "button";
 
-        remove.type = "button";
+            remove.className =
+                "remove-service";
 
-        remove.className =
-            "remove-service";
+            remove.textContent = "×";
 
-        remove.textContent = "×";
 
+            row.appendChild(description);
+            row.appendChild(qty);
+            row.appendChild(rate);
+            row.appendChild(amount);
+            row.appendChild(remove);
 
-        /* -----------------------------------------
-           PUT EVERYTHING INTO ROW
-        ----------------------------------------- */
 
-        row.appendChild(description);
-        row.appendChild(qty);
-        row.appendChild(rate);
-        row.appendChild(amount);
-        row.appendChild(remove);
+            updateServiceAmount(
+                row,
+                index
+            );
 
 
-        /* -----------------------------------------
-           INITIAL AMOUNT
-        ----------------------------------------- */
+            /* =================================================
+               DESCRIPTION INPUT
 
-        updateServiceAmount(
-            row,
-            index
-        );
+               IMPORTANT:
+               DO NOT CALL renderServices() HERE.
+            ================================================= */
 
+            description.addEventListener(
+                "input",
+                function () {
 
-        /* =================================================
-           DESCRIPTION INPUT
+                    services[index].description =
+                        this.value;
 
-           THIS IS THE IMPORTANT FIX.
+                    updatePreview();
 
-           We only update the data.
+                }
+            );
 
-           We DO NOT render the rows again.
-        ================================================= */
 
-        description.addEventListener(
-            "input",
-            function () {
+            /* =================================================
+               QUANTITY
+            ================================================= */
 
-                services[index].description =
-                    this.value;
+            qty.addEventListener(
+                "input",
+                function () {
 
-                updatePreview();
+                    services[index].qty =
+                        Number(this.value) || 0;
 
-            }
-        );
+                    updateServiceAmount(
+                        row,
+                        index
+                    );
 
+                    updatePreview();
 
-        /* -----------------------------------------
-           QUANTITY INPUT
-        ----------------------------------------- */
+                }
+            );
 
-        qty.addEventListener(
-            "input",
-            function () {
 
-                services[index].qty =
-                    Number(this.value) || 0;
+            /* =================================================
+               RATE
+            ================================================= */
 
+            rate.addEventListener(
+                "input",
+                function () {
 
-                updateServiceAmount(
-                    row,
-                    index
-                );
+                    services[index].rate =
+                        Number(this.value) || 0;
 
+                    updateServiceAmount(
+                        row,
+                        index
+                    );
 
-                updatePreview();
+                    updatePreview();
 
-            }
-        );
+                }
+            );
 
 
-        /* -----------------------------------------
-           RATE INPUT
-        ----------------------------------------- */
+            /* =================================================
+               REMOVE
+            ================================================= */
 
-        rate.addEventListener(
-            "input",
-            function () {
+            remove.addEventListener(
+                "click",
+                function () {
 
-                services[index].rate =
-                    Number(this.value) || 0;
+                    removeService(index);
 
+                }
+            );
 
-                updateServiceAmount(
-                    row,
-                    index
-                );
 
+            list.appendChild(row);
 
-                updatePreview();
-
-            }
-        );
-
-
-        /* -----------------------------------------
-           REMOVE
-        ----------------------------------------- */
-
-        remove.addEventListener(
-            "click",
-            function () {
-
-                removeService(index);
-
-            }
-        );
-
-
-        list.appendChild(row);
-
-    });
+        }
+    );
 }
 
 
@@ -410,10 +373,10 @@ function updateServiceAmount(row, index) {
     const amount =
         qty * rate;
 
-
     const amountElement =
-        row.querySelector(".service-amount");
-
+        row.querySelector(
+            ".service-amount"
+        );
 
     if (amountElement) {
 
@@ -439,7 +402,8 @@ function calculateSubtotal() {
             const rate =
                 Number(service.rate) || 0;
 
-            return total + (qty * rate);
+            return total +
+                (qty * rate);
 
         },
         0
@@ -453,14 +417,16 @@ function calculateSubtotal() {
 
 function getDiscount() {
 
-    const discountInput =
-        document.getElementById("discount");
+    const input =
+        document.getElementById(
+            "discount"
+        );
 
-    if (!discountInput) return 0;
+    if (!input) return 0;
 
     return Math.max(
         0,
-        Number(discountInput.value) || 0
+        Number(input.value) || 0
     );
 }
 
@@ -485,7 +451,7 @@ function calculateTotal() {
 
 
 /* =========================================================
-   MONEY FORMAT
+   MONEY
 ========================================================= */
 
 function money(amount) {
@@ -574,10 +540,6 @@ function updatePreview() {
         calculateTotal();
 
 
-    /* -----------------------------------------
-       CLIENT
-    ----------------------------------------- */
-
     setText(
         "previewClient",
         clientName
@@ -599,10 +561,6 @@ function updatePreview() {
     );
 
 
-    /* -----------------------------------------
-       BILL DETAILS
-    ----------------------------------------- */
-
     setText(
         "previewBillNumber",
         "#" + billNumber
@@ -619,10 +577,6 @@ function updatePreview() {
     );
 
 
-    /* -----------------------------------------
-       PAYMENT
-    ----------------------------------------- */
-
     setText(
         "previewUPI",
         upi
@@ -633,10 +587,6 @@ function updatePreview() {
         notes
     );
 
-
-    /* -----------------------------------------
-       EDITOR TOTALS
-    ----------------------------------------- */
 
     setText(
         "editorSubtotal",
@@ -654,10 +604,6 @@ function updatePreview() {
     );
 
 
-    /* -----------------------------------------
-       INVOICE TOTALS
-    ----------------------------------------- */
-
     setText(
         "previewSubtotal",
         money(subtotal)
@@ -673,6 +619,11 @@ function updatePreview() {
         money(total)
     );
 
+
+    /*
+       This only updates the invoice preview.
+       It DOES NOT render the service input block.
+    */
 
     renderInvoiceItems();
 
@@ -693,9 +644,7 @@ function renderInvoiceItems() {
 
     if (!tbody) return;
 
-
     tbody.innerHTML = "";
-
 
     services.forEach(
         (service, index) => {
@@ -724,6 +673,7 @@ function renderInvoiceItems() {
 
             const descriptionCell =
                 document.createElement("td");
+
 
             const strong =
                 document.createElement("strong");
@@ -804,8 +754,7 @@ function updateStatus() {
 
     if (billStatus === "PAID") {
 
-        status.textContent =
-            "PAID";
+        status.textContent = "PAID";
 
         status.className =
             "status paid";
@@ -901,12 +850,11 @@ function markPaid() {
     saveBill(true);
 
     updatePreview();
-
 }
 
 
 /* =========================================================
-   COLLECT BILL DATA
+   COLLECT BILL
 ========================================================= */
 
 function collectBillData() {
@@ -917,56 +865,81 @@ function collectBillData() {
             currentBillId ||
             Date.now().toString(),
 
-
         billNumber:
-            getValue("billNumber", ""),
-
+            getValue(
+                "billNumber",
+                ""
+            ),
 
         date:
-            getValue("billDate", ""),
-
+            getValue(
+                "billDate",
+                ""
+            ),
 
         dueDate:
-            getValue("dueDate", ""),
-
+            getValue(
+                "dueDate",
+                ""
+            ),
 
         status:
             billStatus,
 
-
         client: {
 
             name:
-                getValue("clientName", ""),
+                getValue(
+                    "clientName",
+                    ""
+                ),
 
             company:
-                getValue("company", ""),
+                getValue(
+                    "company",
+                    ""
+                ),
 
             phone:
-                getValue("phone", ""),
+                getValue(
+                    "phone",
+                    ""
+                ),
 
             email:
-                getValue("email", ""),
+                getValue(
+                    "email",
+                    ""
+                ),
 
             location:
-                getValue("location", "")
-
+                getValue(
+                    "location",
+                    ""
+                )
         },
 
 
         services:
-            services.map(service => ({
+            services.map(
+                service => ({
 
-                description:
-                    service.description || "",
+                    description:
+                        service.description ||
+                        "",
 
-                qty:
-                    Number(service.qty) || 0,
+                    qty:
+                        Number(
+                            service.qty
+                        ) || 0,
 
-                rate:
-                    Number(service.rate) || 0
+                    rate:
+                        Number(
+                            service.rate
+                        ) || 0
 
-            })),
+                })
+            ),
 
 
         discount:
@@ -974,7 +947,10 @@ function collectBillData() {
 
 
         upi:
-            getValue("upi", ""),
+            getValue(
+                "upi",
+                ""
+            ),
 
 
         paymentReference:
@@ -985,7 +961,10 @@ function collectBillData() {
 
 
         notes:
-            getValue("notes", "")
+            getValue(
+                "notes",
+                ""
+            )
 
     };
 }
@@ -1008,8 +987,8 @@ function saveBill(silent = false) {
 
         const index =
             bills.findIndex(
-                billItem =>
-                    billItem.id ===
+                item =>
+                    item.id ===
                     currentBillId
             );
 
@@ -1107,7 +1086,6 @@ function openBill(id) {
         );
 
         return;
-
     }
 
 
@@ -1190,7 +1168,8 @@ function openBill(id) {
                 service => ({
 
                     description:
-                        service.description || "",
+                        service.description ||
+                        "",
 
                     qty:
                         Number(
@@ -1207,7 +1186,7 @@ function openBill(id) {
             : [];
 
 
-    if (services.length === 0) {
+    if (!services.length) {
 
         services.push({
             description: "",
@@ -1271,11 +1250,9 @@ function deleteBill(id) {
 
 function newBill() {
 
-    currentBillId =
-        null;
+    currentBillId = null;
 
-    billStatus =
-        "DUE";
+    billStatus = "DUE";
 
 
     setValue("clientName", "");
@@ -1284,35 +1261,42 @@ function newBill() {
     setValue("email", "");
     setValue("location", "");
 
+
     setValue(
         "billNumber",
         generateBillNumber()
     );
+
 
     setValue(
         "billDate",
         getToday()
     );
 
+
     setValue(
         "dueDate",
         ""
     );
+
 
     setValue(
         "discount",
         0
     );
 
+
     setValue(
         "upi",
         ""
     );
 
+
     setValue(
         "paymentReference",
         ""
     );
+
 
     setValue(
         "notes",
@@ -1321,12 +1305,6 @@ function newBill() {
 
 
     services = [];
-
-
-    /*
-       addService() will render ONE row
-       and automatically focus it.
-    */
 
     addService();
 
@@ -1357,6 +1335,7 @@ function showPage(page) {
             "pageTitle"
         );
 
+
     const navButtons =
         document.querySelectorAll(
             ".nav-btn"
@@ -1373,16 +1352,30 @@ function showPage(page) {
 
     if (page === "history") {
 
-        createPage.classList.add(
-            "hidden"
-        );
+        if (createPage) {
 
-        historyPage.classList.remove(
-            "hidden"
-        );
+            createPage.classList.add(
+                "hidden"
+            );
 
-        pageTitle.textContent =
-            "Bill History";
+        }
+
+
+        if (historyPage) {
+
+            historyPage.classList.remove(
+                "hidden"
+            );
+
+        }
+
+
+        if (pageTitle) {
+
+            pageTitle.textContent =
+                "Bill History";
+
+        }
 
 
         if (navButtons[1]) {
@@ -1399,16 +1392,30 @@ function showPage(page) {
 
     } else {
 
-        historyPage.classList.add(
-            "hidden"
-        );
+        if (historyPage) {
 
-        createPage.classList.remove(
-            "hidden"
-        );
+            historyPage.classList.add(
+                "hidden"
+            );
 
-        pageTitle.textContent =
-            "Create Bill";
+        }
+
+
+        if (createPage) {
+
+            createPage.classList.remove(
+                "hidden"
+            );
+
+        }
+
+
+        if (pageTitle) {
+
+            pageTitle.textContent =
+                "Create Bill";
+
+        }
 
 
         if (navButtons[0]) {
@@ -1419,7 +1426,6 @@ function showPage(page) {
                 );
 
         }
-
     }
 }
 
@@ -1445,13 +1451,11 @@ function renderHistory() {
 
 
     const search =
-        (
-            searchInput
-                ? searchInput.value
-                : ""
-        )
-        .trim()
-        .toLowerCase();
+        searchInput
+            ? searchInput.value
+                .trim()
+                .toLowerCase()
+            : "";
 
 
     const bills =
@@ -1479,12 +1483,11 @@ function renderHistory() {
                     name.includes(search) ||
                     company.includes(search)
                 );
-
             }
         );
 
 
-    if (bills.length === 0) {
+    if (!bills.length) {
 
         container.innerHTML = `
             <div class="empty-history">
@@ -1499,134 +1502,140 @@ function renderHistory() {
     container.innerHTML = "";
 
 
-    bills.forEach(bill => {
+    bills.forEach(
+        bill => {
 
-        const subtotal =
-            (bill.services || [])
-                .reduce(
-                    (sum, item) => {
+            const subtotal =
+                (bill.services || [])
+                    .reduce(
+                        (sum, item) => {
 
-                        return sum +
-                            (
-                                Number(item.qty) || 0
-                            ) *
-                            (
-                                Number(item.rate) || 0
-                            );
+                            return sum +
+                                (
+                                    Number(
+                                        item.qty
+                                    ) || 0
+                                ) *
+                                (
+                                    Number(
+                                        item.rate
+                                    ) || 0
+                                );
 
-                    },
-                    0
+                        },
+                        0
+                    );
+
+
+            const total =
+                Math.max(
+                    0,
+                    subtotal -
+                    (
+                        Number(
+                            bill.discount
+                        ) || 0
+                    )
                 );
 
 
-        const total =
-            Math.max(
-                0,
-                subtotal -
-                (
-                    Number(
-                        bill.discount
-                    ) || 0
-                )
-            );
+            const row =
+                document.createElement(
+                    "div"
+                );
 
 
-        const row =
-            document.createElement(
-                "div"
-            );
+            row.className =
+                "history-row";
 
 
-        row.className =
-            "history-row";
+            const clientName =
+                bill.client?.name ||
+                "Unnamed client";
 
 
-        const clientName =
-            bill.client?.name ||
-            "Unnamed client";
+            row.innerHTML = `
+
+                <div>
+
+                    <strong>
+                        ${escapeHTML(
+                            bill.billNumber || ""
+                        )}
+                    </strong>
+
+                    <small>
+                        ${escapeHTML(
+                            clientName
+                        )}
+                    </small>
+
+                </div>
 
 
-        row.innerHTML = `
+                <div>
 
-            <div>
+                    <small>
+                        ${formatDate(
+                            bill.date
+                        )}
+                    </small>
 
-                <strong>
-                    ${escapeHTML(
-                        bill.billNumber || ""
-                    )}
-                </strong>
-
-                <small>
-                    ${escapeHTML(
-                        clientName
-                    )}
-                </small>
-
-            </div>
+                </div>
 
 
-            <div>
+                <div class="history-total">
 
-                <small>
-                    ${formatDate(
-                        bill.date
-                    )}
-                </small>
+                    ${money(total)}
 
-            </div>
+                </div>
 
 
-            <div class="history-total">
+                <div>
 
-                ${money(total)}
-
-            </div>
-
-
-            <div>
-
-                <span class="status ${
-                    bill.status === "PAID"
-                        ? "paid"
-                        : "due"
-                }">
-
-                    ${
+                    <span class="status ${
                         bill.status === "PAID"
-                            ? "PAID"
-                            : "DUE"
-                    }
+                            ? "paid"
+                            : "due"
+                    }">
 
-                </span>
+                        ${
+                            bill.status === "PAID"
+                                ? "PAID"
+                                : "DUE"
+                        }
 
-            </div>
+                    </span>
 
-
-            <button
-                class="history-open"
-                type="button"
-                onclick="openBill('${bill.id}')"
-            >
-                Open
-            </button>
+                </div>
 
 
-            <button
-                class="history-delete"
-                type="button"
-                onclick="deleteBill('${bill.id}')"
-            >
-                ×
-            </button>
-
-        `;
+                <button
+                    class="history-open"
+                    type="button"
+                    onclick="openBill('${bill.id}')"
+                >
+                    Open
+                </button>
 
 
-        container.appendChild(
-            row
-        );
+                <button
+                    class="history-delete"
+                    type="button"
+                    onclick="deleteBill('${bill.id}')"
+                >
+                    ×
+                </button>
 
-    });
+            `;
+
+
+            container.appendChild(
+                row
+            );
+
+        }
+    );
 }
 
 
@@ -1649,16 +1658,10 @@ async function downloadPDF() {
         );
 
         return;
-
     }
 
 
     try {
-
-        /*
-           Make sure the browser has finished
-           rendering before taking screenshot.
-        */
 
         await new Promise(
             resolve =>
@@ -1672,16 +1675,11 @@ async function downloadPDF() {
             await html2canvas(
                 invoice,
                 {
-
                     scale: 2,
-
                     useCORS: true,
-
                     backgroundColor:
                         "#ffffff",
-
                     logging: false
-
                 }
             );
 
@@ -1696,10 +1694,6 @@ async function downloadPDF() {
             jsPDF
         } = window.jspdf;
 
-
-        /*
-           TRUE A4
-        */
 
         const pdf =
             new jsPDF({
@@ -1751,13 +1745,12 @@ async function downloadPDF() {
         alert(
             "Could not generate PDF. Please try again."
         );
-
     }
 }
 
 
 /* =========================================================
-   HELPER — GET VALUE
+   HELPERS
 ========================================================= */
 
 function getValue(
@@ -1768,21 +1761,14 @@ function getValue(
     const element =
         document.getElementById(id);
 
-
     if (!element) {
 
         return fallback;
-
     }
-
 
     return element.value || fallback;
 }
 
-
-/* =========================================================
-   HELPER — SET VALUE
-========================================================= */
 
 function setValue(
     id,
@@ -1791,7 +1777,6 @@ function setValue(
 
     const element =
         document.getElementById(id);
-
 
     if (element) {
 
@@ -1802,10 +1787,6 @@ function setValue(
 }
 
 
-/* =========================================================
-   HELPER — SET TEXT
-========================================================= */
-
 function setText(
     id,
     value
@@ -1813,7 +1794,6 @@ function setText(
 
     const element =
         document.getElementById(id);
-
 
     if (element) {
 
@@ -1824,16 +1804,27 @@ function setText(
 }
 
 
-/* =========================================================
-   HELPER — ESCAPE HTML
-========================================================= */
-
 function escapeHTML(value) {
 
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
