@@ -1,6 +1,6 @@
 /* =========================================================
    SP MEDIA WORKS — BILL GENERATOR
-   Plain HTML + CSS + JavaScript
+   FRONTEND ONLY
 ========================================================= */
 
 const STORAGE_KEY = "sp_media_works_bills";
@@ -8,38 +8,49 @@ const STORAGE_KEY = "sp_media_works_bills";
 let services = [];
 let currentBillId = null;
 let billStatus = "DUE";
+let qrData = "";
+let generatedAt = new Date().toISOString();
 
 
 /* =========================================================
-   START
+   INITIALIZE
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
+
     initializeBill();
 
     services = [];
 
-    addService();
+    addService(false);
 
-    updatePreview();
+    updateAll();
+
 });
 
 
 /* =========================================================
-   INITIAL BILL
+   BILL INITIALIZATION
 ========================================================= */
 
 function initializeBill() {
-    const billNumber = document.getElementById("billNumber");
-    const billDate = document.getElementById("billDate");
+
+    const billNumber =
+        document.getElementById("billNumber");
+
+    const billDate =
+        document.getElementById("billDate");
 
     if (billNumber) {
-        billNumber.value = generateBillNumber();
+        billNumber.value =
+            generateBillNumber();
     }
 
     if (billDate) {
-        billDate.value = getToday();
+        billDate.value =
+            getToday();
     }
+
 }
 
 
@@ -48,20 +59,76 @@ function initializeBill() {
 ========================================================= */
 
 function getToday() {
-    const date = new Date();
-    return date.toISOString().split("T")[0];
+
+    const now = new Date();
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
 }
 
-function formatDate(date) {
-    if (!date) return "—";
 
-    const d = new Date(date + "T00:00:00");
+function formatDate(value) {
 
-    return d.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric"
-    });
+    if (!value) {
+        return "—";
+    }
+
+    const date =
+        new Date(
+            value + "T00:00:00"
+        );
+
+    if (isNaN(date.getTime())) {
+        return "—";
+    }
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+function formatDateTime(value) {
+
+    const date =
+        value
+            ? new Date(value)
+            : new Date();
+
+    if (isNaN(date.getTime())) {
+        return "—";
+    }
+
+    return date.toLocaleString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        }
+    );
+
 }
 
 
@@ -70,25 +137,44 @@ function formatDate(date) {
 ========================================================= */
 
 function generateBillNumber() {
-    const bills = getBills();
 
-    let maxNumber = 0;
+    const bills =
+        getBills();
 
-    bills.forEach(bill => {
-        const match = String(
-            bill.billNumber || ""
-        ).match(/(\d+)$/);
+    let highest =
+        0;
+
+    bills.forEach(function (bill) {
+
+        const match =
+            String(
+                bill.billNumber || ""
+            ).match(
+                /(\d+)$/
+            );
 
         if (match) {
-            maxNumber = Math.max(
-                maxNumber,
-                Number(match[1])
-            );
+
+            highest =
+                Math.max(
+                    highest,
+                    Number(match[1])
+                );
+
         }
+
     });
 
-    return "SPMW-" +
-        String(maxNumber + 1).padStart(4, "0");
+    return (
+        "SPMW-" +
+        String(
+            highest + 1
+        ).padStart(
+            4,
+            "0"
+        )
+    );
+
 }
 
 
@@ -96,33 +182,39 @@ function generateBillNumber() {
    ADD SERVICE
 ========================================================= */
 
-function addService(
-    description = "",
-    qty = 1,
-    rate = 0
-) {
+function addService(focusNew = true) {
 
     services.push({
-        description: description,
-        qty: qty,
-        rate: rate
+
+        description: "",
+
+        qty: 1,
+
+        rate: 0
+
     });
 
     renderServices();
 
-    updatePreview();
+    updateInvoicePreview();
 
-    setTimeout(() => {
+    if (focusNew) {
 
-        const inputs =
-            document.querySelectorAll(
-                ".service-description"
-            );
+        setTimeout(function () {
 
-        if (inputs.length) {
+            const inputs =
+                document.querySelectorAll(
+                    ".service-description"
+                );
+
+            if (!inputs.length) {
+                return;
+            }
 
             const input =
-                inputs[inputs.length - 1];
+                inputs[
+                    inputs.length - 1
+                ];
 
             input.focus();
 
@@ -130,9 +222,11 @@ function addService(
                 input.value.length,
                 input.value.length
             );
-        }
 
-    }, 0);
+        }, 20);
+
+    }
+
 }
 
 
@@ -142,46 +236,76 @@ function addService(
 
 function removeService(index) {
 
-    if (services.length <= 1) {
+    if (
+        index < 0 ||
+        index >= services.length
+    ) {
+        return;
+    }
 
-        services[0] = {
+    services.splice(
+        index,
+        1
+    );
+
+    if (!services.length) {
+
+        services.push({
+
             description: "",
+
             qty: 1,
+
             rate: 0
-        };
 
-    } else {
-
-        services.splice(index, 1);
+        });
 
     }
 
     renderServices();
 
-    updatePreview();
+    updateInvoicePreview();
+
 }
 
 
 /* =========================================================
-   RENDER SERVICES
+   RENDER SERVICE EDITOR
 ========================================================= */
 
 function renderServices() {
 
-    const list =
+    const container =
         document.getElementById(
             "serviceList"
         );
 
-    if (!list) return;
+    if (!container) {
+        return;
+    }
 
-    list.innerHTML = "";
+    /*
+       IMPORTANT:
+
+       This function is ONLY called when:
+       - adding a service
+       - removing a service
+       - loading a saved bill
+       - creating a new bill
+
+       It is NEVER called while typing.
+    */
+
+    container.innerHTML = "";
+
 
     services.forEach(
-        (service, index) => {
+        function (service, index) {
 
             const row =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             row.className =
                 "service-row";
@@ -190,9 +314,12 @@ function renderServices() {
             /* DESCRIPTION */
 
             const description =
-                document.createElement("input");
+                document.createElement(
+                    "input"
+                );
 
-            description.type = "text";
+            description.type =
+                "text";
 
             description.className =
                 "service-description";
@@ -207,39 +334,49 @@ function renderServices() {
             /* QUANTITY */
 
             const qty =
-                document.createElement("input");
+                document.createElement(
+                    "input"
+                );
 
-            qty.type = "number";
+            qty.type =
+                "number";
 
             qty.className =
                 "service-qty";
 
-            qty.min = "1";
+            qty.min =
+                "1";
 
             qty.value =
-                service.qty ?? 1;
+                service.qty || 1;
 
 
             /* RATE */
 
             const rate =
-                document.createElement("input");
+                document.createElement(
+                    "input"
+                );
 
-            rate.type = "number";
+            rate.type =
+                "number";
 
             rate.className =
                 "service-rate";
 
-            rate.min = "0";
+            rate.min =
+                "0";
 
             rate.value =
-                service.rate ?? 0;
+                service.rate || 0;
 
 
             /* AMOUNT */
 
             const amount =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             amount.className =
                 "service-amount";
@@ -248,22 +385,42 @@ function renderServices() {
             /* DELETE */
 
             const remove =
-                document.createElement("button");
+                document.createElement(
+                    "button"
+                );
 
-            remove.type = "button";
+            remove.type =
+                "button";
 
             remove.className =
                 "remove-service";
 
-            remove.textContent = "×";
+            remove.textContent =
+                "×";
 
 
-            row.appendChild(description);
-            row.appendChild(qty);
-            row.appendChild(rate);
-            row.appendChild(amount);
-            row.appendChild(remove);
+            row.appendChild(
+                description
+            );
 
+            row.appendChild(
+                qty
+            );
+
+            row.appendChild(
+                rate
+            );
+
+            row.appendChild(
+                amount
+            );
+
+            row.appendChild(
+                remove
+            );
+
+
+            /* INITIAL AMOUNT */
 
             updateServiceAmount(
                 row,
@@ -272,20 +429,25 @@ function renderServices() {
 
 
             /* =================================================
-               DESCRIPTION INPUT
+               DESCRIPTION
 
-               IMPORTANT:
-               DO NOT CALL renderServices() HERE.
+               NEVER REBUILD THE ROW HERE.
             ================================================= */
 
             description.addEventListener(
                 "input",
                 function () {
 
-                    services[index].description =
+                    services[index]
+                        .description =
                         this.value;
 
-                    updatePreview();
+                    /*
+                       Only update invoice preview.
+                       Do NOT call renderServices().
+                    */
+
+                    updateInvoicePreview();
 
                 }
             );
@@ -299,15 +461,18 @@ function renderServices() {
                 "input",
                 function () {
 
-                    services[index].qty =
-                        Number(this.value) || 0;
+                    services[index]
+                        .qty =
+                        Number(
+                            this.value
+                        ) || 0;
 
                     updateServiceAmount(
                         row,
                         index
                     );
 
-                    updatePreview();
+                    updateInvoicePreview();
 
                 }
             );
@@ -321,15 +486,18 @@ function renderServices() {
                 "input",
                 function () {
 
-                    services[index].rate =
-                        Number(this.value) || 0;
+                    services[index]
+                        .rate =
+                        Number(
+                            this.value
+                        ) || 0;
 
                     updateServiceAmount(
                         row,
                         index
                     );
 
-                    updatePreview();
+                    updateInvoicePreview();
 
                 }
             );
@@ -343,77 +511,100 @@ function renderServices() {
                 "click",
                 function () {
 
-                    removeService(index);
+                    removeService(
+                        index
+                    );
 
                 }
             );
 
 
-            list.appendChild(row);
+            container.appendChild(
+                row
+            );
 
         }
     );
+
 }
 
 
 /* =========================================================
-   UPDATE SERVICE AMOUNT
+   SERVICE AMOUNT
 ========================================================= */
 
-function updateServiceAmount(row, index) {
+function updateServiceAmount(
+    row,
+    index
+) {
 
-    if (!services[index]) return;
+    if (!services[index]) {
+        return;
+    }
 
     const qty =
-        Number(services[index].qty) || 0;
+        Number(
+            services[index].qty
+        ) || 0;
 
     const rate =
-        Number(services[index].rate) || 0;
+        Number(
+            services[index].rate
+        ) || 0;
 
     const amount =
         qty * rate;
 
-    const amountElement =
+    const element =
         row.querySelector(
             ".service-amount"
         );
 
-    if (amountElement) {
+    if (element) {
 
-        amountElement.textContent =
+        element.textContent =
             money(amount);
 
     }
+
 }
 
 
 /* =========================================================
-   SUBTOTAL
+   CALCULATIONS
 ========================================================= */
 
 function calculateSubtotal() {
 
     return services.reduce(
-        (total, service) => {
+        function (
+            total,
+            service
+        ) {
 
             const qty =
-                Number(service.qty) || 0;
+                Number(
+                    service.qty
+                ) || 0;
 
             const rate =
-                Number(service.rate) || 0;
+                Number(
+                    service.rate
+                ) || 0;
 
-            return total +
-                (qty * rate);
+            return (
+                total +
+                (
+                    qty * rate
+                )
+            );
 
         },
         0
     );
+
 }
 
-
-/* =========================================================
-   DISCOUNT
-========================================================= */
 
 function getDiscount() {
 
@@ -422,39 +613,32 @@ function getDiscount() {
             "discount"
         );
 
-    if (!input) return 0;
+    if (!input) {
+        return 0;
+    }
 
     return Math.max(
         0,
-        Number(input.value) || 0
+        Number(
+            input.value
+        ) || 0
     );
+
 }
 
-
-/* =========================================================
-   TOTAL
-========================================================= */
 
 function calculateTotal() {
 
-    const subtotal =
-        calculateSubtotal();
-
-    const discount =
-        getDiscount();
-
     return Math.max(
         0,
-        subtotal - discount
+        calculateSubtotal() -
+        getDiscount()
     );
+
 }
 
 
-/* =========================================================
-   MONEY
-========================================================= */
-
-function money(amount) {
+function money(value) {
 
     return new Intl.NumberFormat(
         "en-IN",
@@ -464,16 +648,28 @@ function money(amount) {
             maximumFractionDigits: 0
         }
     ).format(
-        Number(amount) || 0
+        Number(value) || 0
     );
+
 }
 
 
 /* =========================================================
-   UPDATE PREVIEW
+   UPDATE EVERYTHING EXCEPT SERVICE INPUTS
 ========================================================= */
 
-function updatePreview() {
+function updateAll() {
+
+    updateInvoicePreview();
+
+}
+
+
+/* =========================================================
+   UPDATE INVOICE PREVIEW
+========================================================= */
+
+function updateInvoicePreview() {
 
     const clientName =
         getValue(
@@ -529,6 +725,12 @@ function updatePreview() {
             "Thank you for choosing SP Media Works."
         );
 
+    const terms =
+        getValue(
+            "terms",
+            "Payment once made is non-refundable."
+        );
+
 
     const subtotal =
         calculateSubtotal();
@@ -539,6 +741,8 @@ function updatePreview() {
     const total =
         calculateTotal();
 
+
+    /* CLIENT */
 
     setText(
         "previewClient",
@@ -561,6 +765,8 @@ function updatePreview() {
     );
 
 
+    /* BILL DETAILS */
+
     setText(
         "previewBillNumber",
         "#" + billNumber
@@ -568,14 +774,20 @@ function updatePreview() {
 
     setText(
         "previewDate",
-        formatDate(billDate)
+        formatDate(
+            billDate
+        )
     );
 
     setText(
         "previewDueDate",
-        formatDate(dueDate)
+        formatDate(
+            dueDate
+        )
     );
 
+
+    /* PAYMENT */
 
     setText(
         "previewUPI",
@@ -587,6 +799,13 @@ function updatePreview() {
         notes
     );
 
+    setText(
+        "previewTerms",
+        terms
+    );
+
+
+    /* TOTALS */
 
     setText(
         "editorSubtotal",
@@ -595,7 +814,8 @@ function updatePreview() {
 
     setText(
         "editorDiscount",
-        "- " + money(discount)
+        "- " +
+        money(discount)
     );
 
     setText(
@@ -611,7 +831,8 @@ function updatePreview() {
 
     setText(
         "previewDiscount",
-        "- " + money(discount)
+        "- " +
+        money(discount)
     );
 
     setText(
@@ -620,14 +841,31 @@ function updatePreview() {
     );
 
 
-    /*
-       This only updates the invoice preview.
-       It DOES NOT render the service input block.
-    */
+    /* QR */
+
+    updateQRPreview();
+
+
+    /* GENERATED TIME */
+
+    setText(
+        "generatedTime",
+        "Generated on: " +
+        formatDateTime(
+            generatedAt
+        )
+    );
+
+
+    /* INVOICE ITEMS */
 
     renderInvoiceItems();
 
+
+    /* STATUS */
+
     updateStatus();
+
 }
 
 
@@ -642,83 +880,118 @@ function renderInvoiceItems() {
             "invoiceItems"
         );
 
-    if (!tbody) return;
+    if (!tbody) {
+        return;
+    }
 
     tbody.innerHTML = "";
 
+
     services.forEach(
-        (service, index) => {
+        function (
+            service,
+            index
+        ) {
 
             const qty =
-                Number(service.qty) || 0;
+                Number(
+                    service.qty
+                ) || 0;
 
             const rate =
-                Number(service.rate) || 0;
+                Number(
+                    service.rate
+                ) || 0;
 
             const amount =
                 qty * rate;
 
 
             const row =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
 
-            const numberCell =
-                document.createElement("td");
+            const number =
+                document.createElement(
+                    "td"
+                );
 
-            numberCell.textContent =
-                String(index + 1)
-                    .padStart(2, "0");
+            number.textContent =
+                String(
+                    index + 1
+                ).padStart(
+                    2,
+                    "0"
+                );
 
 
-            const descriptionCell =
-                document.createElement("td");
+            const description =
+                document.createElement(
+                    "td"
+                );
 
-
-            const strong =
-                document.createElement("strong");
-
-            strong.textContent =
+            description.textContent =
                 service.description ||
                 "Service description";
 
-            descriptionCell.appendChild(
-                strong
-            );
 
+            const quantity =
+                document.createElement(
+                    "td"
+                );
 
-            const qtyCell =
-                document.createElement("td");
-
-            qtyCell.textContent =
+            quantity.textContent =
                 qty;
 
 
             const rateCell =
-                document.createElement("td");
+                document.createElement(
+                    "td"
+                );
 
             rateCell.textContent =
                 money(rate);
 
 
             const amountCell =
-                document.createElement("td");
+                document.createElement(
+                    "td"
+                );
 
             amountCell.textContent =
                 money(amount);
 
 
-            row.appendChild(numberCell);
-            row.appendChild(descriptionCell);
-            row.appendChild(qtyCell);
-            row.appendChild(rateCell);
-            row.appendChild(amountCell);
+            row.appendChild(
+                number
+            );
+
+            row.appendChild(
+                description
+            );
+
+            row.appendChild(
+                quantity
+            );
+
+            row.appendChild(
+                rateCell
+            );
+
+            row.appendChild(
+                amountCell
+            );
 
 
-            tbody.appendChild(row);
+            tbody.appendChild(
+                row
+            );
 
         }
     );
+
 }
 
 
@@ -749,93 +1022,245 @@ function updateStatus() {
         );
 
 
-    if (!status) return;
+    if (status) {
 
-
-    if (billStatus === "PAID") {
-
-        status.textContent = "PAID";
+        status.textContent =
+            billStatus === "PAID"
+                ? "PAID"
+                : "PAYMENT DUE";
 
         status.className =
-            "status paid";
+            "status " +
+            (
+                billStatus === "PAID"
+                    ? "paid"
+                    : "due"
+            );
+
+    }
 
 
-        if (heading) {
+    if (heading) {
 
-            heading.textContent =
-                "PAYMENT RECEIPT";
+        heading.textContent =
+            billStatus === "PAID"
+                ? "PAYMENT RECEIPT"
+                : "PAYMENT BILL";
 
-        }
+    }
 
 
-        if (footer) {
+    if (footer) {
 
-            footer.className =
-                "invoice-footer paid";
+        footer.className =
+            billStatus === "PAID"
+                ? "invoice-footer paid"
+                : "invoice-footer";
 
-            footer.innerHTML = `
+        footer.innerHTML = `
+
+            <div class="invoice-footer-main">
+
                 <strong>
-                    ✓ PAYMENT RECEIVED
+                    ${
+                        billStatus === "PAID"
+                            ? "✓ PAYMENT RECEIVED"
+                            : "PAYMENT DUE"
+                    }
                 </strong>
 
                 <span>
-                    Payment has been successfully received.
+                    ${
+                        billStatus === "PAID"
+                            ? "Payment has been successfully received."
+                            : "Please complete payment using the provided UPI details."
+                    }
                 </span>
-            `;
 
-        }
+            </div>
+
+            <div class="generated-footer">
+
+                <span>
+                    This is a computer generated slip and does not require a signature.
+                </span>
+
+                <span id="generatedTime">
+                    Generated on:
+                    ${formatDateTime(generatedAt)}
+                </span>
+
+            </div>
+        `;
+
+    }
 
 
-        if (paidButton) {
+    if (paidButton) {
 
-            paidButton.style.display =
+        paidButton.style.display =
+            billStatus === "PAID"
+                ? "none"
+                : "inline-flex";
+
+    }
+
+}
+
+
+/* =========================================================
+   QR CODE
+========================================================= */
+
+function handleQRUpload(event) {
+
+    const file =
+        event.target.files &&
+        event.target.files[0];
+
+    if (!file) {
+        return;
+    }
+
+
+    if (
+        !file.type.startsWith(
+            "image/"
+        )
+    ) {
+
+        alert(
+            "Please select a valid QR image."
+        );
+
+        event.target.value =
+            "";
+
+        return;
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function (e) {
+
+            qrData =
+                e.target.result;
+
+            updateQRFileName(
+                file.name
+            );
+
+            updateQRPreview();
+
+        };
+
+
+    reader.readAsDataURL(
+        file
+    );
+
+}
+
+
+function updateQRPreview() {
+
+    const image =
+        document.getElementById(
+            "previewQR"
+        );
+
+    if (!image) {
+        return;
+    }
+
+    const placeholder =
+        image.parentElement
+            ? image.parentElement.querySelector(
+                "span"
+            )
+            : null;
+
+
+    if (qrData) {
+
+        image.src =
+            qrData;
+
+        image.style.display =
+            "block";
+
+        if (placeholder) {
+
+            placeholder.style.display =
                 "none";
 
         }
 
     } else {
 
-        status.textContent =
-            "PAYMENT DUE";
+        image.removeAttribute(
+            "src"
+        );
 
-        status.className =
-            "status due";
+        image.style.display =
+            "none";
 
+        if (placeholder) {
 
-        if (heading) {
-
-            heading.textContent =
-                "PAYMENT BILL";
-
-        }
-
-
-        if (footer) {
-
-            footer.className =
-                "invoice-footer";
-
-            footer.innerHTML = `
-                <strong>
-                    PAYMENT DUE
-                </strong>
-
-                <span>
-                    Please complete payment using
-                    the provided UPI details.
-                </span>
-            `;
+            placeholder.style.display =
+                "inline";
 
         }
 
-
-        if (paidButton) {
-
-            paidButton.style.display =
-                "inline-flex";
-
-        }
     }
+
+}
+
+
+function removeQR() {
+
+    qrData = "";
+
+    const input =
+        document.getElementById(
+            "qrUpload"
+        );
+
+    if (input) {
+
+        input.value =
+            "";
+
+    }
+
+    updateQRFileName();
+
+    updateQRPreview();
+
+}
+
+
+function updateQRFileName(
+    name = "No QR selected"
+) {
+
+    const label =
+        document.getElementById(
+            "qrFileName"
+        );
+
+    if (label) {
+
+        label.textContent =
+            name ||
+            "No QR selected";
+
+    }
+
 }
 
 
@@ -845,16 +1270,25 @@ function updateStatus() {
 
 function markPaid() {
 
-    billStatus = "PAID";
+    billStatus =
+        "PAID";
+
+    /*
+       Record the exact time payment was marked.
+    */
+
+    generatedAt =
+        new Date().toISOString();
+
+    updateInvoicePreview();
 
     saveBill(true);
 
-    updatePreview();
 }
 
 
 /* =========================================================
-   COLLECT BILL
+   COLLECT BILL DATA
 ========================================================= */
 
 function collectBillData() {
@@ -885,6 +1319,9 @@ function collectBillData() {
 
         status:
             billStatus,
+
+        generatedAt:
+            generatedAt,
 
         client: {
 
@@ -917,28 +1354,33 @@ function collectBillData() {
                     "location",
                     ""
                 )
+
         },
 
 
         services:
             services.map(
-                service => ({
+                function (service) {
 
-                    description:
-                        service.description ||
-                        "",
+                    return {
 
-                    qty:
-                        Number(
-                            service.qty
-                        ) || 0,
+                        description:
+                            service.description ||
+                            "",
 
-                    rate:
-                        Number(
-                            service.rate
-                        ) || 0
+                        qty:
+                            Number(
+                                service.qty
+                            ) || 0,
 
-                })
+                        rate:
+                            Number(
+                                service.rate
+                            ) || 0
+
+                    };
+
+                }
             ),
 
 
@@ -952,6 +1394,9 @@ function collectBillData() {
                 ""
             ),
 
+        qrData:
+            qrData,
+
 
         paymentReference:
             getValue(
@@ -964,9 +1409,17 @@ function collectBillData() {
             getValue(
                 "notes",
                 ""
+            ),
+
+
+        terms:
+            getValue(
+                "terms",
+                ""
             )
 
     };
+
 }
 
 
@@ -974,7 +1427,9 @@ function collectBillData() {
    SAVE BILL
 ========================================================= */
 
-function saveBill(silent = false) {
+function saveBill(
+    silent = false
+) {
 
     const bill =
         collectBillData();
@@ -983,28 +1438,27 @@ function saveBill(silent = false) {
         getBills();
 
 
-    if (currentBillId) {
+    const existingIndex =
+        bills.findIndex(
+            function (item) {
 
-        const index =
-            bills.findIndex(
-                item =>
+                return (
                     item.id ===
-                    currentBillId
-            );
+                    bill.id
+                );
+
+            }
+        );
 
 
-        if (index !== -1) {
+    if (
+        existingIndex !==
+        -1
+    ) {
 
-            bills[index] =
-                bill;
-
-        } else {
-
-            bills.unshift(
-                bill
-            );
-
-        }
+        bills[
+            existingIndex
+        ] = bill;
 
     } else {
 
@@ -1017,7 +1471,9 @@ function saveBill(silent = false) {
 
     localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify(bills)
+        JSON.stringify(
+            bills
+        )
     );
 
 
@@ -1037,6 +1493,7 @@ function saveBill(silent = false) {
 
 
     renderHistory();
+
 }
 
 
@@ -1059,6 +1516,7 @@ function getBills() {
         return [];
 
     }
+
 }
 
 
@@ -1074,8 +1532,13 @@ function openBill(id) {
 
     const bill =
         bills.find(
-            item =>
-                item.id === id
+            function (item) {
+
+                return (
+                    item.id === id
+                );
+
+            }
         );
 
 
@@ -1086,6 +1549,7 @@ function openBill(id) {
         );
 
         return;
+
     }
 
 
@@ -1096,6 +1560,11 @@ function openBill(id) {
     billStatus =
         bill.status ||
         "DUE";
+
+
+    generatedAt =
+        bill.generatedAt ||
+        new Date().toISOString();
 
 
     setValue(
@@ -1123,6 +1592,7 @@ function openBill(id) {
         bill.client?.location || ""
     );
 
+
     setValue(
         "billNumber",
         bill.billNumber || ""
@@ -1138,10 +1608,12 @@ function openBill(id) {
         bill.dueDate || ""
     );
 
+
     setValue(
         "discount",
         bill.discount || 0
     );
+
 
     setValue(
         "upi",
@@ -1153,10 +1625,30 @@ function openBill(id) {
         bill.paymentReference || ""
     );
 
+
     setValue(
         "notes",
         bill.notes ||
         "Thank you for choosing SP Media Works."
+    );
+
+
+    setValue(
+        "terms",
+        bill.terms ||
+        "Payment once made is non-refundable.\nDelivery will begin after payment confirmation.\nAdditional revisions may be charged separately."
+    );
+
+
+    qrData =
+        bill.qrData ||
+        "";
+
+
+    updateQRFileName(
+        qrData
+            ? "QR code saved"
+            : "No QR selected"
     );
 
 
@@ -1165,23 +1657,27 @@ function openBill(id) {
             bill.services
         )
             ? bill.services.map(
-                service => ({
+                function (service) {
 
-                    description:
-                        service.description ||
-                        "",
+                    return {
 
-                    qty:
-                        Number(
-                            service.qty
-                        ) || 0,
+                        description:
+                            service.description ||
+                            "",
 
-                    rate:
-                        Number(
-                            service.rate
-                        ) || 0
+                        qty:
+                            Number(
+                                service.qty
+                            ) || 0,
 
-                })
+                        rate:
+                            Number(
+                                service.rate
+                            ) || 0
+
+                    };
+
+                }
             )
             : [];
 
@@ -1189,58 +1685,31 @@ function openBill(id) {
     if (!services.length) {
 
         services.push({
+
             description: "",
+
             qty: 1,
+
             rate: 0
+
         });
 
     }
 
 
+    /*
+       Only here do we rebuild
+       the service editor.
+    */
+
     renderServices();
 
-    updatePreview();
+    updateAll();
 
-    showPage("create");
-}
-
-
-/* =========================================================
-   DELETE BILL
-========================================================= */
-
-function deleteBill(id) {
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to delete this bill?"
-        );
-
-
-    if (!confirmed) return;
-
-
-    const bills =
-        getBills().filter(
-            bill =>
-                bill.id !== id
-        );
-
-
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(bills)
+    showPage(
+        "create"
     );
 
-
-    if (currentBillId === id) {
-
-        currentBillId = null;
-
-    }
-
-
-    renderHistory();
 }
 
 
@@ -1250,16 +1719,40 @@ function deleteBill(id) {
 
 function newBill() {
 
-    currentBillId = null;
+    currentBillId =
+        null;
 
-    billStatus = "DUE";
+    billStatus =
+        "DUE";
+
+    generatedAt =
+        new Date().toISOString();
 
 
-    setValue("clientName", "");
-    setValue("company", "");
-    setValue("phone", "");
-    setValue("email", "");
-    setValue("location", "");
+    setValue(
+        "clientName",
+        ""
+    );
+
+    setValue(
+        "company",
+        ""
+    );
+
+    setValue(
+        "phone",
+        ""
+    );
+
+    setValue(
+        "email",
+        ""
+    );
+
+    setValue(
+        "location",
+        ""
+    );
 
 
     setValue(
@@ -1267,12 +1760,10 @@ function newBill() {
         generateBillNumber()
     );
 
-
     setValue(
         "billDate",
         getToday()
     );
-
 
     setValue(
         "dueDate",
@@ -1291,7 +1782,6 @@ function newBill() {
         ""
     );
 
-
     setValue(
         "paymentReference",
         ""
@@ -1304,18 +1794,80 @@ function newBill() {
     );
 
 
-    services = [];
+    setValue(
+        "terms",
+        "Payment once made is non-refundable.\nDelivery will begin after payment confirmation.\nAdditional revisions may be charged separately."
+    );
 
-    addService();
 
-    updatePreview();
+    qrData =
+        "";
 
-    showPage("create");
+    updateQRFileName();
+
+    services =
+        [];
+
+
+    addService(
+        true
+    );
+
 }
 
 
 /* =========================================================
-   SHOW PAGE
+   DELETE BILL
+========================================================= */
+
+function deleteBill(id) {
+
+    if (
+        !confirm(
+            "Are you sure you want to delete this bill?"
+        )
+    ) {
+        return;
+    }
+
+
+    const bills =
+        getBills().filter(
+            function (bill) {
+
+                return (
+                    bill.id !== id
+                );
+
+            }
+        );
+
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(
+            bills
+        )
+    );
+
+
+    if (
+        currentBillId === id
+    ) {
+
+        currentBillId =
+            null;
+
+    }
+
+
+    renderHistory();
+
+}
+
+
+/* =========================================================
+   PAGE NAVIGATION
 ========================================================= */
 
 function showPage(page) {
@@ -1336,21 +1888,24 @@ function showPage(page) {
         );
 
 
-    const navButtons =
-        document.querySelectorAll(
+    document
+        .querySelectorAll(
             ".nav-btn"
+        )
+        .forEach(
+            function (button) {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
         );
 
 
-    navButtons.forEach(
-        button =>
-            button.classList.remove(
-                "active"
-            )
-    );
-
-
-    if (page === "history") {
+    if (
+        page === "history"
+    ) {
 
         if (createPage) {
 
@@ -1360,7 +1915,6 @@ function showPage(page) {
 
         }
 
-
         if (historyPage) {
 
             historyPage.classList.remove(
@@ -1369,7 +1923,6 @@ function showPage(page) {
 
         }
 
-
         if (pageTitle) {
 
             pageTitle.textContent =
@@ -1377,16 +1930,18 @@ function showPage(page) {
 
         }
 
+        const buttons =
+            document.querySelectorAll(
+                ".nav-btn"
+            );
 
-        if (navButtons[1]) {
+        if (buttons[1]) {
 
-            navButtons[1]
-                .classList.add(
-                    "active"
-                );
+            buttons[1].classList.add(
+                "active"
+            );
 
         }
-
 
         renderHistory();
 
@@ -1400,7 +1955,6 @@ function showPage(page) {
 
         }
 
-
         if (createPage) {
 
             createPage.classList.remove(
@@ -1409,7 +1963,6 @@ function showPage(page) {
 
         }
 
-
         if (pageTitle) {
 
             pageTitle.textContent =
@@ -1417,16 +1970,21 @@ function showPage(page) {
 
         }
 
+        const buttons =
+            document.querySelectorAll(
+                ".nav-btn"
+            );
 
-        if (navButtons[0]) {
+        if (buttons[0]) {
 
-            navButtons[0]
-                .classList.add(
-                    "active"
-                );
+            buttons[0].classList.add(
+                "active"
+            );
 
         }
+
     }
+
 }
 
 
@@ -1441,7 +1999,9 @@ function renderHistory() {
             "billHistory"
         );
 
-    if (!container) return;
+    if (!container) {
+        return;
+    }
 
 
     const searchInput =
@@ -1460,29 +2020,39 @@ function renderHistory() {
 
     const bills =
         getBills().filter(
-            bill => {
+            function (bill) {
 
                 const number =
                     String(
-                        bill.billNumber || ""
+                        bill.billNumber ||
+                        ""
                     ).toLowerCase();
 
                 const name =
                     String(
-                        bill.client?.name || ""
+                        bill.client?.name ||
+                        ""
                     ).toLowerCase();
 
                 const company =
                     String(
-                        bill.client?.company || ""
+                        bill.client?.company ||
+                        ""
                     ).toLowerCase();
 
 
                 return (
-                    number.includes(search) ||
-                    name.includes(search) ||
-                    company.includes(search)
+                    number.includes(
+                        search
+                    ) ||
+                    name.includes(
+                        search
+                    ) ||
+                    company.includes(
+                        search
+                    )
                 );
+
             }
         );
 
@@ -1496,35 +2066,44 @@ function renderHistory() {
         `;
 
         return;
+
     }
 
 
-    container.innerHTML = "";
+    container.innerHTML =
+        "";
 
 
     bills.forEach(
-        bill => {
+        function (bill) {
 
             const subtotal =
-                (bill.services || [])
-                    .reduce(
-                        (sum, item) => {
+                (
+                    bill.services ||
+                    []
+                ).reduce(
+                    function (
+                        sum,
+                        item
+                    ) {
 
-                            return sum +
-                                (
-                                    Number(
-                                        item.qty
-                                    ) || 0
-                                ) *
-                                (
-                                    Number(
-                                        item.rate
-                                    ) || 0
-                                );
+                        return (
+                            sum +
+                            (
+                                Number(
+                                    item.qty
+                                ) || 0
+                            ) *
+                            (
+                                Number(
+                                    item.rate
+                                ) || 0
+                            )
+                        );
 
-                        },
-                        0
-                    );
+                    },
+                    0
+                );
 
 
             const total =
@@ -1544,14 +2123,8 @@ function renderHistory() {
                     "div"
                 );
 
-
             row.className =
                 "history-row";
-
-
-            const clientName =
-                bill.client?.name ||
-                "Unnamed client";
 
 
             row.innerHTML = `
@@ -1566,7 +2139,8 @@ function renderHistory() {
 
                     <small>
                         ${escapeHTML(
-                            clientName
+                            bill.client?.name ||
+                            "Unnamed client"
                         )}
                     </small>
 
@@ -1636,6 +2210,7 @@ function renderHistory() {
 
         }
     );
+
 }
 
 
@@ -1644,6 +2219,16 @@ function renderHistory() {
 ========================================================= */
 
 async function downloadPDF() {
+
+    /*
+       Update timestamp when PDF is generated.
+    */
+
+    generatedAt =
+        new Date().toISOString();
+
+    updateInvoicePreview();
+
 
     const invoice =
         document.getElementById(
@@ -1658,16 +2243,20 @@ async function downloadPDF() {
         );
 
         return;
+
     }
 
 
     try {
 
         await new Promise(
-            resolve =>
+            function (resolve) {
+
                 requestAnimationFrame(
                     resolve
-                )
+                );
+
+            }
         );
 
 
@@ -1696,12 +2285,21 @@ async function downloadPDF() {
 
 
         const pdf =
-            new jsPDF({
-                orientation: "portrait",
-                unit: "mm",
-                format: "a4",
-                compress: true
-            });
+            new jsPDF(
+                {
+                    orientation:
+                        "portrait",
+
+                    unit:
+                        "mm",
+
+                    format:
+                        "a4",
+
+                    compress:
+                        true
+                }
+            );
 
 
         pdf.addImage(
@@ -1723,29 +2321,29 @@ async function downloadPDF() {
             );
 
 
-        const status =
+        const suffix =
             billStatus === "PAID"
                 ? "PAID"
                 : "PAYMENT-DUE";
 
 
         pdf.save(
-            `${billNumber}-${status}.pdf`
+            `${billNumber}-${suffix}.pdf`
         );
 
 
     } catch (error) {
 
         console.error(
-            "PDF ERROR:",
             error
         );
-
 
         alert(
             "Could not generate PDF. Please try again."
         );
+
     }
+
 }
 
 
@@ -1759,14 +2357,19 @@ function getValue(
 ) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
     if (!element) {
-
         return fallback;
     }
 
-    return element.value || fallback;
+    return (
+        element.value ||
+        fallback
+    );
+
 }
 
 
@@ -1776,7 +2379,9 @@ function setValue(
 ) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
     if (element) {
 
@@ -1784,6 +2389,7 @@ function setValue(
             value ?? "";
 
     }
+
 }
 
 
@@ -1793,7 +2399,9 @@ function setText(
 ) {
 
     const element =
-        document.getElementById(id);
+        document.getElementById(
+            id
+        );
 
     if (element) {
 
@@ -1801,30 +2409,39 @@ function setText(
             value ?? "";
 
     }
+
 }
 
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
     return String(value)
+
         .replace(
             /&/g,
             "&amp;"
         )
+
         .replace(
             /</g,
             "&lt;"
         )
+
         .replace(
             />/g,
             "&gt;"
         )
+
         .replace(
             /"/g,
             "&quot;"
         )
+
         .replace(
             /'/g,
             "&#039;"
         );
+
 }
