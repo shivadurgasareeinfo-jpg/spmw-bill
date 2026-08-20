@@ -368,6 +368,16 @@ nav {
         0 0 0 3px rgba(255,106,0,.08);
 }
 
+/* =========================================
+   QR UPLOAD
+========================================= */
+.qr-upload-box { margin-top: 7px; border: 1px dashed #d7d7d7; border-radius: 8px; padding: 10px; background: #fafafa; }
+.qr-upload-box input[type="file"] { width: 100%; font-size: 10px; }
+.qr-upload-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 7px; }
+#qrFileName { color: #777; font-size: 9px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.remove-qr-btn { border: 0; background: transparent; color: #d33; font-size: 9px; font-weight: 700; padding: 3px; }
+
+
 
 /* =========================================
    SERVICES
@@ -1017,6 +1027,13 @@ nav {
 
 
 /* =========================================
+   TERMS & CONDITIONS
+========================================= */
+.terms-preview { margin-top: 10px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
+.terms-label { display: block; margin-bottom: 4px; }
+#previewTerms { white-space: pre-line; }
+
+/* =========================================
    FOOTER
 ========================================= */
 
@@ -1374,3 +1391,16 @@ nav {
     }
 
 }
+/* ===== SP MEDIA WORKS - QR / TERMS / GENERATED FOOTER OVERRIDES ===== */
+.qr-upload-box{margin-top:7px;border:1px dashed #d7d7d7;border-radius:8px;padding:10px;background:#fafafa}
+.qr-upload-box input[type=file]{width:100%;font-size:10px}
+.qr-upload-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:7px}
+#qrFileName{color:#777;font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.remove-qr-btn{border:0;background:transparent;color:#d33;font-size:9px;font-weight:700;padding:3px}
+.terms-preview{margin-top:10px;padding-top:8px;border-top:1px solid #f0f0f0}
+.terms-label{display:block;margin-bottom:4px}
+#previewTerms{white-space:pre-line}
+.invoice-footer{flex-direction:column;align-items:stretch;gap:5px}
+.invoice-footer-main{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.generated-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:5px;border-top:1px solid rgba(255,255,255,.10)}
+.generated-footer span{color:#888;font-size:6.5px}
