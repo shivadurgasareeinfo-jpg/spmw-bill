@@ -35,18 +35,9 @@ button {
 }
 
 
-/* =========================
-   APP
-========================= */
-
-.app {
-    min-height: 100vh;
-}
-
-
-/* =========================
+/* =========================================
    SIDEBAR
-========================= */
+========================================= */
 
 .sidebar {
     position: fixed;
@@ -87,17 +78,13 @@ button {
 .brand h2 {
     font-size: 12px;
     letter-spacing: 1px;
-
     margin: 0;
 }
 
 .brand span {
     color: #999;
-
     display: block;
-
     font-size: 10px;
-
     margin-top: 5px;
 }
 
@@ -110,7 +97,6 @@ nav {
 .nav-btn {
     background: transparent;
     border: none;
-
     color: #999;
 
     padding: 13px;
@@ -150,20 +136,18 @@ nav {
     display: block;
 
     font-size: 10px;
-
     font-weight: 700;
 }
 
 .sidebar-bottom small {
     color: #777;
-
     font-size: 9px;
 }
 
 
-/* =========================
+/* =========================================
    MAIN
-========================= */
+========================================= */
 
 .main {
     margin-left: 245px;
@@ -173,7 +157,9 @@ nav {
 
 .topbar {
     display: flex;
+
     justify-content: space-between;
+
     align-items: center;
 
     margin-bottom: 25px;
@@ -198,13 +184,14 @@ nav {
 }
 
 
-/* =========================
+/* =========================================
    BUTTONS
-========================= */
+========================================= */
 
 .orange-btn,
 .secondary-btn,
 .paid-btn {
+
     border-radius: 8px;
 
     padding: 12px 16px;
@@ -216,9 +203,11 @@ nav {
     font-weight: 700;
 
     display: inline-flex;
+
     align-items: center;
 
     gap: 7px;
+
 }
 
 .orange-btn {
@@ -245,16 +234,17 @@ nav {
 }
 
 
-/* =========================
+/* =========================================
    WORKSPACE
-========================= */
+========================================= */
 
 .workspace {
+
     display: grid;
 
     grid-template-columns:
         minmax(500px, 1fr)
-        minmax(500px, 570px);
+        570px;
 
     gap: 25px;
 
@@ -262,6 +252,7 @@ nav {
 }
 
 .editor {
+
     display: flex;
 
     flex-direction: column;
@@ -270,11 +261,12 @@ nav {
 }
 
 
-/* =========================
+/* =========================================
    CARDS
-========================= */
+========================================= */
 
 .card {
+
     background: white;
 
     border: 1px solid var(--border);
@@ -285,9 +277,11 @@ nav {
 
     box-shadow:
         0 5px 20px rgba(0,0,0,.03);
+
 }
 
 .section-title {
+
     display: flex;
 
     align-items: center;
@@ -302,17 +296,19 @@ nav {
 }
 
 .section-title span {
+
     color: var(--orange);
 
     font-size: 10px;
 }
 
 
-/* =========================
+/* =========================================
    FORM
-========================= */
+========================================= */
 
 .form-grid {
+
     display: grid;
 
     grid-template-columns: 1fr 1fr;
@@ -321,6 +317,7 @@ nav {
 }
 
 .field {
+
     display: flex;
 
     flex-direction: column;
@@ -331,6 +328,7 @@ nav {
 }
 
 .field label {
+
     font-size: 10px;
 
     color: #555;
@@ -340,6 +338,7 @@ nav {
 
 .field input,
 .field textarea {
+
     margin-top: 7px;
 
     border: 1px solid #ddd;
@@ -354,6 +353,7 @@ nav {
 }
 
 .field textarea {
+
     min-height: 80px;
 
     resize: vertical;
@@ -361,6 +361,7 @@ nav {
 
 .field input:focus,
 .field textarea:focus {
+
     border-color: var(--orange);
 
     box-shadow:
@@ -368,12 +369,13 @@ nav {
 }
 
 
-/* =========================
-   SERVICE EDITOR
-========================= */
+/* =========================================
+   SERVICES
+========================================= */
 
 .service-header,
 .service-row {
+
     display: grid;
 
     grid-template-columns:
@@ -389,6 +391,7 @@ nav {
 }
 
 .service-header {
+
     font-size: 9px;
 
     color: #999;
@@ -399,10 +402,12 @@ nav {
 }
 
 .service-row {
+
     margin-bottom: 7px;
 }
 
 .service-row input {
+
     width: 100%;
 
     padding: 10px;
@@ -412,17 +417,31 @@ nav {
     border-radius: 7px;
 
     font-size: 11px;
+
+    outline: none;
+}
+
+.service-row input:focus {
+
+    border-color: var(--orange);
+
+    box-shadow:
+        0 0 0 2px rgba(255,106,0,.07);
 }
 
 .service-amount {
+
     text-align: right;
 
     font-size: 11px;
 
     font-weight: 700;
+
+    white-space: nowrap;
 }
 
 .remove-service {
+
     border: none;
 
     background: transparent;
@@ -433,6 +452,7 @@ nav {
 }
 
 .add-service {
+
     margin-top: 8px;
 
     width: 100%;
@@ -452,12 +472,20 @@ nav {
     color: #555;
 }
 
+.add-service:hover {
 
-/* =========================
+    border-color: var(--orange);
+
+    color: var(--orange);
+}
+
+
+/* =========================================
    CALCULATIONS
-========================= */
+========================================= */
 
 .calculation {
+
     margin-top: 18px;
 
     padding-top: 15px;
@@ -470,6 +498,7 @@ nav {
 }
 
 .discount-box label {
+
     font-size: 10px;
 
     font-weight: 700;
@@ -478,6 +507,7 @@ nav {
 }
 
 .discount-box input {
+
     display: block;
 
     margin-top: 7px;
@@ -492,10 +522,12 @@ nav {
 }
 
 .calculation-lines {
+
     width: 230px;
 }
 
 .calculation-lines div {
+
     display: flex;
 
     justify-content: space-between;
@@ -506,6 +538,7 @@ nav {
 }
 
 .grand-total {
+
     border-top: 1px solid #ddd;
 
     margin-top: 5px;
@@ -516,15 +549,17 @@ nav {
 }
 
 .grand-total strong {
+
     color: var(--orange);
 }
 
 
-/* =========================
+/* =========================================
    ACTIONS
-========================= */
+========================================= */
 
 .actions {
+
     display: flex;
 
     justify-content: flex-end;
@@ -535,17 +570,20 @@ nav {
 }
 
 
-/* =========================
+/* =========================================
    PREVIEW
-========================= */
+========================================= */
 
 .preview-area {
+
     position: sticky;
 
     top: 20px;
+
 }
 
 .preview-title {
+
     color: #888;
 
     font-size: 9px;
@@ -558,24 +596,47 @@ nav {
 }
 
 
-/* =========================
-   INVOICE
-========================= */
+/* =========================================
+   EXACT A4 INVOICE
+========================================= */
 
 .invoice {
+
+    width: 210mm;
+
+    height: 297mm;
+
+    min-width: 210mm;
+
+    max-width: 210mm;
+
+    min-height: 297mm;
+
+    max-height: 297mm;
+
+    box-sizing: border-box;
+
+    padding: 14mm;
+
+    margin: 0 auto;
+
     background: white;
 
-    width: 100%;
-
-    min-height: 740px;
-
-    padding: 35px;
+    overflow: hidden;
 
     box-shadow:
         0 15px 50px rgba(0,0,0,.10);
+
+    position: relative;
 }
 
+
+/* =========================================
+   INVOICE HEADER
+========================================= */
+
 .invoice-header {
+
     display: flex;
 
     justify-content: space-between;
@@ -584,6 +645,7 @@ nav {
 }
 
 .invoice-brand {
+
     display: flex;
 
     align-items: center;
@@ -592,6 +654,7 @@ nav {
 }
 
 .invoice-brand img {
+
     width: 52px;
 
     height: 52px;
@@ -602,6 +665,7 @@ nav {
 }
 
 .invoice-brand h2 {
+
     font-size: 18px;
 
     margin: 0;
@@ -610,6 +674,7 @@ nav {
 }
 
 .invoice-brand p {
+
     margin: 5px 0 0;
 
     font-size: 7px;
@@ -620,10 +685,12 @@ nav {
 }
 
 .invoice-heading {
+
     text-align: right;
 }
 
 .invoice-heading h1 {
+
     color: var(--orange);
 
     font-size: 16px;
@@ -634,33 +701,37 @@ nav {
 }
 
 .invoice-heading strong {
+
     font-size: 10px;
 }
 
 .orange-line {
+
     height: 3px;
 
     background: var(--orange);
 
-    margin: 20px 0;
+    margin: 12px 0;
 }
 
 
-/* =========================
-   INVOICE INFO
-========================= */
+/* =========================================
+   CLIENT INFO
+========================================= */
 
 .invoice-info {
+
     display: grid;
 
     grid-template-columns: 1fr 1fr;
 
     gap: 30px;
 
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 .label {
+
     color: var(--orange);
 
     font-size: 8px;
@@ -671,13 +742,15 @@ nav {
 }
 
 .bill-to h3 {
-    margin: 7px 0 4px;
+
+    margin: 6px 0 4px;
 
     font-size: 15px;
 }
 
 .bill-to p {
-    margin: 4px 0;
+
+    margin: 3px 0;
 
     font-size: 9px;
 
@@ -685,16 +758,18 @@ nav {
 }
 
 .bill-meta {
+
     display: flex;
 
     flex-direction: column;
 
-    gap: 8px;
+    gap: 7px;
 
     align-items: flex-end;
 }
 
 .bill-meta div {
+
     display: flex;
 
     gap: 12px;
@@ -703,16 +778,19 @@ nav {
 }
 
 .bill-meta span {
+
     color: #888;
 }
 
 .bill-meta strong {
+
     min-width: 80px;
 
     text-align: right;
 }
 
 .status {
+
     padding: 5px 8px;
 
     border-radius: 5px;
@@ -725,108 +803,145 @@ nav {
 }
 
 .status.due {
+
     background: #fff0e6;
 
     color: #ed5f00;
 }
 
 .status.paid {
+
     background: #e7f8ee;
 
     color: #148047;
 }
 
 
-/* =========================
-   TABLE
-========================= */
+/* =========================================
+   INVOICE TABLE
+========================================= */
 
 .invoice-table {
+
     width: 100%;
 
     border-collapse: collapse;
 
-    font-size: 9px;
+    font-size: 8.5px;
+
+    table-layout: fixed;
 }
 
 .invoice-table th {
+
     background: var(--black);
 
     color: white;
 
-    padding: 10px 8px;
+    padding: 7px 6px;
 
     text-align: left;
 
-    font-size: 8px;
+    font-size: 7.5px;
 
     text-transform: uppercase;
 }
 
+.invoice-table th:nth-child(1) {
+    width: 7%;
+}
+
+.invoice-table th:nth-child(2) {
+    width: 43%;
+}
+
+.invoice-table th:nth-child(3) {
+    width: 10%;
+}
+
+.invoice-table th:nth-child(4) {
+    width: 20%;
+}
+
+.invoice-table th:nth-child(5) {
+    width: 20%;
+}
+
 .invoice-table th:nth-child(n+3),
 .invoice-table td:nth-child(n+3) {
+
     text-align: right;
 }
 
 .invoice-table td {
-    padding: 12px 8px;
+
+    padding: 6px;
 
     border-bottom: 1px solid #eee;
 
     color: #555;
+
+    word-break: break-word;
 }
 
 .invoice-table td strong {
+
     color: #222;
 }
 
 
-/* =========================
+/* =========================================
    TOTAL
-========================= */
+========================================= */
 
 .invoice-total {
+
     display: grid;
 
     grid-template-columns:
         1fr
         90px;
 
-    gap: 7px;
+    gap: 5px;
 
-    margin: 18px 0 25px 55%;
+    margin: 13px 0 18px 55%;
 
-    font-size: 9px;
+    font-size: 8.5px;
 }
 
 .invoice-total span {
+
     color: #888;
 
     text-align: right;
 }
 
 .invoice-total strong {
+
     text-align: right;
 }
 
 .invoice-total b {
+
     text-align: right;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .total-number {
+
     color: var(--orange);
 
-    font-size: 18px !important;
+    font-size: 16px !important;
 }
 
 
-/* =========================
+/* =========================================
    PAYMENT
-========================= */
+========================================= */
 
 .payment-section {
+
     display: grid;
 
     grid-template-columns: 1fr 1fr;
@@ -837,29 +952,39 @@ nav {
 
     border-radius: 10px;
 
-    padding: 17px;
+    padding: 12px;
 }
 
 .payment-section h4 {
-    font-size: 10px;
 
-    margin: 8px 0;
+    font-size: 9px;
+
+    margin: 6px 0;
 }
 
 .payment-section p {
+
     color: #777;
 
-    font-size: 8px;
+    font-size: 7.5px;
 
-    line-height: 1.6;
+    line-height: 1.5;
+
+    margin: 4px 0;
 }
 
-.fake-qr {
-    width: 70px;
 
-    height: 70px;
+/* =========================================
+   QR
+========================================= */
 
-    border: 2px dashed #ccc;
+.qr-box {
+
+    width: 55px;
+
+    height: 55px;
+
+    border: 1px dashed #ccc;
 
     display: grid;
 
@@ -869,20 +994,39 @@ nav {
 
     font-weight: 900;
 
-    margin-top: 8px;
+    font-size: 8px;
+
+    margin-top: 6px;
+
+    overflow: hidden;
+}
+
+.qr-box img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+}
+
+.qr-box img:not([src=""]) + span {
+
+    display: none;
 }
 
 
-/* =========================
+/* =========================================
    FOOTER
-========================= */
+========================================= */
 
 .invoice-footer {
-    margin-top: 18px;
+
+    margin-top: 12px;
 
     background: var(--black);
 
-    padding: 11px 13px;
+    padding: 9px 12px;
 
     display: flex;
 
@@ -894,31 +1038,36 @@ nav {
 }
 
 .invoice-footer strong {
+
     color: var(--orange);
 
-    font-size: 9px;
+    font-size: 8px;
 }
 
 .invoice-footer span {
+
     color: #aaa;
 
     font-size: 7px;
 }
 
 .invoice-footer.paid {
+
     background: #0d4a2d;
 }
 
 .invoice-footer.paid strong {
+
     color: #70dfa0;
 }
 
 
-/* =========================
+/* =========================================
    HISTORY
-========================= */
+========================================= */
 
 .history-page {
+
     background: white;
 
     border-radius: 13px;
@@ -929,10 +1078,12 @@ nav {
 }
 
 .hidden {
+
     display: none !important;
 }
 
 .history-top {
+
     display: flex;
 
     justify-content: space-between;
@@ -943,12 +1094,14 @@ nav {
 }
 
 .history-top h2 {
+
     margin: 0;
 
     font-size: 20px;
 }
 
 .history-top input {
+
     width: 250px;
 
     padding: 11px;
@@ -959,6 +1112,7 @@ nav {
 }
 
 .history-row {
+
     display: grid;
 
     grid-template-columns:
@@ -979,18 +1133,21 @@ nav {
 }
 
 .history-row strong {
+
     display: block;
 
     font-size: 11px;
 }
 
 .history-row small {
+
     color: #888;
 
     font-size: 9px;
 }
 
 .history-total {
+
     font-weight: 800;
 
     font-size: 11px;
@@ -999,6 +1156,7 @@ nav {
 }
 
 .history-open {
+
     border: none;
 
     background: transparent;
@@ -1009,6 +1167,7 @@ nav {
 }
 
 .history-delete {
+
     border: none;
 
     background: transparent;
@@ -1017,6 +1176,7 @@ nav {
 }
 
 .empty-history {
+
     text-align: center;
 
     padding: 70px;
@@ -1025,31 +1185,39 @@ nav {
 }
 
 
-/* =========================
+/* =========================================
    RESPONSIVE
-========================= */
+========================================= */
 
 @media(max-width:1150px) {
 
     .workspace {
+
         grid-template-columns: 1fr;
     }
 
     .preview-area {
+
         position: static;
+
+        overflow-x: auto;
+
+        padding-bottom: 20px;
     }
 
-    .invoice {
-        max-width: 700px;
-
-        margin: auto;
-    }
 }
 
+
+/*
+    Keep invoice physically A4.
+    On smaller screens it can scroll horizontally
+    rather than being stretched.
+*/
 
 @media(max-width:800px) {
 
     .sidebar {
+
         position: static;
 
         width: 100%;
@@ -1059,53 +1227,60 @@ nav {
         padding: 15px;
     }
 
-    .app {
-        display: block;
-    }
-
     .brand {
+
         padding-bottom: 15px;
     }
 
     nav {
+
         flex-direction: row;
     }
 
     .nav-btn {
+
         flex: 1;
     }
 
     .sidebar-bottom {
+
         display: none;
     }
 
     .main {
+
         margin-left: 0;
 
         padding: 20px;
     }
 
     .form-grid {
+
         grid-template-columns: 1fr;
     }
 
     .field.full {
+
         grid-column: auto;
     }
 
     .invoice-info {
+
         grid-template-columns: 1fr;
     }
 
     .bill-meta {
+
         align-items: flex-start;
     }
 
     .payment-section {
+
         grid-template-columns: 1fr;
     }
 
     .history-top {
+
         flex-direction: column;
 
         align-items: stretch;
@@ -1114,73 +1289,37 @@ nav {
     }
 
     .history-top input {
+
         width: 100%;
     }
 
 }
 
 
-@media(max-width:600px) {
+/* =========================================
+   PRINT - EXACT A4
+========================================= */
 
-    .topbar {
-        align-items: flex-end;
-    }
+@page {
 
-    .topbar h1 {
-        font-size: 22px;
-    }
+    size: A4;
 
-    .orange-btn {
-        padding: 10px;
-    }
-
-    .service-header {
-        display: none;
-    }
-
-    .service-row {
-        grid-template-columns:
-            1fr
-            55px
-            80px
-            90px
-            25px;
-    }
-
-    .invoice {
-        padding: 22px 16px;
-    }
-
-    .invoice-brand h2 {
-        font-size: 14px;
-    }
-
-    .invoice-brand p {
-        font-size: 6px;
-    }
-
-    .invoice-heading h1 {
-        font-size: 12px;
-    }
-
-    .invoice-total {
-        margin-left: 25%;
-    }
-
-    .actions button {
-        flex: 1;
-    }
-
+    margin: 0;
 }
-
-
-/* =========================
-   PRINT
-========================= */
 
 @media print {
 
+    html,
     body {
+
+        width: 210mm;
+
+        height: 297mm;
+
+        margin: 0;
+
+        padding: 0;
+
         background: white;
     }
 
@@ -1188,33 +1327,50 @@ nav {
     .topbar,
     .editor,
     .preview-title {
+
         display: none !important;
     }
 
     .main {
+
         margin: 0;
 
         padding: 0;
     }
 
     .workspace {
+
         display: block;
     }
 
     .preview-area {
+
         position: static;
+
+        overflow: visible;
     }
 
     .invoice {
-        box-shadow: none;
 
         width: 210mm;
 
+        height: 297mm;
+
+        min-width: 210mm;
+
+        max-width: 210mm;
+
         min-height: 297mm;
+
+        max-height: 297mm;
 
         margin: 0;
 
-        padding: 15mm;
+        padding: 14mm;
+
+        box-shadow: none;
+
+        overflow: hidden;
     }
 
 }
