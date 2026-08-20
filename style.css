@@ -1,6 +1,6 @@
 /* =========================================================
    SP MEDIA WORKS — BILL GENERATOR
-   CLEAN / PROFESSIONAL / RESPONSIVE
+   FINAL CLEAN CSS
 ========================================================= */
 
 :root {
@@ -20,9 +20,12 @@ html,
 body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    min-width: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: var(--bg);
     color: #111;
+    overflow-x: hidden;
 }
 
 
@@ -34,11 +37,14 @@ body {
     display: flex;
     width: 100%;
     min-height: 100vh;
+    min-width: 0;
+    overflow-x: hidden;
 }
 
 .main {
     flex: 1;
     min-width: 0;
+    width: 100%;
     padding: 22px;
 }
 
@@ -65,9 +71,11 @@ body {
     border-radius: 18px;
     padding: 16px 26px;
     margin-bottom: 22px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     border: 1px solid #ddd;
 }
 
@@ -93,19 +101,29 @@ body {
 
 .workspace {
     display: grid;
-    grid-template-columns: minmax(520px, 1fr) minmax(500px, 1fr);
+
+    /* FIXED:
+       No more 520px + 500px minimum widths
+    */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+
     gap: 26px;
     align-items: start;
+
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
 }
 
 .editor {
     min-width: 0;
+    width: 100%;
 }
 
 .preview-area {
     min-width: 0;
     width: 100%;
+    max-width: 100%;
 }
 
 
@@ -163,13 +181,19 @@ input,
 textarea,
 select {
     width: 100%;
+    max-width: 100%;
+
     border: 1px solid #d7d7d7;
     border-radius: 10px;
+
     background: white;
+
     padding: 13px 14px;
+
     font-size: 14px;
     font-family: inherit;
     color: #111;
+
     outline: none;
 }
 
@@ -193,9 +217,19 @@ textarea {
 .services-header,
 .service-row {
     display: grid;
-    grid-template-columns: minmax(180px, 1fr) 75px 110px 100px 28px;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        75px
+        110px
+        100px
+        28px;
+
     gap: 10px;
     align-items: center;
+
+    width: 100%;
+    min-width: 0;
 }
 
 .services-header {
@@ -208,6 +242,7 @@ textarea {
 
 .service-row input {
     min-width: 0;
+    width: 100%;
 }
 
 .service-amount {
@@ -228,9 +263,11 @@ textarea {
     width: 100%;
     margin-top: 5px;
     padding: 11px;
+
     border: 1px dashed #ccc;
     background: #fff;
     border-radius: 9px;
+
     cursor: pointer;
     font-weight: 700;
 }
@@ -248,13 +285,16 @@ textarea {
 .totals {
     margin-top: 20px;
     padding-top: 18px;
+
     border-top: 1px solid #e5e5e5;
+
     display: flex;
     justify-content: flex-end;
 }
 
 .totals-box {
     width: 300px;
+    max-width: 100%;
 }
 
 .total-line {
@@ -287,9 +327,12 @@ textarea {
 
 .qr-preview {
     display: block;
+
     width: 130px;
     height: 130px;
+
     object-fit: contain;
+
     margin-top: 10px;
 }
 
@@ -303,13 +346,17 @@ textarea {
     flex-wrap: wrap;
     align-items: center;
     gap: 14px;
+
     margin-top: 12px;
+
+    max-width: 100%;
 }
 
 .upi-logo {
     display: flex;
     align-items: center;
     gap: 5px;
+
     font-size: 12px;
     white-space: nowrap;
 }
@@ -356,13 +403,18 @@ textarea {
 
 
 /* =========================================================
-   LIVE PREVIEW CONTAINER
+   LIVE PREVIEW
 ========================================================= */
 
 .preview-wrapper {
     width: 100%;
-    overflow: auto;
+    max-width: 100%;
+
+    overflow-x: auto;
+    overflow-y: visible;
+
     background: #555;
+
     padding: 20px;
     border-radius: 12px;
 }
@@ -372,22 +424,13 @@ textarea {
    INVOICE
 ========================================================= */
 
-/*
-IMPORTANT:
-
-Do NOT force 210mm width in live preview.
-
-The invoice automatically fits inside the
-available preview panel.
-
-Actual A4 width is applied ONLY during print.
-*/
-
 .invoice {
     width: 100%;
     max-width: 794px;
+
     height: auto;
     min-height: 0;
+
     margin: 0 auto;
 
     background: #fff;
@@ -398,7 +441,9 @@ Actual A4 width is applied ONLY during print.
 
     box-shadow: 0 3px 18px rgba(0, 0, 0, .20);
 
-    overflow: visible;
+    overflow: hidden;
+
+    word-wrap: break-word;
 }
 
 
@@ -410,6 +455,10 @@ Actual A4 width is applied ONLY during print.
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+
+    width: 100%;
+    min-width: 0;
+
     border-bottom: 2px solid var(--orange);
     padding-bottom: 12px;
 }
@@ -417,13 +466,17 @@ Actual A4 width is applied ONLY during print.
 .invoice-brand {
     display: flex;
     align-items: center;
+
     gap: 12px;
+
+    min-width: 0;
 }
 
 .invoice-brand img {
     width: 42px;
     height: 42px;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 .invoice-brand-name {
@@ -433,25 +486,33 @@ Actual A4 width is applied ONLY during print.
 
 .invoice-brand-subtitle {
     margin-top: 3px;
+
     font-size: 7px;
     letter-spacing: 2px;
+
     color: #999;
 }
 
 .invoice-title {
     text-align: right;
+    min-width: 0;
+    flex-shrink: 0;
 }
 
 .invoice-title h2 {
     margin: 0;
+
     color: var(--orange);
+
     font-size: 16px;
     font-weight: 800;
 }
 
 .invoice-title small {
     display: block;
+
     margin-top: 9px;
+
     font-size: 8px;
 }
 
@@ -462,39 +523,54 @@ Actual A4 width is applied ONLY during print.
 
 .invoice-meta {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 30px;
+
     padding: 15px 0;
+
+    min-width: 0;
 }
 
 .bill-to-title,
 .meta-label,
 .section-label {
     color: var(--orange);
+
     font-size: 8px;
     font-weight: 800;
+
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .bill-to-name {
     margin-top: 6px;
+
     font-size: 13px;
     font-weight: 700;
 }
 
 .bill-to-details {
     margin-top: 3px;
+
     color: #777;
+
     font-size: 8px;
     line-height: 1.5;
 }
 
 .invoice-meta-right {
     display: grid;
+
     grid-template-columns: 1fr auto;
+
     gap: 7px 15px;
+
     font-size: 8px;
+
+    min-width: 0;
 }
 
 .invoice-meta-right .label {
@@ -513,10 +589,14 @@ Actual A4 width is applied ONLY during print.
 
 .status-badge {
     display: inline-block;
+
     background: #fff0e6;
     color: var(--orange);
+
     padding: 4px 7px;
+
     border-radius: 4px;
+
     font-size: 7px;
     font-weight: 800;
 }
@@ -528,6 +608,8 @@ Actual A4 width is applied ONLY during print.
 
 .invoice-table {
     width: 100%;
+    max-width: 100%;
+
     border-collapse: collapse;
     table-layout: fixed;
 }
@@ -535,16 +617,22 @@ Actual A4 width is applied ONLY during print.
 .invoice-table th {
     background: #111;
     color: #fff;
+
     padding: 7px 8px;
+
     font-size: 7px;
     text-align: left;
 }
 
 .invoice-table td {
     padding: 7px 8px;
+
     border-bottom: 1px solid #e5e5e5;
+
     font-size: 8px;
-    word-wrap: break-word;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .invoice-table th:nth-child(1),
@@ -583,24 +671,33 @@ Actual A4 width is applied ONLY during print.
 .invoice-total-area {
     display: flex;
     justify-content: flex-end;
+
+    width: 100%;
+    max-width: 100%;
+
     margin-top: 10px;
 }
 
 .invoice-totals {
     width: 190px;
+    max-width: 100%;
 }
 
 .invoice-total-line {
     display: flex;
     justify-content: space-between;
+
     margin-bottom: 5px;
+
     font-size: 8px;
 }
 
 .invoice-total-line.total {
     border-top: 1px solid #222;
+
     padding-top: 7px;
     margin-top: 6px;
+
     font-size: 12px;
     font-weight: 800;
 }
@@ -620,16 +717,21 @@ Actual A4 width is applied ONLY during print.
 
 .amount-words-label {
     color: var(--orange);
+
     font-size: 8px;
     font-weight: 800;
+
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .amount-words-value {
     margin-top: 4px;
+
     font-size: 8px;
     font-weight: 600;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -638,67 +740,102 @@ Actual A4 width is applied ONLY during print.
 ========================================================= */
 
 .payment-notes {
+    width: 100%;
+    max-width: 100%;
+
     margin-top: 12px;
+
     border: 1px solid #ddd;
     border-radius: 10px;
+
     padding: 12px;
+
+    overflow: hidden;
 }
 
 .payment-notes-grid {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     gap: 18px;
+
+    min-width: 0;
+}
+
+.payment-notes-grid > div {
+    min-width: 0;
 }
 
 .payment-title {
     color: var(--orange);
+
     font-size: 8px;
     font-weight: 800;
+
     text-transform: uppercase;
     letter-spacing: 1px;
+
     margin-bottom: 8px;
 }
 
 .payment-subtitle {
     font-size: 8px;
     font-weight: 800;
+
     margin-bottom: 5px;
 }
 
 .upi-id {
     font-size: 8px;
-    word-break: break-word;
+
+    word-break: break-all;
 }
 
 .qr-section {
     display: flex;
     align-items: center;
+
     gap: 15px;
+
+    min-width: 0;
 }
 
 .qr-section img {
     width: 110px;
     height: 110px;
+
     object-fit: contain;
+
+    flex-shrink: 0;
 }
 
 .scan-text {
     font-size: 7px;
+
     color: #777;
+
     line-height: 1.5;
+
+    min-width: 0;
 }
 
 .notes-block {
     padding-bottom: 8px;
     margin-bottom: 8px;
+
     border-bottom: 1px solid #e5e5e5;
 }
 
 .notes-text,
 .terms-text {
     font-size: 7px;
+
     color: #666;
+
     line-height: 1.5;
+
+    overflow-wrap: anywhere;
 }
 
 .terms-text ul {
@@ -716,7 +853,11 @@ Actual A4 width is applied ONLY during print.
 ========================================================= */
 
 .payment-footer {
+    width: 100%;
+    max-width: 100%;
+
     margin-top: 12px;
+
     background: #111;
     color: #fff;
 
@@ -726,35 +867,46 @@ Actual A4 width is applied ONLY during print.
     justify-content: space-between;
     align-items: center;
 
+    gap: 15px;
+
     font-size: 7px;
+
+    overflow: hidden;
 }
 
 .payment-footer strong {
     color: var(--orange);
+
     font-size: 8px;
 }
 
 .generated-time {
     color: #aaa;
+
     font-size: 7px;
+
+    text-align: right;
 }
 
 .computer-generated {
     margin-top: 4px;
+
     text-align: center;
+
     font-size: 7px;
+
     color: #888;
 }
 
 
 /* =========================================================
-   RESPONSIVE
+   DESKTOP / TABLET
 ========================================================= */
 
 @media (max-width: 1400px) {
 
     .workspace {
-        grid-template-columns: minmax(480px, 1fr) minmax(450px, 1fr);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
     .invoice {
@@ -762,6 +914,10 @@ Actual A4 width is applied ONLY during print.
     }
 }
 
+
+/* =========================================================
+   SINGLE COLUMN
+========================================================= */
 
 @media (max-width: 1100px) {
 
@@ -774,14 +930,20 @@ Actual A4 width is applied ONLY during print.
     }
 
     .preview-wrapper {
+        width: 100%;
         max-width: 100%;
     }
 
     .invoice {
+        width: 100%;
         max-width: 794px;
     }
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 700px) {
 
@@ -814,12 +976,27 @@ Actual A4 width is applied ONLY during print.
     }
 
     .service-row {
-        grid-template-columns: 1fr 60px 85px 80px 25px;
+        grid-template-columns:
+            minmax(0, 1fr)
+            60px
+            85px
+            80px
+            25px;
+
         gap: 5px;
     }
 
     .invoice {
         padding: 22px;
+    }
+
+    .invoice-meta {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .payment-notes-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -830,8 +1007,13 @@ Actual A4 width is applied ONLY during print.
 
 @media print {
 
+    /*
+       A4 page.
+       No browser margins.
+    */
+
     @page {
-        size: 210mm auto;
+        size: A4;
         margin: 0;
     }
 
@@ -839,93 +1021,163 @@ Actual A4 width is applied ONLY during print.
     body {
         margin: 0 !important;
         padding: 0 !important;
-        width: 210mm !important;
-        background: #fff !important;
-    }
 
-    body {
+        width: 210mm !important;
+
+        background: #fff !important;
+
         overflow: visible !important;
     }
 
+
     /*
-       Hide editor UI
+       HIDE APPLICATION UI
     */
 
     .sidebar,
     .topbar,
     .editor,
-    button,
     .action-bar,
-    .preview-title {
+    .preview-title,
+    button {
         display: none !important;
     }
 
+
+    /*
+       REMOVE GRID
+    */
+
     .app {
         display: block !important;
+
         width: 210mm !important;
+
         min-height: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: visible !important;
     }
 
     .main {
+        display: block !important;
+
         width: 210mm !important;
-        padding: 0 !important;
+
         margin: 0 !important;
+        padding: 0 !important;
     }
 
     .workspace {
         display: block !important;
+
         width: 210mm !important;
+
         margin: 0 !important;
         padding: 0 !important;
     }
 
     .preview-area {
         display: block !important;
+
         width: 210mm !important;
+
         margin: 0 !important;
         padding: 0 !important;
     }
 
     .preview-wrapper {
+        display: block !important;
+
         width: 210mm !important;
-        padding: 0 !important;
+
         margin: 0 !important;
+        padding: 0 !important;
+
         background: #fff !important;
+
         overflow: visible !important;
     }
 
+
     /*
+       ACTUAL BILL
+
        IMPORTANT:
-       A4 WIDTH ONLY.
-       HEIGHT IS AUTOMATIC.
+       NO 297mm HEIGHT.
+       Content controls height.
     */
 
     .invoice {
+        display: block !important;
+
         width: 210mm !important;
-        max-width: none !important;
+        max-width: 210mm !important;
 
         height: auto !important;
         min-height: 0 !important;
         max-height: none !important;
 
         margin: 0 !important;
+
         padding: 10mm !important;
+
+        background: #fff !important;
 
         box-shadow: none !important;
         border: none !important;
 
         overflow: visible !important;
 
-        background: #fff !important;
+        color: #111 !important;
 
-        page-break-after: avoid !important;
-        break-after: avoid-page !important;
+        page-break-after: auto !important;
+        break-after: auto !important;
     }
 
+
+    /*
+       KEEP SECTIONS TOGETHER
+    */
+
+    .invoice-header,
+    .invoice-meta,
+    .invoice-table,
+    .invoice-total-area,
+    .amount-words,
     .payment-notes,
-    .payment-footer,
+    .payment-footer {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
     .invoice-table tr {
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+    }
+
+
+    /*
+       QR
+    */
+
+    .qr-section img {
+        width: 110px !important;
+        height: 110px !important;
+    }
+
+
+    /*
+       NO EXTRA BOTTOM SPACE
+    */
+
+    .payment-footer {
+        margin-bottom: 0 !important;
+    }
+
+    .computer-generated {
+        margin-bottom: 0 !important;
     }
 }
