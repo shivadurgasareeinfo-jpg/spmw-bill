@@ -1,85 +1,1220 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-:root{
-  --orange:#ff6a00;
-  --orange2:#ff7a1a;
-  --black:#111111;
-  --ink:#181818;
-  --muted:#777;
-  --line:#e9e9e9;
-  --soft:#f7f7f7;
-  --white:#fff;
+:root {
+    --orange: #ff6a00;
+    --orange-light: #fff0e6;
+    --black: #111111;
+    --dark: #181818;
+    --text: #222222;
+    --muted: #777777;
+    --border: #e8e8e8;
+    --background: #f5f5f5;
+    --white: #ffffff;
+    --green: #16834d;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,sans-serif;background:#f2f2f2;color:var(--ink)}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-.app{min-height:100vh;display:flex}
-.sidebar{width:245px;background:#111;color:#fff;padding:24px 16px;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0}
-.brand{display:flex;gap:12px;align-items:center;padding:4px 8px 30px}
-.brand img{width:43px;height:43px;object-fit:cover;border-radius:12px}
-.brand strong{display:block;font-size:12px;letter-spacing:.8px}
-.brand span{display:block;color:#999;font-size:10px;margin-top:4px}
-.nav{width:100%;border:0;background:transparent;color:#aaa;padding:13px 14px;border-radius:10px;text-align:left;display:flex;align-items:center;gap:10px;margin:3px 0}
-.nav:hover,.nav.active{background:#242424;color:#fff}
-.nav.active{box-shadow:inset 3px 0 var(--orange)}
-.sidebar-spacer{flex:1}
-.sidebar-note{display:flex;gap:10px;align-items:center;border-top:1px solid #292929;padding:18px 10px;color:#888;font-size:11px;line-height:1.5}
-.main{margin-left:245px;width:calc(100% - 245px);padding:30px 34px}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:25px}
-.eyebrow{font-size:10px;font-weight:800;letter-spacing:2px;color:var(--orange)}
-h1{font-size:27px;margin:5px 0 0}
-.primary,.secondary,.paid-btn{border:0;border-radius:9px;padding:12px 16px;display:inline-flex;align-items:center;gap:8px;font-weight:700}
-.primary{background:var(--orange);color:#fff}
-.secondary{background:#fff;border:1px solid #ddd;color:#222}
-.paid-btn{background:#16834a;color:#fff}
-.workspace{display:grid;grid-template-columns:minmax(500px,1fr) minmax(480px,570px);gap:26px;align-items:start}
-.editor{display:flex;flex-direction:column;gap:16px}
-.card{background:#fff;border:1px solid #e7e7e7;border-radius:14px;padding:20px;box-shadow:0 4px 20px #00000005}
-.card-title{font-size:13px;font-weight:800;margin-bottom:18px;display:flex;gap:10px;align-items:center}
-.card-title span{color:var(--orange);font-size:11px}
-.grid{display:grid;gap:14px}.grid.two{grid-template-columns:1fr 1fr}
-label{font-size:11px;font-weight:700;color:#555}
-input,textarea{width:100%;margin-top:7px;border:1px solid #ddd;border-radius:8px;padding:11px 12px;outline:none;background:#fff;color:#111}
-input:focus,textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px #ff6a0014}
-textarea{min-height:85px;resize:vertical}
-.wide{grid-column:1/-1}
-.service-head,.service-line{display:grid;grid-template-columns:minmax(180px,1fr) 65px 105px 105px 34px;gap:8px;align-items:center}
-.service-head{font-size:10px;color:#999;padding:0 3px 8px;text-transform:uppercase}
-.service-line{margin:5px 0}.service-line input{margin:0}.service-line strong{font-size:12px;text-align:right}
-.icon-btn{border:0;background:transparent;padding:7px;border-radius:7px}.icon-btn:hover{background:#f5f5f5}.danger{color:#d33}
-.add-line{border:1px dashed #ccc;background:#fafafa;border-radius:8px;padding:9px;margin-top:8px;color:#555;font-weight:700}
-.totals-edit{margin-top:18px;border-top:1px solid #eee;padding-top:14px;display:grid;grid-template-columns:180px 1fr;gap:8px;align-items:center}
-.totals-edit>div{display:flex;justify-content:flex-end;gap:60px;font-size:12px}
-.totals-edit .orange,.orange{color:var(--orange)}
-.actions{display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap}
-.preview-wrap{position:sticky;top:25px}
-.preview-label{font-size:9px;letter-spacing:2px;color:#888;font-weight:800;margin:0 0 8px 3px}
-.invoice{background:#fff;width:100%;padding:36px 38px;box-shadow:0 15px 50px #00000012;min-height:740px}
-.invoice-top{display:flex;justify-content:space-between;gap:20px}
-.invoice-brand{display:flex;gap:12px;align-items:center}
-.invoice-brand img{width:52px;height:52px;object-fit:cover;border-radius:10px}
-.invoice-brand h2{font-size:18px;margin:0;letter-spacing:.5px}
-.invoice-brand p{font-size:8px;letter-spacing:3px;color:#777;margin:5px 0 0}
-.invoice-meta{text-align:right}.invoice-title{color:var(--orange);font-size:17px;font-weight:900;letter-spacing:.7px}.invoice-meta strong,.invoice-meta span{display:block;font-size:10px;margin-top:5px}
-.orange-rule{height:3px;background:var(--orange);margin:22px 0}
-.invoice-info{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:25px}
-.invoice-info small,.payment-box small{font-size:8px;letter-spacing:1.5px;color:var(--orange);font-weight:900}
-.invoice-info h3{font-size:15px;margin:7px 0 3px}.invoice-info p{font-size:9px;color:#777;margin:4px 0}
-.right-meta p{display:flex;justify-content:flex-end;gap:12px}.right-meta p span{color:#888}.right-meta p strong{min-width:78px;text-align:right}
-.status{font-size:8px!important;letter-spacing:.5px;padding:5px 8px;border-radius:5px;font-weight:900!important;display:inline-block}.status.due{background:#fff0e7;color:#f05f00}.status.paid{background:#e7f8ee;color:#138044}
-.invoice-table{width:100%;border-collapse:collapse;font-size:9px}
-.invoice-table th{background:#111;color:#fff;text-align:left;padding:10px 8px;font-size:8px;text-transform:uppercase}
-.invoice-table th:nth-child(n+3),.invoice-table td:nth-child(n+3){text-align:right}
-.invoice-table td{padding:12px 8px;border-bottom:1px solid #eee;color:#555}.invoice-table td strong{color:#222}
-.invoice-total{display:grid;grid-template-columns:1fr 90px;gap:8px;margin:18px 0 25px 55%;font-size:9px}.invoice-total span{text-align:right;color:#888}.invoice-total strong{text-align:right}.invoice-total b{text-align:right;font-size:12px}.invoice-total .grand{font-size:18px;color:var(--orange)}
-.payment-box{display:grid;grid-template-columns:1fr 1fr;border:1px solid #eee;border-radius:10px;padding:18px;gap:20px}
-.payment-box h4{margin:8px 0 4px;font-size:10px}.payment-box p{font-size:8px;color:#777;line-height:1.6;margin:5px 0}
-.qr-placeholder{width:72px;height:72px;border:2px dashed #ddd;display:grid;place-items:center;font-weight:900;color:#bbb;margin-top:8px}
-.invoice-footer{margin-top:18px;padding:11px 13px;background:#111;color:#fff;display:flex;justify-content:space-between;gap:10px;align-items:center}.invoice-footer strong{color:var(--orange);font-size:9px}.invoice-footer span{font-size:7px;color:#bbb}.paid-footer{background:#0e4a2d}.paid-footer strong{color:#75dfa5}
-.history-page{background:#fff;border:1px solid #e7e7e7;border-radius:14px;padding:20px}.searchbar{display:flex;gap:9px;align-items:center;background:#f7f7f7;padding:0 12px;border-radius:9px}.searchbar input{border:0;background:transparent;margin:0}.bill-list{margin-top:15px}.empty{text-align:center;padding:70px;color:#999}
-.bill-row{display:grid;grid-template-columns:1fr 110px 110px 70px 38px;gap:15px;align-items:center;padding:15px 5px;border-bottom:1px solid #eee}.bill-row strong{display:block;font-size:12px}.bill-row span{display:block;font-size:10px;color:#888;margin-top:4px}.row-total{font-size:12px;font-weight:800;text-align:right}.bill-row .status{text-align:center}.ghost{border:0;background:transparent;font-weight:700;font-size:11px}
-@media(max-width:1100px){.workspace{grid-template-columns:1fr}.preview-wrap{position:static}.invoice{max-width:700px;margin:auto}.sidebar{width:210px}.main{margin-left:210px;width:calc(100% - 210px);padding:24px}}
-@media(max-width:760px){.sidebar{position:static;width:100%;height:auto}.app{display:block}.brand{padding-bottom:15px}.nav{display:inline-flex;width:auto;margin-right:4px}.sidebar-note{display:none}.main{margin:0;width:100%;padding:18px}.topbar{align-items:flex-end}.grid.two{grid-template-columns:1fr}.service-head{display:none}.service-line{grid-template-columns:1fr 55px 85px 90px 30px}.invoice{padding:22px 18px}.invoice-info{grid-template-columns:1fr}.right-meta p{justify-content:flex-start}.invoice-total{margin-left:20%}.payment-box{grid-template-columns:1fr}.actions{justify-content:stretch}.actions button{flex:1}.bill-row{grid-template-columns:1fr 80px}.bill-row .status{display:none}}
-@media print{body{background:#fff}.sidebar,.topbar,.editor,.preview-label{display:none!important}.main{margin:0;padding:0;width:100%}.workspace{display:block}.preview-wrap{position:static}.invoice{box-shadow:none;margin:0;width:210mm;min-height:297mm;padding:20mm}}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+/* =========================
+   APP
+========================= */
+
+.app {
+    min-height: 100vh;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 245px;
+
+    background: var(--black);
+    color: white;
+
+    padding: 25px 16px;
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 5px 8px 30px;
+}
+
+.brand img {
+    width: 45px;
+    height: 45px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+}
+
+.brand h2 {
+    font-size: 12px;
+    letter-spacing: 1px;
+
+    margin: 0;
+}
+
+.brand span {
+    color: #999;
+
+    display: block;
+
+    font-size: 10px;
+
+    margin-top: 5px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+
+    color: #999;
+
+    padding: 13px;
+
+    border-radius: 9px;
+
+    text-align: left;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: #242424;
+    color: white;
+}
+
+.nav-btn.active {
+    border-left: 3px solid var(--orange);
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+
+    border-top: 1px solid #292929;
+
+    padding: 18px 8px;
+}
+
+.sidebar-bottom span {
+    display: block;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.sidebar-bottom small {
+    color: #777;
+
+    font-size: 9px;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+    margin-left: 245px;
+
+    padding: 30px 35px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 25px;
+}
+
+.small-title {
+    color: var(--orange);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+    margin: 0 0 5px;
+}
+
+.topbar h1 {
+    margin: 0;
+
+    font-size: 28px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.orange-btn,
+.secondary-btn,
+.paid-btn {
+    border-radius: 8px;
+
+    padding: 12px 16px;
+
+    border: none;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.orange-btn {
+    background: var(--orange);
+    color: white;
+}
+
+.orange-btn:hover {
+    background: #e95e00;
+}
+
+.secondary-btn {
+    background: white;
+
+    border: 1px solid #ddd;
+
+    color: #222;
+}
+
+.paid-btn {
+    background: var(--green);
+
+    color: white;
+}
+
+
+/* =========================
+   WORKSPACE
+========================= */
+
+.workspace {
+    display: grid;
+
+    grid-template-columns:
+        minmax(500px, 1fr)
+        minmax(500px, 570px);
+
+    gap: 25px;
+
+    align-items: start;
+}
+
+.editor {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 15px;
+}
+
+
+/* =========================
+   CARDS
+========================= */
+
+.card {
+    background: white;
+
+    border: 1px solid var(--border);
+
+    border-radius: 13px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.03);
+}
+
+.section-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    margin-bottom: 18px;
+}
+
+.section-title span {
+    color: var(--orange);
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+}
+
+.field {
+    display: flex;
+
+    flex-direction: column;
+}
+
+.field.full {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    font-size: 10px;
+
+    color: #555;
+
+    font-weight: 700;
+}
+
+.field input,
+.field textarea {
+    margin-top: 7px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    padding: 11px;
+
+    outline: none;
+
+    font-size: 11px;
+}
+
+.field textarea {
+    min-height: 80px;
+
+    resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+    border-color: var(--orange);
+
+    box-shadow:
+        0 0 0 3px rgba(255,106,0,.08);
+}
+
+
+/* =========================
+   SERVICE EDITOR
+========================= */
+
+.service-header,
+.service-row {
+    display: grid;
+
+    grid-template-columns:
+        minmax(160px, 1fr)
+        60px
+        100px
+        100px
+        35px;
+
+    gap: 8px;
+
+    align-items: center;
+}
+
+.service-header {
+    font-size: 9px;
+
+    color: #999;
+
+    text-transform: uppercase;
+
+    margin-bottom: 5px;
+}
+
+.service-row {
+    margin-bottom: 7px;
+}
+
+.service-row input {
+    width: 100%;
+
+    padding: 10px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+}
+
+.service-amount {
+    text-align: right;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.remove-service {
+    border: none;
+
+    background: transparent;
+
+    color: #d33;
+
+    font-size: 17px;
+}
+
+.add-service {
+    margin-top: 8px;
+
+    width: 100%;
+
+    padding: 9px;
+
+    border: 1px dashed #ccc;
+
+    background: #fafafa;
+
+    border-radius: 8px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #555;
+}
+
+
+/* =========================
+   CALCULATIONS
+========================= */
+
+.calculation {
+    margin-top: 18px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #eee;
+
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.discount-box label {
+    font-size: 10px;
+
+    font-weight: 700;
+
+    color: #555;
+}
+
+.discount-box input {
+    display: block;
+
+    margin-top: 7px;
+
+    width: 130px;
+
+    padding: 9px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 7px;
+}
+
+.calculation-lines {
+    width: 230px;
+}
+
+.calculation-lines div {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 5px 0;
+
+    font-size: 11px;
+}
+
+.grand-total {
+    border-top: 1px solid #ddd;
+
+    margin-top: 5px;
+
+    padding-top: 10px !important;
+
+    font-size: 14px !important;
+}
+
+.grand-total strong {
+    color: var(--orange);
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+
+/* =========================
+   PREVIEW
+========================= */
+
+.preview-area {
+    position: sticky;
+
+    top: 20px;
+}
+
+.preview-title {
+    color: #888;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    font-weight: 800;
+
+    margin-bottom: 8px;
+}
+
+
+/* =========================
+   INVOICE
+========================= */
+
+.invoice {
+    background: white;
+
+    width: 100%;
+
+    min-height: 740px;
+
+    padding: 35px;
+
+    box-shadow:
+        0 15px 50px rgba(0,0,0,.10);
+}
+
+.invoice-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+}
+
+.invoice-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.invoice-brand img {
+    width: 52px;
+
+    height: 52px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+}
+
+.invoice-brand h2 {
+    font-size: 18px;
+
+    margin: 0;
+
+    letter-spacing: .5px;
+}
+
+.invoice-brand p {
+    margin: 5px 0 0;
+
+    font-size: 7px;
+
+    letter-spacing: 3px;
+
+    color: #777;
+}
+
+.invoice-heading {
+    text-align: right;
+}
+
+.invoice-heading h1 {
+    color: var(--orange);
+
+    font-size: 16px;
+
+    margin: 0 0 8px;
+
+    font-weight: 900;
+}
+
+.invoice-heading strong {
+    font-size: 10px;
+}
+
+.orange-line {
+    height: 3px;
+
+    background: var(--orange);
+
+    margin: 20px 0;
+}
+
+
+/* =========================
+   INVOICE INFO
+========================= */
+
+.invoice-info {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 30px;
+
+    margin-bottom: 25px;
+}
+
+.label {
+    color: var(--orange);
+
+    font-size: 8px;
+
+    font-weight: 900;
+
+    letter-spacing: 1.5px;
+}
+
+.bill-to h3 {
+    margin: 7px 0 4px;
+
+    font-size: 15px;
+}
+
+.bill-to p {
+    margin: 4px 0;
+
+    font-size: 9px;
+
+    color: #777;
+}
+
+.bill-meta {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    align-items: flex-end;
+}
+
+.bill-meta div {
+    display: flex;
+
+    gap: 12px;
+
+    font-size: 9px;
+}
+
+.bill-meta span {
+    color: #888;
+}
+
+.bill-meta strong {
+    min-width: 80px;
+
+    text-align: right;
+}
+
+.status {
+    padding: 5px 8px;
+
+    border-radius: 5px;
+
+    font-size: 8px;
+
+    font-weight: 900;
+
+    letter-spacing: .5px;
+}
+
+.status.due {
+    background: #fff0e6;
+
+    color: #ed5f00;
+}
+
+.status.paid {
+    background: #e7f8ee;
+
+    color: #148047;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.invoice-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 9px;
+}
+
+.invoice-table th {
+    background: var(--black);
+
+    color: white;
+
+    padding: 10px 8px;
+
+    text-align: left;
+
+    font-size: 8px;
+
+    text-transform: uppercase;
+}
+
+.invoice-table th:nth-child(n+3),
+.invoice-table td:nth-child(n+3) {
+    text-align: right;
+}
+
+.invoice-table td {
+    padding: 12px 8px;
+
+    border-bottom: 1px solid #eee;
+
+    color: #555;
+}
+
+.invoice-table td strong {
+    color: #222;
+}
+
+
+/* =========================
+   TOTAL
+========================= */
+
+.invoice-total {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        90px;
+
+    gap: 7px;
+
+    margin: 18px 0 25px 55%;
+
+    font-size: 9px;
+}
+
+.invoice-total span {
+    color: #888;
+
+    text-align: right;
+}
+
+.invoice-total strong {
+    text-align: right;
+}
+
+.invoice-total b {
+    text-align: right;
+
+    font-size: 12px;
+}
+
+.total-number {
+    color: var(--orange);
+
+    font-size: 18px !important;
+}
+
+
+/* =========================
+   PAYMENT
+========================= */
+
+.payment-section {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+
+    border: 1px solid #eee;
+
+    border-radius: 10px;
+
+    padding: 17px;
+}
+
+.payment-section h4 {
+    font-size: 10px;
+
+    margin: 8px 0;
+}
+
+.payment-section p {
+    color: #777;
+
+    font-size: 8px;
+
+    line-height: 1.6;
+}
+
+.fake-qr {
+    width: 70px;
+
+    height: 70px;
+
+    border: 2px dashed #ccc;
+
+    display: grid;
+
+    place-items: center;
+
+    color: #aaa;
+
+    font-weight: 900;
+
+    margin-top: 8px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.invoice-footer {
+    margin-top: 18px;
+
+    background: var(--black);
+
+    padding: 11px 13px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.invoice-footer strong {
+    color: var(--orange);
+
+    font-size: 9px;
+}
+
+.invoice-footer span {
+    color: #aaa;
+
+    font-size: 7px;
+}
+
+.invoice-footer.paid {
+    background: #0d4a2d;
+}
+
+.invoice-footer.paid strong {
+    color: #70dfa0;
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+.history-page {
+    background: white;
+
+    border-radius: 13px;
+
+    border: 1px solid var(--border);
+
+    padding: 25px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.history-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.history-top h2 {
+    margin: 0;
+
+    font-size: 20px;
+}
+
+.history-top input {
+    width: 250px;
+
+    padding: 11px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+}
+
+.history-row {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        120px
+        120px
+        80px
+        70px
+        40px;
+
+    align-items: center;
+
+    gap: 10px;
+
+    border-bottom: 1px solid #eee;
+
+    padding: 14px 5px;
+}
+
+.history-row strong {
+    display: block;
+
+    font-size: 11px;
+}
+
+.history-row small {
+    color: #888;
+
+    font-size: 9px;
+}
+
+.history-total {
+    font-weight: 800;
+
+    font-size: 11px;
+
+    text-align: right;
+}
+
+.history-open {
+    border: none;
+
+    background: transparent;
+
+    font-weight: 700;
+
+    font-size: 10px;
+}
+
+.history-delete {
+    border: none;
+
+    background: transparent;
+
+    color: #d33;
+}
+
+.empty-history {
+    text-align: center;
+
+    padding: 70px;
+
+    color: #999;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1150px) {
+
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .preview-area {
+        position: static;
+    }
+
+    .invoice {
+        max-width: 700px;
+
+        margin: auto;
+    }
+}
+
+
+@media(max-width:800px) {
+
+    .sidebar {
+        position: static;
+
+        width: 100%;
+
+        height: auto;
+
+        padding: 15px;
+    }
+
+    .app {
+        display: block;
+    }
+
+    .brand {
+        padding-bottom: 15px;
+    }
+
+    nav {
+        flex-direction: row;
+    }
+
+    .nav-btn {
+        flex: 1;
+    }
+
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+
+        padding: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field.full {
+        grid-column: auto;
+    }
+
+    .invoice-info {
+        grid-template-columns: 1fr;
+    }
+
+    .bill-meta {
+        align-items: flex-start;
+    }
+
+    .payment-section {
+        grid-template-columns: 1fr;
+    }
+
+    .history-top {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 15px;
+    }
+
+    .history-top input {
+        width: 100%;
+    }
+
+}
+
+
+@media(max-width:600px) {
+
+    .topbar {
+        align-items: flex-end;
+    }
+
+    .topbar h1 {
+        font-size: 22px;
+    }
+
+    .orange-btn {
+        padding: 10px;
+    }
+
+    .service-header {
+        display: none;
+    }
+
+    .service-row {
+        grid-template-columns:
+            1fr
+            55px
+            80px
+            90px
+            25px;
+    }
+
+    .invoice {
+        padding: 22px 16px;
+    }
+
+    .invoice-brand h2 {
+        font-size: 14px;
+    }
+
+    .invoice-brand p {
+        font-size: 6px;
+    }
+
+    .invoice-heading h1 {
+        font-size: 12px;
+    }
+
+    .invoice-total {
+        margin-left: 25%;
+    }
+
+    .actions button {
+        flex: 1;
+    }
+
+}
+
+
+/* =========================
+   PRINT
+========================= */
+
+@media print {
+
+    body {
+        background: white;
+    }
+
+    .sidebar,
+    .topbar,
+    .editor,
+    .preview-title {
+        display: none !important;
+    }
+
+    .main {
+        margin: 0;
+
+        padding: 0;
+    }
+
+    .workspace {
+        display: block;
+    }
+
+    .preview-area {
+        position: static;
+    }
+
+    .invoice {
+        box-shadow: none;
+
+        width: 210mm;
+
+        min-height: 297mm;
+
+        margin: 0;
+
+        padding: 15mm;
+    }
+
+}
