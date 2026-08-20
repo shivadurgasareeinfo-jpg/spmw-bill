@@ -1,176 +1,913 @@
-*{box-sizing:border-box}
-:root{--orange:#ff6a00;--orange-dark:#e85d00;--ink:#171717;--muted:#777;--line:#e7e7e7;--soft:#f7f7f7;--green:#16a765}
-body{margin:0;font-family:Inter,Arial,sans-serif;background:#f3f3f3;color:#171717}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
-.app{display:flex;min-height:100vh}
-.sidebar{width:235px;background:#0d0d0d;color:#fff;position:fixed;inset:0 auto 0 0;padding:24px 16px;display:flex;flex-direction:column}
-.brand{display:flex;align-items:center;gap:11px;padding:5px 8px 28px;border-bottom:1px solid #292929}
-.brand img{width:42px;height:42px;object-fit:cover;border-radius:10px}
-.brand h2{font-size:13px;margin:0;letter-spacing:.8px}
-.brand span{font-size:10px;color:#999}
-nav{padding-top:22px;display:grid;gap:8px}
-.nav-btn{border:0;background:transparent;color:#aaa;text-align:left;padding:12px 13px;border-radius:9px;font-weight:600}
-.nav-btn:hover,.nav-btn.active{background:#1c1c1c;color:#fff}
-.nav-btn.active{box-shadow:inset 3px 0 var(--orange)}
-.sidebar-bottom{margin-top:auto;padding:16px 8px;border-top:1px solid #292929;display:grid;gap:4px;font-size:10px}
-.sidebar-bottom small{color:#777}
-.main{margin-left:235px;width:calc(100% - 235px);padding:24px}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.small-title{font-size:10px;letter-spacing:1.8px;color:var(--orange);font-weight:800;margin:0 0 4px}
-.topbar h1,.history-top h2{margin:0;font-size:24px}
-.workspace{display:grid;grid-template-columns:minmax(540px,1fr) minmax(480px,1fr);gap:20px;align-items:start}
-.editor{display:grid;gap:16px}
-.card{background:#fff;border:1px solid #e5e5e5;border-radius:16px;padding:22px;box-shadow:0 5px 18px rgba(0,0,0,.035)}
-.section-title{font-size:16px;font-weight:800;margin-bottom:18px}
-.section-title span{color:var(--orange);font-size:12px;margin-right:8px}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-label{font-size:10px;color:#777;font-weight:700;letter-spacing:.5px;display:grid;gap:7px}
-input,textarea{width:100%;border:1px solid #ddd;border-radius:9px;padding:11px 12px;background:#fff;color:#171717;outline:none}
-input:focus,textarea:focus{border-color:#ff8a3d;box-shadow:0 0 0 3px rgba(255,106,0,.08)}
-textarea{resize:vertical;min-height:95px;line-height:1.45}
-.service-head{display:grid;grid-template-columns:minmax(180px,1fr) 75px 110px 110px 28px;gap:9px;font-size:9px;color:#888;margin-bottom:6px}
-#serviceList{display:grid;gap:9px}
-.service-row{display:grid;grid-template-columns:minmax(180px,1fr) 75px 110px 110px 28px;gap:9px;align-items:center}
-.service-row input{min-width:0}
-.service-amount{font-size:13px;font-weight:800;text-align:right;padding-right:4px}
-.remove-service{border:0;background:transparent;color:#e43b32;font-size:20px;padding:0}
-.add-service{width:100%;margin-top:12px;border:1px dashed #ccc;background:#fff;padding:11px;border-radius:9px;font-weight:700;color:#444}
-.add-service:hover{border-color:var(--orange);color:var(--orange)}
-.editor-totals{border-top:1px solid #eee;margin-top:16px;padding-top:16px;display:flex;justify-content:space-between;gap:25px}
-.editor-totals>label{width:160px}
-.totals-box{min-width:290px;display:grid;gap:10px}
-.totals-box>div{display:flex;justify-content:space-between;font-size:13px}
-.editor-grand{border-top:1px solid #ddd;padding-top:10px;font-size:18px!important}
-.editor-grand strong{color:var(--orange)}
-.payment-editor{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.qr-upload-wrap{grid-column:1/-1}
-.qr-upload{border:1px dashed #ccc;border-radius:10px;padding:10px}
-.qr-file-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:11px;color:#777}
-.qr-file-row button{border:0;background:none;color:#e33;font-weight:700}
-.upi-support-editor{margin-top:17px;padding-top:16px;border-top:1px solid #eee}
-.upi-support-editor>span{font-size:9px;color:#888;font-weight:800}
-.upi-badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
-.upi-badge{display:inline-flex;align-items:center;gap:5px;border:1px solid #e5e5e5;border-radius:7px;padding:5px 8px;background:#fff;font-size:9px;font-weight:700;color:#555}
-.upi-badge b{display:inline-flex;width:18px;height:18px;border-radius:5px;align-items:center;justify-content:center;background:#111;color:#fff;font-size:8px}
-.upi-badge.phonepe b{background:#5f259f}.upi-badge.gpay b{background:#4285f4}.upi-badge.paytm b{background:#00baf2}.upi-badge.bhim b{background:#2c7be5}.upi-badge.whatsapp b{background:#25d366}.upi-badge.amazon b{background:#ff9900}
-.notes-grid{display:grid;grid-template-columns:1fr 1.25fr;gap:14px;margin-top:16px}
-.action-bar{display:flex;gap:9px;flex-wrap:wrap}
-.orange-btn,.paid-btn,.secondary-btn{border:0;border-radius:9px;padding:11px 15px;font-weight:800}
-.orange-btn{background:var(--orange);color:#fff}.orange-btn:hover{background:var(--orange-dark)}
-.paid-btn{background:#e8f8ef;color:#16864f}.secondary-btn{background:#fff;border:1px solid #ddd;color:#333}
-.preview-area{position:sticky;top:20px}
-.preview-title{font-size:10px;font-weight:800;letter-spacing:1.4px;color:#888;margin:0 0 8px}
-.invoice{width:210mm;min-height:297mm;background:#fff;padding:15mm 14mm 11mm;box-shadow:0 10px 30px rgba(0,0,0,.1);color:#171717}
-.invoice-header{display:flex;justify-content:space-between;align-items:center}
-.invoice-brand{display:flex;align-items:center;gap:9px}.invoice-brand img{width:38px;height:38px;object-fit:cover;border-radius:8px}
-.invoice-brand h2{font-size:15px;margin:0;letter-spacing:.6px}.invoice-brand p{font-size:7px;letter-spacing:1.3px;color:#888;margin:3px 0 0}
-.invoice-heading{text-align:right}.invoice-heading h1{font-size:15px;color:var(--orange);margin:0 0 4px}.invoice-heading strong{font-size:9px;color:#555}
-.orange-line{height:2px;background:var(--orange);margin:10px 0 16px}
-.bill-to{display:flex;justify-content:space-between;margin-bottom:14px}
-.label{display:block;color:var(--orange);font-size:7px;font-weight:900;letter-spacing:1.2px;margin-bottom:6px}
-.bill-to h3{font-size:12px;margin:0 0 3px}.bill-to p{font-size:8px;color:#777;margin:2px 0}
-.bill-meta{width:155px;display:grid;gap:5px}.bill-meta div{display:flex;justify-content:space-between;font-size:7.5px}.bill-meta span{color:#888}.bill-meta strong{font-weight:800}
-.status{font-size:6.5px;padding:3px 6px;border-radius:4px;display:inline-block}.status.due{background:#fff0e7;color:var(--orange)}.status.paid{background:#e7f8ef;color:#16864f}
-.invoice-table{width:100%;border-collapse:collapse;font-size:8px}
-.invoice-table th{background:#171717;color:#fff;text-align:left;padding:6px 7px;font-size:6.5px;letter-spacing:.7px}
-.invoice-table th:nth-child(1){width:6%}.invoice-table th:nth-child(3){width:10%;text-align:center}.invoice-table th:nth-child(4),.invoice-table th:nth-child(5){width:16%;text-align:right}
-.invoice-table td{padding:6px 7px;border-bottom:1px solid #eee;color:#555}.invoice-table td:first-child{color:#999}.invoice-table td:nth-child(3){text-align:center}.invoice-table td:nth-child(4),.invoice-table td:nth-child(5){text-align:right}.invoice-table td:nth-child(2){color:#222;font-weight:600}
-.invoice-total-area{display:flex;justify-content:space-between;gap:25px;padding:12px 0 15px}
-.amount-words{max-width:48%;align-self:end}.amount-words strong{display:block;font-size:8px;line-height:1.4}
-.invoice-totals{width:185px;display:grid;gap:5px}.invoice-totals div{display:flex;justify-content:space-between;font-size:8px}.invoice-totals .grand{border-top:1px solid #222;margin-top:3px;padding-top:7px;font-size:13px;font-weight:900}.invoice-totals .grand strong{color:var(--orange);font-size:15px}
-.payment-notes{border:1px solid #e5e5e5;border-radius:10px;padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.payment-box h4{font-size:9px;margin:0 0 7px}.upi-id-label{font-size:7px;color:#888;margin-bottom:2px}.upi-value{font-size:9px;display:block;margin-bottom:8px}
-.qr-payment-row{display:flex;gap:12px;align-items:center}.qr-box{width:38mm;height:38mm;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;overflow:hidden;flex:none}.qr-box img{width:100%;height:100%;object-fit:contain;display:none}.qr-box span{font-size:8px;color:#aaa}
-.scan-copy{flex:1}.scan-copy>strong{font-size:8px}.scan-copy p{font-size:7.5px;color:#777;line-height:1.4;margin:4px 0 6px}.compact{gap:4px}.compact .upi-badge{padding:0;border:0}.compact .upi-badge b{width:19px;height:19px;border-radius:5px}.scan-copy small{display:block;color:#888;font-size:6.3px;line-height:1.4;margin-top:5px}
-.notes-box{min-width:0}.notes-box>p{font-size:7.5px;line-height:1.45;color:#666;margin:0}.terms-divider{height:1px;background:#eee;margin:9px 0}.terms-text{white-space:pre-line}
-.reference-row{font-size:7px;color:#555;margin-top:7px;font-weight:700}
-.invoice-footer{margin-top:12px;background:#151515;color:#fff;padding:8px 10px}.invoice-footer-main{display:flex;justify-content:space-between;gap:15px;align-items:center}.invoice-footer-main strong{font-size:7px;color:var(--orange)}.invoice-footer-main span{font-size:6.5px;color:#bbb}.invoice-footer.paid .invoice-footer-main strong{color:#62d59c}
-.generated-footer{border-top:1px solid #333;margin-top:6px;padding-top:5px;display:flex;justify-content:space-between;gap:12px;font-size:6px;color:#888}
-.history-page{background:#fff;border:1px solid #e5e5e5;border-radius:16px;padding:22px}.history-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.history-top input{width:260px}.history-row{display:grid;grid-template-columns:1.5fr .8fr .8fr .7fr auto auto;gap:12px;align-items:center;border-top:1px solid #eee;padding:13px 5px;font-size:12px}.history-row small{display:block;color:#888;margin-top:3px}.history-total{font-weight:800}.history-open,.history-delete{border:1px solid #ddd;background:#fff;border-radius:7px;padding:7px 10px}.history-delete{color:#d33}.hidden{display:none!important}
-
-@media(max-width:1250px){.workspace{grid-template-columns:1fr}.preview-area{position:relative;overflow:auto}.invoice{margin:auto}}
-@media(max-width:800px){.sidebar{position:relative;width:100%;height:auto;padding:12px}.app{display:block}.sidebar-bottom{display:none}.brand{padding-bottom:12px}.main{margin:0;width:100%;padding:12px}.sidebar nav{display:flex}.nav-btn{flex:1}.grid-2,.notes-grid,.payment-editor{grid-template-columns:1fr}.service-head,.service-row{grid-template-columns:minmax(130px,1fr) 55px 80px 85px 24px}.editor-totals{display:block}.totals-box{margin-top:14px}.invoice{transform-origin:top left}.history-row{grid-template-columns:1fr 1fr}.history-top{display:block}.history-top input{width:100%;margin-top:12px}}
-
-@media print{
-    body{background:#fff}.sidebar,.topbar,.preview-title,.editor,.history-page{display:none!important}.main{margin:0;padding:0;width:100%}.preview-area{position:static;overflow:visible}.invoice{box-shadow:none;margin:0;width:210mm;min-height:297mm;padding:15mm 14mm 11mm}
-}
 /* =========================================================
-   REAL UPI PAYMENT APP LOGOS
+   SP MEDIA WORKS — BILL GENERATOR
+   PROFESSIONAL UI + CONTENT-SIZED PRINT
+========================================================= */
+
+:root {
+    --orange: #ff6a00;
+    --orange-dark: #e85d00;
+    --black: #111111;
+    --dark: #181818;
+    --gray: #666;
+    --light-gray: #f5f5f5;
+    --border: #dddddd;
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #171717;
+}
+
+
+/* =========================================================
+   APP LAYOUT
+========================================================= */
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background: #111;
+    color: #fff;
+    padding: 25px 18px;
+}
+
+.main {
+    flex: 1;
+    min-width: 0;
+    padding: 25px;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+    height: 64px;
+    background: #fff;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    margin-bottom: 20px;
+    border: 1px solid #e5e5e5;
+}
+
+.topbar h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.topbar button {
+    border: 0;
+    background: var(--orange);
+    color: #fff;
+    padding: 11px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   EDITOR + PREVIEW
+========================================================= */
+
+.workspace {
+    display: grid;
+    grid-template-columns: minmax(520px, 1fr) minmax(500px, 0.95fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.editor {
+    min-width: 0;
+}
+
+.preview-area {
+    min-width: 0;
+    position: sticky;
+    top: 20px;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.card {
+    background: #fff;
+    border: 1px solid #e2e2e2;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 22px;
+    font-size: 18px;
+}
+
+.card-title .number {
+    color: var(--orange);
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.form-group {
+    min-width: 0;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #444;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    border: 1px solid #d7d7d7;
+    background: #fff;
+    border-radius: 9px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #111;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, .10);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+
+/* =========================================================
+   SERVICES
+========================================================= */
+
+.services-header {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) 74px 110px 100px 25px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.service-row {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) 74px 110px 100px 25px;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 9px;
+}
+
+.service-row input {
+    min-width: 0;
+}
+
+.service-amount {
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.remove-service {
+    border: 0;
+    background: transparent;
+    color: #e60000;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.add-service {
+    width: 100%;
+    margin-top: 8px;
+    padding: 11px;
+    background: #fff;
+    border: 1px dashed #cfcfcf;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: 700;
+    color: #333;
+}
+
+.add-service:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+}
+
+
+/* =========================================================
+   TOTALS
+========================================================= */
+
+.totals {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e5e5;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.totals-box {
+    width: 300px;
+}
+
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.total-line.grand {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #222;
+    font-size: 20px;
+}
+
+.total-line.grand strong:last-child {
+    color: var(--orange);
+}
+
+
+/* =========================================================
+   QR UPLOAD
+========================================================= */
+
+.qr-upload {
+    border: 1px dashed #cfcfcf;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.qr-upload input[type="file"] {
+    padding: 8px;
+}
+
+.qr-preview {
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: contain;
+    margin-top: 10px;
+}
+
+
+/* =========================================================
+   UPI LOGOS
 ========================================================= */
 
 .upi-real-logos {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 16px;
     margin-top: 12px;
 }
 
 .upi-logo {
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
     white-space: nowrap;
 }
 
 .upi-logo img {
-    width: 22px;
-    height: 22px;
+    width: 23px;
+    height: 23px;
     object-fit: contain;
     display: block;
 }
 
-.upi-logo span {
-    font-size: 7.5px;
-    color: #555;
-    font-weight: 600;
-}
 
-.upi-supported-text {
-    display: block;
-    margin-top: 7px;
-    font-size: 6.5px;
-    color: #888;
-}
+/* =========================================================
+   BUTTONS
+========================================================= */
 
-
-/* EDITOR VERSION */
-
-.upi-apps {
-    margin-top: 16px;
-}
-
-.upi-apps-title {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #777;
-    margin-bottom: 10px;
-}
-
-.upi-app-logos {
+.button-row {
     display: flex;
-    align-items: center;
-    gap: 18px;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
-.upi-app {
+.btn {
+    border: 0;
+    border-radius: 9px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background: var(--orange);
+    color: #fff;
+}
+
+.btn-dark {
+    background: #111;
+    color: #fff;
+}
+
+.btn-light {
+    background: #f1f1f1;
+    color: #222;
+}
+
+
+/* =========================================================
+   BILL PREVIEW
+========================================================= */
+
+.preview-wrapper {
+    width: 100%;
+    overflow: auto;
+    background: #5f6368;
+    padding: 25px;
+    border-radius: 14px;
+}
+
+/*
+   IMPORTANT:
+   This is the visual A4-width invoice.
+   Do NOT give it a forced 297mm height.
+*/
+
+.invoice {
+    width: 210mm;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+
+    margin: 0 auto;
+
+    background: #fff;
+    color: #111;
+
+    padding: 10mm;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 3px 18px rgba(0, 0, 0, .18);
+
+    overflow: visible;
+}
+
+
+/* =========================================================
+   INVOICE HEADER
+========================================================= */
+
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding-bottom: 7px;
+    border-bottom: 2px solid var(--orange);
+}
+
+.invoice-brand {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 10px;
 }
 
-.upi-app img {
-    width: 28px;
-    height: 28px;
+.invoice-brand img {
+    width: 34px;
+    height: 34px;
     object-fit: contain;
 }
 
-.upi-app span {
-    font-size: 9px;
-    color: #333;
+.invoice-brand-name {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.invoice-brand-subtitle {
+    font-size: 6px;
+    letter-spacing: 1.5px;
+    color: #999;
+    margin-top: 2px;
+}
+
+.invoice-title {
+    text-align: right;
+}
+
+.invoice-title h2 {
+    margin: 0;
+    color: var(--orange);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.invoice-title small {
+    display: block;
+    margin-top: 8px;
+    font-size: 7px;
+    color: #444;
+}
+
+
+/* =========================================================
+   BILL TO / META
+========================================================= */
+
+.invoice-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    padding: 9px 0;
+}
+
+.bill-to-title,
+.meta-label,
+.section-label {
+    color: var(--orange);
+    font-size: 7px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.bill-to-name {
+    margin-top: 5px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.bill-to-details {
+    font-size: 7px;
+    color: #777;
+    line-height: 1.45;
+}
+
+.invoice-meta-right {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 5px 15px;
+    align-content: start;
+    font-size: 7px;
+}
+
+.invoice-meta-right .label {
+    color: #999;
+}
+
+.invoice-meta-right .value {
+    font-weight: 700;
+    text-align: right;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 7px;
+    border-radius: 4px;
+    background: #fff1e8;
+    color: var(--orange);
+    font-size: 6px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   INVOICE TABLE
+========================================================= */
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.invoice-table th {
+    background: #111;
+    color: #fff;
+    padding: 6px 7px;
+    font-size: 6px;
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.invoice-table td {
+    padding: 6px 7px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 7px;
+}
+
+.invoice-table th:nth-child(1),
+.invoice-table td:nth-child(1) {
+    width: 6%;
+}
+
+.invoice-table th:nth-child(2),
+.invoice-table td:nth-child(2) {
+    width: 48%;
+}
+
+.invoice-table th:nth-child(3),
+.invoice-table td:nth-child(3) {
+    width: 10%;
+    text-align: center;
+}
+
+.invoice-table th:nth-child(4),
+.invoice-table td:nth-child(4) {
+    width: 16%;
+    text-align: right;
+}
+
+.invoice-table th:nth-child(5),
+.invoice-table td:nth-child(5) {
+    width: 20%;
+    text-align: right;
+}
+
+
+/* =========================================================
+   TOTAL AREA
+========================================================= */
+
+.invoice-total-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 7px;
+}
+
+.invoice-totals {
+    width: 165px;
+}
+
+.invoice-total-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 7px;
+    margin-bottom: 4px;
+}
+
+.invoice-total-line.total {
+    padding-top: 6px;
+    margin-top: 5px;
+    border-top: 1px solid #222;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.invoice-total-line.total strong:last-child {
+    color: var(--orange);
+}
+
+
+/* =========================================================
+   AMOUNT IN WORDS
+========================================================= */
+
+.amount-words {
+    margin-top: 8px;
+}
+
+.amount-words-label {
+    color: var(--orange);
+    font-size: 7px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.amount-words-value {
+    margin-top: 3px;
+    font-size: 7px;
     font-weight: 600;
+}
+
+
+/* =========================================================
+   PAYMENT / NOTES / TERMS
+========================================================= */
+
+.payment-notes {
+    margin-top: 10px;
+    border: 1px solid #dedede;
+    border-radius: 9px;
+    padding: 10px;
+}
+
+.payment-notes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.payment-column {
+    min-width: 0;
+}
+
+.payment-title {
+    color: var(--orange);
+    font-size: 7px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+}
+
+.payment-subtitle {
+    font-size: 7px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.upi-id {
+    font-size: 7px;
+    color: #444;
+    word-break: break-word;
+}
+
+.qr-section {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.qr-section img {
+    width: 42mm;
+    height: 42mm;
+    object-fit: contain;
+}
+
+.scan-text {
+    font-size: 6.5px;
+    color: #777;
+    line-height: 1.4;
+}
+
+.notes-text,
+.terms-text {
+    font-size: 6.5px;
+    line-height: 1.4;
+    color: #666;
+}
+
+.terms-text ul {
+    margin: 4px 0 0;
+    padding-left: 12px;
+}
+
+.terms-text li {
+    margin-bottom: 2px;
+}
+
+.notes-block {
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 8px;
+}
+
+
+/* =========================================================
+   PAYMENT DUE / PAID FOOTER
+========================================================= */
+
+.payment-footer {
+    margin-top: 10px;
+    background: #111;
+    color: #fff;
+    padding: 7px 9px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 6px;
+}
+
+.payment-footer strong {
+    color: var(--orange);
+    font-size: 7px;
+}
+
+.generated-time {
+    color: #aaa;
+    font-size: 6px;
+}
+
+
+/* =========================================================
+   COMPUTER GENERATED NOTE
+========================================================= */
+
+.computer-generated {
+    margin-top: 4px;
+    text-align: center;
+    color: #888;
+    font-size: 6px;
+}
+
+
+/* =========================================================
+   RESPONSIVE EDITOR
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .preview-area {
+        position: static;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .main {
+        padding: 12px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .services-header {
+        display: none;
+    }
+
+    .service-row {
+        grid-template-columns: 1fr 70px 90px 80px 25px;
+        gap: 6px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .preview-wrapper {
+        padding: 10px;
+    }
+}
+
+
+/* =========================================================
+   PRINT
+   IMPORTANT:
+   Do NOT force 297mm height.
+========================================================= */
+
+@media print {
+
+    @page {
+        size: 210mm auto;
+        margin: 0;
+    }
+
+    html,
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 210mm !important;
+        background: #fff !important;
+    }
+
+    body {
+        overflow: visible !important;
+    }
+
+    .sidebar,
+    .topbar,
+    .editor,
+    .preview-title,
+    .history-page,
+    .action-bar,
+    button {
+        display: none !important;
+    }
+
+    .app {
+        display: block !important;
+        min-height: 0 !important;
+    }
+
+    .main {
+        width: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .workspace {
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .preview-area {
+        display: block !important;
+        width: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .preview-wrapper {
+        width: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        overflow: visible !important;
+    }
+
+    .invoice {
+        width: 210mm !important;
+
+        /* KEY FIX */
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        margin: 0 !important;
+        padding: 10mm !important;
+
+        background: #fff !important;
+
+        box-shadow: none !important;
+        border: 0 !important;
+
+        overflow: visible !important;
+
+        page-break-after: avoid !important;
+        break-after: avoid-page !important;
+    }
+
+    .invoice-table tr,
+    .payment-notes,
+    .payment-footer,
+    .computer-generated {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
 }
