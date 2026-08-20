@@ -2002,48 +2002,80 @@ function renderHistory() {
 
 async function downloadPDF() {
 
-    generatedAt =
-        new Date().toISOString();
-
-
-    updatePreview();
-
-
-    const invoice =
-        document.getElementById(
-            "invoice"
-        );
-
+    const invoice = document.getElementById("invoice");
 
     if (!invoice) {
-
-        alert(
-            "Invoice preview not found."
-        );
-
+        alert("Invoice not found.");
         return;
     }
 
-
     try {
 
-        await new Promise(
-            resolve =>
-                requestAnimationFrame(
-                    resolve
-                )
+        /*
+         * Wait for images
+         */
+        const images = Array.from(
+            invoice.querySelectorAll("img")
+        );
+
+        await Promise.all(
+
+            images.map(img => {
+
+                return new Promise(resolve => {
+
+                    if (
+                        img.complete &&
+                        img.naturalWidth > 0
+                    ) {
+                        resolve();
+                        return;
+                    }
+
+                    img.onload = resolve;
+
+                    img.onerror = () => {
+                        img.style.display = "none";
+                        resolve();
+                    };
+
+                    setTimeout(resolve, 3000);
+
+                });
+
+            })
+
         );
 
 
-        const canvas =
-            await html2canvas(
-                invoice,
-                {
-                    scale: 2,
-                    useCORS: true,
-                    backgroundColor: "#ffffff",
-                    logging: false
-                }
+        /*
+         * Allow browser to finish rendering
+         */
+        await new Promise(
+            resolve => setTimeout(resolve, 300)
+        );
+
+
+        /*
+         * Capture invoice
+         */
+        const canvas = await html2canvas(
+            invoice,
+            {
+                scale: 3,
+                useCORS: true,
+                allowTaint: false,
+                backgroundColor: "#ffffff",
+                logging: false,
+                imageTimeout: 10000
+            }
+        );
+
+
+        const imgData =
+            canvas.toDataURL(
+                "image/jpeg",
+                0.95
             );
 
 
@@ -2052,64 +2084,96 @@ async function downloadPDF() {
         } = window.jspdf;
 
 
-        const pdf =
-            new jsPDF({
-                orientation: "portrait",
-                unit: "mm",
-                format: "a4",
-                compress: true
-            });
+        /*
+         * A4 WIDTH
+         */
+        const pageWidth = 210;
 
 
-        const image =
-            canvas.toDataURL(
-                "image/png"
-            );
+        /*
+         * Calculate height from actual
+         * invoice content.
+         */
+        const pageHeight =
+            pageWidth *
+            (canvas.height / canvas.width);
 
 
+        /*
+         * Create PDF with EXACT
+         * content height.
+         */
+        const pdf = new jsPDF({
+
+            orientation:
+                pageHeight > pageWidth
+                    ? "portrait"
+                    : "landscape",
+
+            unit: "mm",
+
+            format: [
+                pageWidth,
+                pageHeight
+            ],
+
+            compress: true
+
+        });
+
+
+        /*
+         * Put bill at 0,0
+         */
         pdf.addImage(
-            image,
-            "PNG",
+
+            imgData,
+
+            "JPEG",
+
             0,
+
             0,
-            210,
-            297,
+
+            pageWidth,
+
+            pageHeight,
+
             undefined,
+
             "FAST"
+
         );
 
 
+        /*
+         * Filename
+         */
         const billNumber =
-            getValue(
-                "billNumber",
-                "SPMW-BILL"
-            );
-
-
-        const suffix =
-            billStatus === "PAID"
-                ? "PAID"
-                : "PAYMENT-DUE";
+            document.getElementById(
+                "billNumber"
+            )?.value ||
+            "SPMW-BILL";
 
 
         pdf.save(
-            `${billNumber}-${suffix}.pdf`
+            `${billNumber}.pdf`
         );
 
 
     } catch (error) {
 
         console.error(
-            "PDF Error:",
+            "PDF generation failed:",
             error
         );
-
 
         alert(
             "Could not generate PDF. Please try again."
         );
 
     }
+
 }
 
 
