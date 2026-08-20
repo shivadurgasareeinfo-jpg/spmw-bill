@@ -1,6 +1,6 @@
 /* =========================================================
    SP MEDIA WORKS — BILL GENERATOR
-   FINAL CLEAN CSS
+   FINAL CORRECTED CSS
 ========================================================= */
 
 :root {
@@ -20,12 +20,9 @@ html,
 body {
     margin: 0;
     padding: 0;
-    width: 100%;
-    min-width: 0;
     font-family: Arial, Helvetica, sans-serif;
     background: var(--bg);
     color: #111;
-    overflow-x: hidden;
 }
 
 
@@ -37,14 +34,11 @@ body {
     display: flex;
     width: 100%;
     min-height: 100vh;
-    min-width: 0;
-    overflow-x: hidden;
 }
 
 .main {
     flex: 1;
     min-width: 0;
-    width: 100%;
     padding: 22px;
 }
 
@@ -71,11 +65,9 @@ body {
     border-radius: 18px;
     padding: 16px 26px;
     margin-bottom: 22px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     border: 1px solid #ddd;
 }
 
@@ -102,16 +94,12 @@ body {
 .workspace {
     display: grid;
 
-    /* FIXED:
-       No more 520px + 500px minimum widths
-    */
+    /* FIXED: no forced 480px + 450px minimum */
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 
     gap: 26px;
     align-items: start;
-
     width: 100%;
-    max-width: 100%;
     min-width: 0;
 }
 
@@ -123,7 +111,6 @@ body {
 .preview-area {
     min-width: 0;
     width: 100%;
-    max-width: 100%;
 }
 
 
@@ -181,19 +168,13 @@ input,
 textarea,
 select {
     width: 100%;
-    max-width: 100%;
-
     border: 1px solid #d7d7d7;
     border-radius: 10px;
-
     background: white;
-
     padding: 13px 14px;
-
     font-size: 14px;
     font-family: inherit;
     color: #111;
-
     outline: none;
 }
 
@@ -217,19 +198,9 @@ textarea {
 .services-header,
 .service-row {
     display: grid;
-
-    grid-template-columns:
-        minmax(0, 1fr)
-        75px
-        110px
-        100px
-        28px;
-
+    grid-template-columns: minmax(180px, 1fr) 75px 110px 100px 28px;
     gap: 10px;
     align-items: center;
-
-    width: 100%;
-    min-width: 0;
 }
 
 .services-header {
@@ -242,7 +213,6 @@ textarea {
 
 .service-row input {
     min-width: 0;
-    width: 100%;
 }
 
 .service-amount {
@@ -263,11 +233,9 @@ textarea {
     width: 100%;
     margin-top: 5px;
     padding: 11px;
-
     border: 1px dashed #ccc;
     background: #fff;
     border-radius: 9px;
-
     cursor: pointer;
     font-weight: 700;
 }
@@ -285,16 +253,13 @@ textarea {
 .totals {
     margin-top: 20px;
     padding-top: 18px;
-
     border-top: 1px solid #e5e5e5;
-
     display: flex;
     justify-content: flex-end;
 }
 
 .totals-box {
     width: 300px;
-    max-width: 100%;
 }
 
 .total-line {
@@ -327,12 +292,9 @@ textarea {
 
 .qr-preview {
     display: block;
-
     width: 130px;
     height: 130px;
-
     object-fit: contain;
-
     margin-top: 10px;
 }
 
@@ -346,17 +308,13 @@ textarea {
     flex-wrap: wrap;
     align-items: center;
     gap: 14px;
-
     margin-top: 12px;
-
-    max-width: 100%;
 }
 
 .upi-logo {
     display: flex;
     align-items: center;
     gap: 5px;
-
     font-size: 12px;
     white-space: nowrap;
 }
@@ -408,13 +366,8 @@ textarea {
 
 .preview-wrapper {
     width: 100%;
-    max-width: 100%;
-
-    overflow-x: auto;
-    overflow-y: visible;
-
+    overflow: auto;
     background: #555;
-
     padding: 20px;
     border-radius: 12px;
 }
@@ -427,10 +380,8 @@ textarea {
 .invoice {
     width: 100%;
     max-width: 794px;
-
     height: auto;
     min-height: 0;
-
     margin: 0 auto;
 
     background: #fff;
@@ -441,9 +392,7 @@ textarea {
 
     box-shadow: 0 3px 18px rgba(0, 0, 0, .20);
 
-    overflow: hidden;
-
-    word-wrap: break-word;
+    overflow: visible;
 }
 
 
@@ -455,10 +404,6 @@ textarea {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-
-    width: 100%;
-    min-width: 0;
-
     border-bottom: 2px solid var(--orange);
     padding-bottom: 12px;
 }
@@ -466,17 +411,13 @@ textarea {
 .invoice-brand {
     display: flex;
     align-items: center;
-
     gap: 12px;
-
-    min-width: 0;
 }
 
 .invoice-brand img {
     width: 42px;
     height: 42px;
     object-fit: contain;
-    flex-shrink: 0;
 }
 
 .invoice-brand-name {
@@ -486,33 +427,25 @@ textarea {
 
 .invoice-brand-subtitle {
     margin-top: 3px;
-
     font-size: 7px;
     letter-spacing: 2px;
-
     color: #999;
 }
 
 .invoice-title {
     text-align: right;
-    min-width: 0;
-    flex-shrink: 0;
 }
 
 .invoice-title h2 {
     margin: 0;
-
     color: var(--orange);
-
     font-size: 16px;
     font-weight: 800;
 }
 
 .invoice-title small {
     display: block;
-
     margin-top: 9px;
-
     font-size: 8px;
 }
 
@@ -523,54 +456,39 @@ textarea {
 
 .invoice-meta {
     display: grid;
-
     grid-template-columns: 1fr 1fr;
-
     gap: 30px;
-
     padding: 15px 0;
-
-    min-width: 0;
 }
 
 .bill-to-title,
 .meta-label,
 .section-label {
     color: var(--orange);
-
     font-size: 8px;
     font-weight: 800;
-
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .bill-to-name {
     margin-top: 6px;
-
     font-size: 13px;
     font-weight: 700;
 }
 
 .bill-to-details {
     margin-top: 3px;
-
     color: #777;
-
     font-size: 8px;
     line-height: 1.5;
 }
 
 .invoice-meta-right {
     display: grid;
-
     grid-template-columns: 1fr auto;
-
     gap: 7px 15px;
-
     font-size: 8px;
-
-    min-width: 0;
 }
 
 .invoice-meta-right .label {
@@ -589,14 +507,10 @@ textarea {
 
 .status-badge {
     display: inline-block;
-
     background: #fff0e6;
     color: var(--orange);
-
     padding: 4px 7px;
-
     border-radius: 4px;
-
     font-size: 7px;
     font-weight: 800;
 }
@@ -608,8 +522,6 @@ textarea {
 
 .invoice-table {
     width: 100%;
-    max-width: 100%;
-
     border-collapse: collapse;
     table-layout: fixed;
 }
@@ -617,22 +529,16 @@ textarea {
 .invoice-table th {
     background: #111;
     color: #fff;
-
     padding: 7px 8px;
-
     font-size: 7px;
     text-align: left;
 }
 
 .invoice-table td {
     padding: 7px 8px;
-
     border-bottom: 1px solid #e5e5e5;
-
     font-size: 8px;
-
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    word-wrap: break-word;
 }
 
 .invoice-table th:nth-child(1),
@@ -671,33 +577,24 @@ textarea {
 .invoice-total-area {
     display: flex;
     justify-content: flex-end;
-
-    width: 100%;
-    max-width: 100%;
-
     margin-top: 10px;
 }
 
 .invoice-totals {
     width: 190px;
-    max-width: 100%;
 }
 
 .invoice-total-line {
     display: flex;
     justify-content: space-between;
-
     margin-bottom: 5px;
-
     font-size: 8px;
 }
 
 .invoice-total-line.total {
     border-top: 1px solid #222;
-
     padding-top: 7px;
     margin-top: 6px;
-
     font-size: 12px;
     font-weight: 800;
 }
@@ -717,21 +614,16 @@ textarea {
 
 .amount-words-label {
     color: var(--orange);
-
     font-size: 8px;
     font-weight: 800;
-
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .amount-words-value {
     margin-top: 4px;
-
     font-size: 8px;
     font-weight: 600;
-
-    overflow-wrap: anywhere;
 }
 
 
@@ -740,102 +632,67 @@ textarea {
 ========================================================= */
 
 .payment-notes {
-    width: 100%;
-    max-width: 100%;
-
     margin-top: 12px;
-
     border: 1px solid #ddd;
     border-radius: 10px;
-
     padding: 12px;
-
-    overflow: hidden;
 }
 
 .payment-notes-grid {
     display: grid;
-
     grid-template-columns: 1fr 1fr;
-
     gap: 18px;
-
-    min-width: 0;
-}
-
-.payment-notes-grid > div {
-    min-width: 0;
 }
 
 .payment-title {
     color: var(--orange);
-
     font-size: 8px;
     font-weight: 800;
-
     text-transform: uppercase;
     letter-spacing: 1px;
-
     margin-bottom: 8px;
 }
 
 .payment-subtitle {
     font-size: 8px;
     font-weight: 800;
-
     margin-bottom: 5px;
 }
 
 .upi-id {
     font-size: 8px;
-
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .qr-section {
     display: flex;
     align-items: center;
-
     gap: 15px;
-
-    min-width: 0;
 }
 
 .qr-section img {
     width: 110px;
     height: 110px;
-
     object-fit: contain;
-
-    flex-shrink: 0;
 }
 
 .scan-text {
     font-size: 7px;
-
     color: #777;
-
     line-height: 1.5;
-
-    min-width: 0;
 }
 
 .notes-block {
     padding-bottom: 8px;
     margin-bottom: 8px;
-
     border-bottom: 1px solid #e5e5e5;
 }
 
 .notes-text,
 .terms-text {
     font-size: 7px;
-
     color: #666;
-
     line-height: 1.5;
-
-    overflow-wrap: anywhere;
 }
 
 .terms-text ul {
@@ -853,11 +710,7 @@ textarea {
 ========================================================= */
 
 .payment-footer {
-    width: 100%;
-    max-width: 100%;
-
     margin-top: 12px;
-
     background: #111;
     color: #fff;
 
@@ -867,41 +720,35 @@ textarea {
     justify-content: space-between;
     align-items: center;
 
-    gap: 15px;
-
     font-size: 7px;
-
-    overflow: hidden;
 }
 
 .payment-footer strong {
     color: var(--orange);
-
     font-size: 8px;
 }
 
 .generated-time {
     color: #aaa;
-
     font-size: 7px;
-
-    text-align: right;
 }
 
 .computer-generated {
     margin-top: 4px;
-
     text-align: center;
-
     font-size: 7px;
-
     color: #888;
 }
 
 
 /* =========================================================
-   DESKTOP / TABLET
+   RESPONSIVE
 ========================================================= */
+
+/* IMPORTANT:
+   This was the broken part in the previous CSS.
+   Never force 480px + 450px minimum columns.
+*/
 
 @media (max-width: 1400px) {
 
@@ -915,10 +762,6 @@ textarea {
 }
 
 
-/* =========================================================
-   SINGLE COLUMN
-========================================================= */
-
 @media (max-width: 1100px) {
 
     .workspace {
@@ -930,20 +773,14 @@ textarea {
     }
 
     .preview-wrapper {
-        width: 100%;
         max-width: 100%;
     }
 
     .invoice {
-        width: 100%;
         max-width: 794px;
     }
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
 
 @media (max-width: 700px) {
 
@@ -976,27 +813,12 @@ textarea {
     }
 
     .service-row {
-        grid-template-columns:
-            minmax(0, 1fr)
-            60px
-            85px
-            80px
-            25px;
-
+        grid-template-columns: 1fr 60px 85px 80px 25px;
         gap: 5px;
     }
 
     .invoice {
         padding: 22px;
-    }
-
-    .invoice-meta {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .payment-notes-grid {
-        grid-template-columns: 1fr;
     }
 }
 
@@ -1008,8 +830,7 @@ textarea {
 @media print {
 
     /*
-       A4 page.
-       No browser margins.
+       A4 page
     */
 
     @page {
@@ -1025,27 +846,29 @@ textarea {
         width: 210mm !important;
 
         background: #fff !important;
+    }
 
+    body {
         overflow: visible !important;
     }
 
 
     /*
-       HIDE APPLICATION UI
+       HIDE EDITOR
     */
 
     .sidebar,
     .topbar,
     .editor,
+    button,
     .action-bar,
-    .preview-title,
-    button {
+    .preview-title {
         display: none !important;
     }
 
 
     /*
-       REMOVE GRID
+       PRINT CONTAINER
     */
 
     .app {
@@ -1057,17 +880,13 @@ textarea {
 
         margin: 0 !important;
         padding: 0 !important;
-
-        overflow: visible !important;
     }
 
     .main {
-        display: block !important;
-
         width: 210mm !important;
 
-        margin: 0 !important;
         padding: 0 !important;
+        margin: 0 !important;
     }
 
     .workspace {
@@ -1089,12 +908,10 @@ textarea {
     }
 
     .preview-wrapper {
-        display: block !important;
-
         width: 210mm !important;
 
-        margin: 0 !important;
         padding: 0 !important;
+        margin: 0 !important;
 
         background: #fff !important;
 
@@ -1103,16 +920,13 @@ textarea {
 
 
     /*
-       ACTUAL BILL
+       BILL
 
-       IMPORTANT:
-       NO 297mm HEIGHT.
-       Content controls height.
+       Width = A4
+       Height = CONTENT ONLY
     */
 
     .invoice {
-        display: block !important;
-
         width: 210mm !important;
         max-width: 210mm !important;
 
@@ -1123,15 +937,13 @@ textarea {
         margin: 0 !important;
 
         padding: 10mm !important;
-
-        background: #fff !important;
 
         box-shadow: none !important;
         border: none !important;
 
         overflow: visible !important;
 
-        color: #111 !important;
+        background: #fff !important;
 
         page-break-after: auto !important;
         break-after: auto !important;
@@ -1139,257 +951,13 @@ textarea {
 
 
     /*
-       KEEP SECTIONS TOGETHER
+       KEEP IMPORTANT SECTIONS TOGETHER
     */
 
-    .invoice-header,
-    .invoice-meta,
-    .invoice-table,
-    .invoice-total-area,
-    .amount-words,
     .payment-notes,
-    .payment-footer {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-    }
-
+    .payment-footer,
     .invoice-table tr {
         page-break-inside: avoid !important;
         break-inside: avoid !important;
-    }
-
-
-    /*
-       QR
-    */
-
-    .qr-section img {
-        width: 110px !important;
-        height: 110px !important;
-    }
-
-
-    /*
-       NO EXTRA BOTTOM SPACE
-    */
-
-    .payment-footer {
-        margin-bottom: 0 !important;
-    }
-
-    .computer-generated {
-        margin-bottom: 0 !important;
-    }
-}
-/* =========================================================
-   FINAL OVERFLOW FIX — SP MEDIA WORKS
-   ========================================================= */
-
-/* Prevent the application from creating horizontal overflow */
-html,
-body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden !important;
-}
-
-.app {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0 !important;
-    overflow-x: hidden !important;
-}
-
-.main {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0 !important;
-    overflow-x: hidden !important;
-}
-
-/* Editor + preview must never force the page wider */
-.workspace {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-
-    overflow: hidden !important;
-}
-
-.editor,
-.preview-area {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-}
-
-/* Preview container */
-.preview-wrapper {
-    width: 100% !important;
-    max-width: 100% !important;
-
-    min-width: 0 !important;
-
-    overflow-x: auto !important;
-    overflow-y: visible !important;
-
-    padding: 20px !important;
-}
-
-/* =========================================================
-   LIVE A4 BILL
-   ========================================================= */
-
-.invoice {
-    width: 794px !important;
-    max-width: 794px !important;
-    min-width: 0 !important;
-
-    margin: 0 auto !important;
-
-    background: #fff;
-
-    overflow: hidden !important;
-}
-
-/* =========================================================
-   IMPORTANT:
-   The preview can scale down instead of cutting the bill.
-   ========================================================= */
-
-@media screen and (max-width: 900px) {
-
-    .workspace {
-        grid-template-columns: 1fr !important;
-    }
-
-    .preview-area {
-        width: 100% !important;
-    }
-
-    .preview-wrapper {
-        width: 100% !important;
-        overflow-x: auto !important;
-    }
-
-    .invoice {
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
-}
-
-
-/* =========================================================
-   PRINT — PRINT ONLY THE BILL
-   NO EXTRA A4 HEIGHT
-   ========================================================= */
-
-@media print {
-
-    @page {
-        size: A4;
-        margin: 0;
-    }
-
-    html,
-    body {
-        width: 210mm !important;
-        height: auto !important;
-
-        margin: 0 !important;
-        padding: 0 !important;
-
-        overflow: visible !important;
-
-        background: #fff !important;
-    }
-
-    /* Hide entire generator UI */
-    .sidebar,
-    .topbar,
-    .editor,
-    .preview-title,
-    .action-bar,
-    button {
-        display: none !important;
-    }
-
-    .app,
-    .main,
-    .workspace,
-    .preview-area,
-    .preview-wrapper {
-        display: block !important;
-
-        width: 210mm !important;
-        max-width: 210mm !important;
-        min-width: 0 !important;
-
-        margin: 0 !important;
-        padding: 0 !important;
-
-        overflow: visible !important;
-        background: #fff !important;
-    }
-
-    /*
-       THIS IS THE IMPORTANT PART.
-
-       The bill is NOT forced to 297mm height.
-       Its height is exactly its content height.
-    */
-    #invoice.invoice {
-        display: block !important;
-
-        width: 210mm !important;
-        max-width: 210mm !important;
-
-        height: auto !important;
-        min-height: 0 !important;
-        max-height: none !important;
-
-        margin: 0 !important;
-
-        padding: 10mm !important;
-
-        overflow: visible !important;
-
-        box-shadow: none !important;
-        border: 0 !important;
-
-        page-break-after: auto !important;
-        break-after: auto !important;
-    }
-
-    /*
-       Do NOT stretch the invoice to full A4 height.
-    */
-    #invoice.invoice::after {
-        display: none !important;
-    }
-
-    .invoice-header,
-    .invoice-meta,
-    .invoice-table,
-    .invoice-total-area,
-    .amount-words,
-    .payment-notes,
-    .payment-footer {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-    }
-
-    .invoice-table {
-        width: 100% !important;
-        table-layout: fixed !important;
-    }
-
-    .invoice-table td,
-    .invoice-table th {
-        overflow-wrap: anywhere !important;
-        word-break: break-word !important;
     }
 }
