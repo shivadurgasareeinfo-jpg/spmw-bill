@@ -1181,3 +1181,215 @@ textarea {
         margin-bottom: 0 !important;
     }
 }
+/* =========================================================
+   FINAL OVERFLOW FIX — SP MEDIA WORKS
+   ========================================================= */
+
+/* Prevent the application from creating horizontal overflow */
+html,
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+.app {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+}
+
+.main {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+}
+
+/* Editor + preview must never force the page wider */
+.workspace {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+
+    overflow: hidden !important;
+}
+
+.editor,
+.preview-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+}
+
+/* Preview container */
+.preview-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+
+    padding: 20px !important;
+}
+
+/* =========================================================
+   LIVE A4 BILL
+   ========================================================= */
+
+.invoice {
+    width: 794px !important;
+    max-width: 794px !important;
+    min-width: 0 !important;
+
+    margin: 0 auto !important;
+
+    background: #fff;
+
+    overflow: hidden !important;
+}
+
+/* =========================================================
+   IMPORTANT:
+   The preview can scale down instead of cutting the bill.
+   ========================================================= */
+
+@media screen and (max-width: 900px) {
+
+    .workspace {
+        grid-template-columns: 1fr !important;
+    }
+
+    .preview-area {
+        width: 100% !important;
+    }
+
+    .preview-wrapper {
+        width: 100% !important;
+        overflow-x: auto !important;
+    }
+
+    .invoice {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}
+
+
+/* =========================================================
+   PRINT — PRINT ONLY THE BILL
+   NO EXTRA A4 HEIGHT
+   ========================================================= */
+
+@media print {
+
+    @page {
+        size: A4;
+        margin: 0;
+    }
+
+    html,
+    body {
+        width: 210mm !important;
+        height: auto !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: visible !important;
+
+        background: #fff !important;
+    }
+
+    /* Hide entire generator UI */
+    .sidebar,
+    .topbar,
+    .editor,
+    .preview-title,
+    .action-bar,
+    button {
+        display: none !important;
+    }
+
+    .app,
+    .main,
+    .workspace,
+    .preview-area,
+    .preview-wrapper {
+        display: block !important;
+
+        width: 210mm !important;
+        max-width: 210mm !important;
+        min-width: 0 !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        overflow: visible !important;
+        background: #fff !important;
+    }
+
+    /*
+       THIS IS THE IMPORTANT PART.
+
+       The bill is NOT forced to 297mm height.
+       Its height is exactly its content height.
+    */
+    #invoice.invoice {
+        display: block !important;
+
+        width: 210mm !important;
+        max-width: 210mm !important;
+
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+
+        margin: 0 !important;
+
+        padding: 10mm !important;
+
+        overflow: visible !important;
+
+        box-shadow: none !important;
+        border: 0 !important;
+
+        page-break-after: auto !important;
+        break-after: auto !important;
+    }
+
+    /*
+       Do NOT stretch the invoice to full A4 height.
+    */
+    #invoice.invoice::after {
+        display: none !important;
+    }
+
+    .invoice-header,
+    .invoice-meta,
+    .invoice-table,
+    .invoice-total-area,
+    .amount-words,
+    .payment-notes,
+    .payment-footer {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    .invoice-table {
+        width: 100% !important;
+        table-layout: fixed !important;
+    }
+
+    .invoice-table td,
+    .invoice-table th {
+        overflow-wrap: anywhere !important;
+        word-break: break-word !important;
+    }
+}
