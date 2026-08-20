@@ -2445,3 +2445,11 @@ function escapeHTML(
         );
 
 }
+/* =========================================================
+   COMPATIBILITY FUNCTION
+   HTML INPUTS USE updatePreview()
+========================================================= */
+
+function updatePreview() {
+    updateInvoicePreview();
+}
