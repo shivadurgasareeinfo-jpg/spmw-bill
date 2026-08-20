@@ -391,34 +391,32 @@
 
                             </div>
 
-
                             <div class="field">
-
-                                <label>
-                                    Payment Reference
-                                </label>
-
-                                <input
-                                    id="paymentReference"
-                                    type="text"
-                                    placeholder="Optional"
-                                    oninput="updatePreview()"
-                                >
-
+                                <label>Upload QR Code</label>
+                                <div class="qr-upload-box">
+                                    <input id="qrUpload" type="file" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(event)">
+                                    <div class="qr-upload-actions">
+                                        <span id="qrFileName">No QR selected</span>
+                                        <button type="button" class="remove-qr-btn" onclick="removeQR()">Remove</button>
+                                    </div>
+                                </div>
                             </div>
 
+                            <div class="field">
+                                <label>Payment Reference</label>
+                                <input id="paymentReference" type="text" placeholder="Optional" oninput="updatePreview()">
+                            </div>
 
                             <div class="field full">
+                                <label>Notes</label>
+                                <textarea id="notes" oninput="updatePreview()">Thank you for choosing SP Media Works.</textarea>
+                            </div>
 
-                                <label>
-                                    Notes
-                                </label>
-
-                                <textarea
-                                    id="notes"
-                                    oninput="updatePreview()"
-                                >Thank you for choosing SP Media Works.</textarea>
-
+                            <div class="field full">
+                                <label>Terms &amp; Conditions</label>
+                                <textarea id="terms" oninput="updatePreview()" placeholder="Enter your terms and conditions...">Payment once made is non-refundable.
+Delivery will begin after payment confirmation.
+Additional revisions may be charged separately.</textarea>
                             </div>
 
                         </div>
@@ -732,19 +730,14 @@
 
                             <div class="notes-section">
 
-                                <span class="label">
-                                    TERMS & NOTES
-                                </span>
+                                <span class="label">NOTES</span>
 
-                                <p id="previewNotes">
-                                    Thank you for choosing
-                                    SP Media Works.
-                                </p>
+                                <p id="previewNotes">Thank you for choosing SP Media Works.</p>
 
-                                <p>
-                                    Payment once made is
-                                    non-refundable.
-                                </p>
+                                <div class="terms-preview">
+                                    <span class="label terms-label">TERMS &amp; CONDITIONS</span>
+                                    <p id="previewTerms">Payment once made is non-refundable.</p>
+                                </div>
 
                             </div>
 
@@ -758,14 +751,15 @@
                             class="invoice-footer"
                         >
 
-                            <strong>
-                                PAYMENT DUE
-                            </strong>
+                            <div class="invoice-footer-main">
+                                <strong>PAYMENT DUE</strong>
+                                <span>Please complete payment using the provided UPI details.</span>
+                            </div>
 
-                            <span>
-                                Please complete payment using
-                                the provided UPI details.
-                            </span>
+                            <div class="generated-footer">
+                                <span>This is a computer generated slip and does not require a signature.</span>
+                                <span id="generatedTime">Generated on: —</span>
+                            </div>
 
                         </div>
 
