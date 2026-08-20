@@ -95,3 +95,38 @@ textarea{resize:vertical;min-height:95px;line-height:1.45}
 @media print{
     body{background:#fff}.sidebar,.topbar,.preview-title,.editor,.history-page{display:none!important}.main{margin:0;padding:0;width:100%}.preview-area{position:static;overflow:visible}.invoice{box-shadow:none;margin:0;width:210mm;min-height:297mm;padding:15mm 14mm 11mm}
 }
+.upi-apps {
+    margin-top: 18px;
+}
+
+.upi-apps-title {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.upi-app-logos {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.upi-app {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #333;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+.upi-app img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    display: block;
+}
