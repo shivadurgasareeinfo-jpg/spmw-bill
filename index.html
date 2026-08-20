@@ -1,323 +1,1256 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SP Media Works | Bill Generator</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SP Media Works | Bill Generator</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- PDF LIBRARIES -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+    </script>
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js">
+    </script>
 </head>
+
 <body>
 
 <div class="app">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
     <aside class="sidebar">
+
         <div class="brand">
-            <img src="assets/sp-logo.jpg" alt="SP Media Works Logo" onerror="this.style.display='none'">
+
+            <img
+                src="assets/sp-logo.jpg"
+                alt="SP Media Works Logo"
+                onerror="this.style.display='none'"
+            >
+
             <div>
                 <h2>SP MEDIA WORKS</h2>
                 <span>Bill Generator</span>
             </div>
+
         </div>
+
 
         <nav>
-            <button class="nav-btn active" onclick="showPage('create')">＋ <span>Create Bill</span></button>
-            <button class="nav-btn" onclick="showPage('history')">▣ <span>Bill History</span></button>
+
+            <button
+                class="nav-btn active"
+                onclick="showPage('create')"
+            >
+                ＋
+                <span>Create Bill</span>
+            </button>
+
+
+            <button
+                class="nav-btn"
+                onclick="showPage('history')"
+            >
+                ▣
+                <span>Bill History</span>
+            </button>
+
         </nav>
 
+
         <div class="sidebar-bottom">
+
             <strong>SP MEDIA WORKS</strong>
-            <small>Media • Design • Digital</small>
+
+            <small>
+                Media • Design • Digital
+            </small>
+
         </div>
+
     </aside>
 
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
     <main class="main">
+
+        <!-- TOP BAR -->
+
         <header class="topbar">
+
             <div>
-                <p class="small-title">SP MEDIA WORKS</p>
-                <h1 id="pageTitle">Create Bill</h1>
+
+                <p class="small-title">
+                    SP MEDIA WORKS
+                </p>
+
+                <h1 id="pageTitle">
+                    Create Bill
+                </h1>
+
             </div>
-            <button class="orange-btn" onclick="newBill()">＋ New Bill</button>
+
+
+            <button
+                class="orange-btn"
+                onclick="newBill()"
+            >
+                ＋ New Bill
+            </button>
+
         </header>
 
+
+
+        <!-- =================================================
+             CREATE PAGE
+        ================================================== -->
+
         <section id="createPage">
+
             <div class="workspace">
+
+
+                <!-- =================================================
+                     EDITOR
+                ================================================== -->
 
                 <div class="editor">
 
+
+                    <!-- =============================================
+                         CLIENT DETAILS
+                    ============================================== -->
+
                     <div class="card">
-                        <div class="section-title"><span>01</span> Client Details</div>
+
+                        <div class="section-title">
+                            <span>01</span>
+                            Client Details
+                        </div>
+
 
                         <div class="grid-2">
-                            <label>CLIENT NAME
-                                <input id="clientName" oninput="updatePreview()" placeholder="Client name">
+
+
+                            <label>
+                                CLIENT NAME
+
+                                <input
+                                    id="clientName"
+                                    oninput="updatePreview()"
+                                    placeholder="Client name"
+                                >
+
                             </label>
-                            <label>COMPANY / BUSINESS
-                                <input id="company" oninput="updatePreview()" placeholder="Optional">
+
+
+                            <label>
+                                COMPANY / BUSINESS
+
+                                <input
+                                    id="company"
+                                    oninput="updatePreview()"
+                                    placeholder="Optional"
+                                >
+
                             </label>
-                            <label>PHONE
-                                <input id="phone" oninput="updatePreview()" placeholder="+91 XXXXX XXXXX">
+
+
+                            <label>
+                                PHONE
+
+                                <input
+                                    id="phone"
+                                    oninput="updatePreview()"
+                                    placeholder="+91 XXXXX XXXXX"
+                                >
+
                             </label>
-                            <label>EMAIL
-                                <input id="email" oninput="updatePreview()" placeholder="Optional">
+
+
+                            <label>
+                                EMAIL
+
+                                <input
+                                    id="email"
+                                    oninput="updatePreview()"
+                                    placeholder="Optional"
+                                >
+
                             </label>
-                            <label>LOCATION
-                                <input id="location" oninput="updatePreview()" placeholder="Vijayawada, Andhra Pradesh">
+
+
+                            <label>
+                                LOCATION
+
+                                <input
+                                    id="location"
+                                    oninput="updatePreview()"
+                                    placeholder="Vijayawada, Andhra Pradesh"
+                                >
+
                             </label>
-                            <label>BILL NUMBER
-                                <input id="billNumber" oninput="updatePreview()">
+
+
+                            <label>
+                                BILL NUMBER
+
+                                <input
+                                    id="billNumber"
+                                    oninput="updatePreview()"
+                                >
+
                             </label>
-                            <label>ISSUE DATE
-                                <input id="billDate" type="date" onchange="updatePreview()">
+
+
+                            <label>
+                                ISSUE DATE
+
+                                <input
+                                    id="billDate"
+                                    type="date"
+                                    onchange="updatePreview()"
+                                >
+
                             </label>
-                            <label>DUE DATE
-                                <input id="dueDate" type="date" onchange="updatePreview()">
+
+
+                            <label>
+                                DUE DATE
+
+                                <input
+                                    id="dueDate"
+                                    type="date"
+                                    onchange="updatePreview()"
+                                >
+
                             </label>
+
+
                         </div>
+
                     </div>
 
+
+
+                    <!-- =============================================
+                         SERVICES
+                    ============================================== -->
+
                     <div class="card">
-                        <div class="section-title"><span>02</span> Services</div>
+
+                        <div class="section-title">
+                            <span>02</span>
+                            Services
+                        </div>
+
 
                         <div class="service-head">
-                            <span>DESCRIPTION</span><span>QTY</span><span>RATE</span><span>AMOUNT</span><span></span>
+
+                            <span>
+                                DESCRIPTION
+                            </span>
+
+                            <span>
+                                QTY
+                            </span>
+
+                            <span>
+                                RATE
+                            </span>
+
+                            <span>
+                                AMOUNT
+                            </span>
+
+                            <span></span>
+
                         </div>
+
 
                         <div id="serviceList"></div>
 
-                        <button class="add-service" onclick="addService(true)">＋ Add Service</button>
+
+                        <button
+                            class="add-service"
+                            onclick="addService(true)"
+                        >
+                            ＋ Add Service
+                        </button>
+
+
+
+                        <!-- TOTALS -->
 
                         <div class="editor-totals">
-                            <label>DISCOUNT
-                                <input id="discount" type="number" min="0" value="0" oninput="updatePreview()">
+
+
+                            <label>
+                                DISCOUNT
+
+                                <input
+                                    id="discount"
+                                    type="number"
+                                    min="0"
+                                    value="0"
+                                    oninput="updatePreview()"
+                                >
+
                             </label>
+
 
                             <div class="totals-box">
-                                <div><span>Subtotal</span><strong id="editorSubtotal">₹0</strong></div>
-                                <div><span>Discount</span><strong id="editorDiscount">- ₹0</strong></div>
-                                <div class="editor-grand"><span>Total</span><strong id="editorTotal">₹0</strong></div>
+
+                                <div>
+
+                                    <span>
+                                        Subtotal
+                                    </span>
+
+                                    <strong id="editorSubtotal">
+                                        ₹0
+                                    </strong>
+
+                                </div>
+
+
+                                <div>
+
+                                    <span>
+                                        Discount
+                                    </span>
+
+                                    <strong id="editorDiscount">
+                                        - ₹0
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="editor-grand">
+
+                                    <span>
+                                        Total
+                                    </span>
+
+                                    <strong id="editorTotal">
+                                        ₹0
+                                    </strong>
+
+                                </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
+
+
+                    <!-- =============================================
+                         PAYMENT & NOTES
+                    ============================================== -->
+
                     <div class="card">
-                        <div class="section-title"><span>03</span> Payment & Notes</div>
 
-                        <div class="payment-editor">
-                            <label>UPI ID
-                                <input id="upi" oninput="updatePreview()" placeholder="yourupi@upi">
-                            </label>
-
-                            <label>PAYMENT REFERENCE
-                                <input id="paymentReference" oninput="updatePreview()" placeholder="Optional">
-                            </label>
-
-                            <div class="qr-upload-wrap">
-                                <label>UPLOAD QR CODE</label>
-                                <div class="qr-upload">
-                                    <input id="qrUpload" type="file" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(event)">
-                                    <div class="qr-file-row">
-                                        <span id="qrFileName">No QR selected</span>
-                                        <button type="button" onclick="removeQR()">Remove</button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="section-title">
+                            <span>03</span>
+                            Payment & Notes
                         </div>
 
+
+                        <div class="payment-editor">
+
+
+                            <!-- UPI -->
+
+                            <label>
+                                UPI ID
+
+                                <input
+                                    id="upi"
+                                    oninput="updatePreview()"
+                                    placeholder="yourupi@upi"
+                                >
+
+                            </label>
+
+
+                            <!-- PAYMENT REFERENCE -->
+
+                            <label>
+                                PAYMENT REFERENCE
+
+                                <input
+                                    id="paymentReference"
+                                    oninput="updatePreview()"
+                                    placeholder="Optional"
+                                >
+
+                            </label>
+
+
+
+                            <!-- QR UPLOAD -->
+
+                            <div class="qr-upload-wrap">
+
+                                <label>
+                                    UPLOAD QR CODE
+                                </label>
+
+
+                                <div class="qr-upload">
+
+                                    <input
+                                        id="qrUpload"
+                                        type="file"
+                                        accept="image/png,image/jpeg,image/webp"
+                                        onchange="handleQRUpload(event)"
+                                    >
+
+
+                                    <div class="qr-file-row">
+
+                                        <span id="qrFileName">
+                                            No QR selected
+                                        </span>
+
+
+                                        <button
+                                            type="button"
+                                            onclick="removeQR()"
+                                        >
+                                            Remove
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =========================================
+                             SUPPORTED UPI APPS
+                        ========================================== -->
+
                         <div class="upi-apps">
-    <div class="upi-apps-title">Supported UPI Apps</div>
 
-    <div class="upi-app-logos">
+                            <div class="upi-apps-title">
+                                SUPPORTED UPI APPS
+                            </div>
 
-        <div class="upi-app">
-            <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/phonepe.svg"
-                alt="PhonePe"
-            >
-            <span>PhonePe</span>
-        </div>
 
-        <div class="upi-app">
-            <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/googlepay.svg"
-                alt="Google Pay"
-            >
-            <span>Google Pay</span>
-        </div>
+                            <div class="upi-app-logos">
 
-        <div class="upi-app">
-            <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/paytm.svg"
-                alt="Paytm"
-            >
-            <span>Paytm</span>
-        </div>
 
-        <div class="upi-app">
-            <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/bhim.svg"
-                alt="BHIM"
-            >
-            <span>BHIM</span>
-        </div>
+                                <!-- PHONEPE -->
 
-        <div class="upi-app">
-            <img
-                src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/whatsapp.svg"
-                alt="WhatsApp"
-            >
-            <span>WhatsApp</span>
-        </div>
+                                <div class="upi-app">
 
-    </div>
-</div>
+                                    <img
+                                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/phonepe.svg"
+                                        alt="PhonePe"
+                                        crossorigin="anonymous"
+                                    >
+
+                                    <span>
+                                        PhonePe
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- GOOGLE PAY -->
+
+                                <div class="upi-app">
+
+                                    <img
+                                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/googlepay.svg"
+                                        alt="Google Pay"
+                                        crossorigin="anonymous"
+                                    >
+
+                                    <span>
+                                        Google Pay
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- PAYTM -->
+
+                                <div class="upi-app">
+
+                                    <img
+                                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/paytm.svg"
+                                        alt="Paytm"
+                                        crossorigin="anonymous"
+                                    >
+
+                                    <span>
+                                        Paytm
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- BHIM -->
+
+                                <div class="upi-app">
+
+                                    <img
+                                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/bhim.svg"
+                                        alt="BHIM"
+                                        crossorigin="anonymous"
+                                    >
+
+                                    <span>
+                                        BHIM
+                                    </span>
+
+                                </div>
+
+
+
+                                <!-- WHATSAPP -->
+
+                                <div class="upi-app">
+
+                                    <img
+                                        src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/whatsapp.svg"
+                                        alt="WhatsApp Pay"
+                                        crossorigin="anonymous"
+                                    >
+
+                                    <span>
+                                        WhatsApp
+                                    </span>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- =========================================
+                             NOTES + TERMS
+                        ========================================== -->
 
                         <div class="notes-grid">
-                            <label>NOTES
-                                <textarea id="notes" oninput="updatePreview()">Thank you for choosing SP Media Works.</textarea>
+
+
+                            <label>
+
+                                NOTES
+
+                                <textarea
+                                    id="notes"
+                                    oninput="updatePreview()"
+                                >Thank you for choosing SP Media Works.</textarea>
+
                             </label>
-                            <label>TERMS & CONDITIONS
-                                <textarea id="terms" oninput="updatePreview()">• Payment is due as specified on this bill and work may begin after confirmation.
+
+
+
+                            <label>
+
+                                TERMS & CONDITIONS
+
+                                <textarea
+                                    id="terms"
+                                    oninput="updatePreview()"
+                                >• Payment is due as specified on this bill and work may begin after confirmation.
 • Payments made for confirmed services are non-refundable once work has commenced.
 • Additional revisions or services outside the agreed scope may incur extra charges.
 • Delivery timelines depend on project requirements and timely client feedback.
 • By making the payment, the client agrees to these terms and conditions.</textarea>
+
                             </label>
+
+
                         </div>
+
                     </div>
+
+
+
+                    <!-- =============================================
+                         ACTION BAR
+                    ============================================== -->
 
                     <div class="action-bar">
-                        <button id="saveButton" class="secondary-btn" onclick="saveBill()">Save Bill</button>
-                        <button id="markPaidButton" class="paid-btn" onclick="markPaid()">✓ Mark as Paid</button>
-                        <button class="orange-btn" onclick="downloadPDF()">↓ Download PDF</button>
-                        <button class="secondary-btn" onclick="window.print()">Print</button>
+
+
+                        <button
+                            id="saveButton"
+                            class="secondary-btn"
+                            onclick="saveBill()"
+                        >
+                            Save Bill
+                        </button>
+
+
+                        <button
+                            id="markPaidButton"
+                            class="paid-btn"
+                            onclick="markPaid()"
+                        >
+                            ✓ Mark as Paid
+                        </button>
+
+
+                        <button
+                            class="orange-btn"
+                            onclick="downloadPDF()"
+                        >
+                            ↓ Download PDF
+                        </button>
+
+
+                        <button
+                            class="secondary-btn"
+                            onclick="window.print()"
+                        >
+                            Print
+                        </button>
+
+
                     </div>
+
+
                 </div>
 
-                <div class="preview-area">
-                    <div class="preview-title">LIVE PREVIEW • A4</div>
 
-                    <div id="invoice" class="invoice">
+
+                <!-- =================================================
+                     A4 PREVIEW
+                ================================================== -->
+
+                <div class="preview-area">
+
+                    <div class="preview-title">
+                        LIVE PREVIEW • A4
+                    </div>
+
+
+                    <div
+                        id="invoice"
+                        class="invoice"
+                    >
+
+
+                        <!-- =========================================
+                             INVOICE HEADER
+                        ========================================== -->
+
                         <div class="invoice-header">
+
+
                             <div class="invoice-brand">
-                                <img src="assets/sp-logo.jpg" alt="SP Media Works" onerror="this.style.display='none'">
+
+                                <img
+                                    src="assets/sp-logo.jpg"
+                                    alt="SP Media Works"
+                                    onerror="this.style.display='none'"
+                                >
+
+
                                 <div>
-                                    <h2>SP MEDIA WORKS</h2>
-                                    <p>MEDIA • DESIGN • DIGITAL</p>
+
+                                    <h2>
+                                        SP MEDIA WORKS
+                                    </h2>
+
+                                    <p>
+                                        MEDIA • DESIGN • DIGITAL
+                                    </p>
+
                                 </div>
+
                             </div>
+
+
+
                             <div class="invoice-heading">
-                                <h1 id="invoiceType">PAYMENT BILL</h1>
-                                <strong id="previewBillNumber">#SPMW-0001</strong>
+
+                                <h1 id="invoiceType">
+                                    PAYMENT BILL
+                                </h1>
+
+
+                                <strong id="previewBillNumber">
+                                    #SPMW-0001
+                                </strong>
+
                             </div>
+
+
                         </div>
+
+
 
                         <div class="orange-line"></div>
 
+
+
+                        <!-- =========================================
+                             BILL TO
+                        ========================================== -->
+
                         <div class="bill-to">
+
+
                             <div>
-                                <span class="label">BILL TO</span>
-                                <h3 id="previewClient">Client Name</h3>
-                                <p id="previewCompany">Company / Business</p>
-                                <p id="previewPhone">+91 XXXXX XXXXX</p>
-                                <p id="previewLocation">Vijayawada, Andhra Pradesh</p>
+
+                                <span class="label">
+                                    BILL TO
+                                </span>
+
+
+                                <h3 id="previewClient">
+                                    Client Name
+                                </h3>
+
+
+                                <p id="previewCompany">
+                                    Company / Business
+                                </p>
+
+
+                                <p id="previewPhone">
+                                    +91 XXXXX XXXXX
+                                </p>
+
+
+                                <p id="previewLocation">
+                                    Vijayawada, Andhra Pradesh
+                                </p>
+
                             </div>
+
+
 
                             <div class="bill-meta">
-                                <div><span>Issue Date</span><strong id="previewDate">—</strong></div>
-                                <div><span>Due Date</span><strong id="previewDueDate">—</strong></div>
-                                <div><span>Status</span><strong id="previewStatus" class="status due">PAYMENT DUE</strong></div>
+
+
+                                <div>
+
+                                    <span>
+                                        Issue Date
+                                    </span>
+
+                                    <strong id="previewDate">
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <span>
+                                        Due Date
+                                    </span>
+
+                                    <strong id="previewDueDate">
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <span>
+                                        Status
+                                    </span>
+
+                                    <strong
+                                        id="previewStatus"
+                                        class="status due"
+                                    >
+                                        PAYMENT DUE
+                                    </strong>
+
+                                </div>
+
+
                             </div>
+
                         </div>
+
+
+
+                        <!-- =========================================
+                             SERVICES TABLE
+                        ========================================== -->
 
                         <table class="invoice-table">
+
                             <thead>
-                                <tr><th>#</th><th>DESCRIPTION</th><th>QTY</th><th>RATE</th><th>AMOUNT</th></tr>
+
+                                <tr>
+
+                                    <th>
+                                        #
+                                    </th>
+
+                                    <th>
+                                        DESCRIPTION
+                                    </th>
+
+                                    <th>
+                                        QTY
+                                    </th>
+
+                                    <th>
+                                        RATE
+                                    </th>
+
+                                    <th>
+                                        AMOUNT
+                                    </th>
+
+                                </tr>
+
                             </thead>
+
+
                             <tbody id="invoiceItems"></tbody>
+
                         </table>
 
+
+
+                        <!-- =========================================
+                             TOTALS
+                        ========================================== -->
+
                         <div class="invoice-total-area">
+
+
                             <div class="amount-words">
-                                <span class="label">AMOUNT IN WORDS</span>
-                                <strong id="amountWords">Rupees Zero Only</strong>
+
+                                <span class="label">
+                                    AMOUNT IN WORDS
+                                </span>
+
+
+                                <strong id="amountWords">
+                                    Rupees Zero Only
+                                </strong>
+
                             </div>
+
+
 
                             <div class="invoice-totals">
-                                <div><span>Subtotal</span><strong id="previewSubtotal">₹0</strong></div>
-                                <div><span>Discount</span><strong id="previewDiscount">- ₹0</strong></div>
-                                <div class="grand"><span>TOTAL</span><strong id="previewTotal">₹0</strong></div>
+
+
+                                <div>
+
+                                    <span>
+                                        Subtotal
+                                    </span>
+
+                                    <strong id="previewSubtotal">
+                                        ₹0
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <span>
+                                        Discount
+                                    </span>
+
+                                    <strong id="previewDiscount">
+                                        - ₹0
+                                    </strong>
+
+                                </div>
+
+
+
+                                <div class="grand">
+
+                                    <span>
+                                        TOTAL
+                                    </span>
+
+                                    <strong id="previewTotal">
+                                        ₹0
+                                    </strong>
+
+                                </div>
+
+
                             </div>
+
                         </div>
+
+
+
+                        <!-- =========================================
+                             PAYMENT + NOTES
+                        ========================================== -->
 
                         <div class="payment-notes">
+
+
+                            <!-- PAYMENT DETAILS -->
+
                             <div class="payment-box">
-                                <span class="label">PAYMENT DETAILS</span>
-                                <h4>UPI PAYMENT</h4>
-                                <div class="upi-id-label">UPI ID</div>
-                                <strong class="upi-value" id="previewUPI">yourupi@upi</strong>
+
+                                <span class="label">
+                                    PAYMENT DETAILS
+                                </span>
+
+
+                                <h4>
+                                    UPI PAYMENT
+                                </h4>
+
+
+                                <div class="upi-id-label">
+                                    UPI ID
+                                </div>
+
+
+                                <strong
+                                    class="upi-value"
+                                    id="previewUPI"
+                                >
+                                    yourupi@upi
+                                </strong>
+
+
 
                                 <div class="qr-payment-row">
+
+
+                                    <!-- QR -->
+
                                     <div class="qr-box">
-                                        <img id="previewQR" src="" alt="Payment QR">
-                                        <span id="qrPlaceholder">QR</span>
+
+                                        <img
+                                            id="previewQR"
+                                            src=""
+                                            alt="Payment QR"
+                                            crossorigin="anonymous"
+                                        >
+
+
+                                        <span id="qrPlaceholder">
+                                            QR
+                                        </span>
+
                                     </div>
+
+
+
+                                    <!-- SCAN INFORMATION -->
+
                                     <div class="scan-copy">
-                                        <strong>SCAN & PAY</strong>
-                                        <p>Use any supported UPI app to complete the payment.</p>
-                                        <div class="upi-badges compact">
-                                            <span class="upi-badge phonepe"><b>पे</b></span>
-                                            <span class="upi-badge gpay"><b>G</b></span>
-                                            <span class="upi-badge paytm"><b>₹</b></span>
-                                            <span class="upi-badge bhim"><b>BH</b></span>
-                                            <span class="upi-badge whatsapp"><b>WA</b></span>
-                                            <span class="upi-badge amazon"><b>A</b></span>
+
+
+                                        <strong>
+                                            SCAN & PAY
+                                        </strong>
+
+
+                                        <p>
+                                            Scan the QR or pay using any supported UPI app.
+                                        </p>
+
+
+
+                                        <!-- REAL UPI LOGOS -->
+
+                                        <div class="upi-real-logos">
+
+
+                                            <div class="upi-logo">
+
+                                                <img
+                                                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/phonepe.svg"
+                                                    alt="PhonePe"
+                                                    crossorigin="anonymous"
+                                                >
+
+                                                <span>
+                                                    PhonePe
+                                                </span>
+
+                                            </div>
+
+
+
+                                            <div class="upi-logo">
+
+                                                <img
+                                                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/googlepay.svg"
+                                                    alt="Google Pay"
+                                                    crossorigin="anonymous"
+                                                >
+
+                                                <span>
+                                                    Google Pay
+                                                </span>
+
+                                            </div>
+
+
+
+                                            <div class="upi-logo">
+
+                                                <img
+                                                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/paytm.svg"
+                                                    alt="Paytm"
+                                                    crossorigin="anonymous"
+                                                >
+
+                                                <span>
+                                                    Paytm
+                                                </span>
+
+                                            </div>
+
+
+
+                                            <div class="upi-logo">
+
+                                                <img
+                                                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/bhim.svg"
+                                                    alt="BHIM"
+                                                    crossorigin="anonymous"
+                                                >
+
+                                                <span>
+                                                    BHIM
+                                                </span>
+
+                                            </div>
+
+
+
+                                            <div class="upi-logo">
+
+                                                <img
+                                                    src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons@16.28.0/icons/whatsapp.svg"
+                                                    alt="WhatsApp Pay"
+                                                    crossorigin="anonymous"
+                                                >
+
+                                                <span>
+                                                    WhatsApp
+                                                </span>
+
+                                            </div>
+
+
                                         </div>
-                                        <small>PhonePe • Google Pay • Paytm • BHIM • WhatsApp Pay • Amazon Pay</small>
+
+
+
+                                        <small class="upi-supported-text">
+                                            PhonePe • Google Pay • Paytm • BHIM • WhatsApp Pay
+                                        </small>
+
+
                                     </div>
+
                                 </div>
+
                             </div>
+
+
+
+                            <!-- NOTES + TERMS -->
 
                             <div class="notes-box">
-                                <span class="label">NOTES</span>
-                                <p id="previewNotes">Thank you for choosing SP Media Works.</p>
+
+
+                                <span class="label">
+                                    NOTES
+                                </span>
+
+
+                                <p id="previewNotes">
+                                    Thank you for choosing SP Media Works.
+                                </p>
+
+
 
                                 <div class="terms-divider"></div>
-                                <span class="label">TERMS & CONDITIONS</span>
-                                <p id="previewTerms" class="terms-text"></p>
 
-                                <div id="paymentReferencePreview" class="reference-row"></div>
+
+
+                                <span class="label">
+                                    TERMS & CONDITIONS
+                                </span>
+
+
+                                <p
+                                    id="previewTerms"
+                                    class="terms-text"
+                                ></p>
+
+
+
+                                <div
+                                    id="paymentReferencePreview"
+                                    class="reference-row"
+                                ></div>
+
+
                             </div>
+
+
                         </div>
 
-                        <div id="invoiceFooter" class="invoice-footer">
+
+
+                        <!-- =========================================
+                             FOOTER
+                        ========================================== -->
+
+                        <div
+                            id="invoiceFooter"
+                            class="invoice-footer"
+                        >
+
+
                             <div class="invoice-footer-main">
-                                <strong>PAYMENT DUE</strong>
-                                <span>Please complete payment using the provided UPI details.</span>
+
+
+                                <strong>
+                                    PAYMENT DUE
+                                </strong>
+
+
+                                <span>
+                                    Please complete payment using the provided UPI details.
+                                </span>
+
+
                             </div>
+
+
+
                             <div class="generated-footer">
-                                <span>This is a computer-generated slip and does not require a signature.</span>
-                                <span id="generatedTime">Generated on: —</span>
+
+
+                                <span>
+                                    This is a computer-generated slip and does not require a signature.
+                                </span>
+
+
+                                <span id="generatedTime">
+                                    Generated on: —
+                                </span>
+
+
                             </div>
+
+
                         </div>
+
+
                     </div>
+
                 </div>
+
             </div>
+
         </section>
 
-        <section id="historyPage" class="history-page hidden">
+
+
+        <!-- =================================================
+             BILL HISTORY
+        ================================================== -->
+
+        <section
+            id="historyPage"
+            class="history-page hidden"
+        >
+
+
             <div class="history-top">
+
+
                 <div>
-                    <p class="small-title">SAVED DOCUMENTS</p>
-                    <h2>Bill History</h2>
+
+                    <p class="small-title">
+                        SAVED DOCUMENTS
+                    </p>
+
+
+                    <h2>
+                        Bill History
+                    </h2>
+
                 </div>
-                <input id="searchBills" oninput="renderHistory()" placeholder="Search bills...">
+
+
+                <input
+                    id="searchBills"
+                    oninput="renderHistory()"
+                    placeholder="Search bills..."
+                >
+
             </div>
+
+
+
             <div id="billHistory"></div>
+
+
         </section>
+
+
     </main>
+
 </div>
 
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
 <script src="script.js"></script>
+
 </body>
 </html>
