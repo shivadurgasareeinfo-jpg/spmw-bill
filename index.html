@@ -1,819 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SP Media Works | Bill Generator</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <!-- PDF Libraries -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SP Media Works | Bill Generator</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 </head>
-
 <body>
 
 <div class="app">
-
-    <!-- ================= SIDEBAR ================= -->
-
     <aside class="sidebar">
-
         <div class="brand">
-
-            <img
-                src="assets/sp-logo.jpg"
-                alt="SP Media Works Logo"
-            >
-
+            <img src="assets/sp-logo.jpg" alt="SP Media Works Logo" onerror="this.style.display='none'">
             <div>
                 <h2>SP MEDIA WORKS</h2>
                 <span>Bill Generator</span>
             </div>
-
         </div>
-
 
         <nav>
-
-            <button
-                class="nav-btn active"
-                onclick="showPage('create')"
-            >
-                <span>＋</span>
-                Create Bill
-            </button>
-
-            <button
-                class="nav-btn"
-                onclick="showPage('history')"
-            >
-                <span>▣</span>
-                Bill History
-            </button>
-
+            <button class="nav-btn active" onclick="showPage('create')">＋ <span>Create Bill</span></button>
+            <button class="nav-btn" onclick="showPage('history')">▣ <span>Bill History</span></button>
         </nav>
 
-
         <div class="sidebar-bottom">
-
-            <span>SP MEDIA WORKS</span>
-
-            <small>
-                Media • Design • Digital
-            </small>
-
+            <strong>SP MEDIA WORKS</strong>
+            <small>Media • Design • Digital</small>
         </div>
-
     </aside>
 
-
-    <!-- ================= MAIN ================= -->
-
     <main class="main">
-
         <header class="topbar">
-
             <div>
-
-                <p class="small-title">
-                    SP MEDIA WORKS
-                </p>
-
-                <h1 id="pageTitle">
-                    Create Bill
-                </h1>
-
+                <p class="small-title">SP MEDIA WORKS</p>
+                <h1 id="pageTitle">Create Bill</h1>
             </div>
-
-
-            <button
-                class="orange-btn"
-                onclick="newBill()"
-            >
-                + New Bill
-            </button>
-
+            <button class="orange-btn" onclick="newBill()">＋ New Bill</button>
         </header>
 
-
-        <!-- ================= CREATE PAGE ================= -->
-
         <section id="createPage">
-
             <div class="workspace">
-
-                <!-- ================= EDITOR ================= -->
 
                 <div class="editor">
 
-
-                    <!-- CLIENT DETAILS -->
-
                     <div class="card">
+                        <div class="section-title"><span>01</span> Client Details</div>
 
-                        <div class="section-title">
-                            <span>01</span>
-                            Client & Bill Details
+                        <div class="grid-2">
+                            <label>CLIENT NAME
+                                <input id="clientName" oninput="updatePreview()" placeholder="Client name">
+                            </label>
+                            <label>COMPANY / BUSINESS
+                                <input id="company" oninput="updatePreview()" placeholder="Optional">
+                            </label>
+                            <label>PHONE
+                                <input id="phone" oninput="updatePreview()" placeholder="+91 XXXXX XXXXX">
+                            </label>
+                            <label>EMAIL
+                                <input id="email" oninput="updatePreview()" placeholder="Optional">
+                            </label>
+                            <label>LOCATION
+                                <input id="location" oninput="updatePreview()" placeholder="Vijayawada, Andhra Pradesh">
+                            </label>
+                            <label>BILL NUMBER
+                                <input id="billNumber" oninput="updatePreview()">
+                            </label>
+                            <label>ISSUE DATE
+                                <input id="billDate" type="date" onchange="updatePreview()">
+                            </label>
+                            <label>DUE DATE
+                                <input id="dueDate" type="date" onchange="updatePreview()">
+                            </label>
                         </div>
-
-
-                        <div class="form-grid">
-
-
-                            <div class="field">
-
-                                <label>
-                                    Client Name
-                                </label>
-
-                                <input
-                                    id="clientName"
-                                    type="text"
-                                    placeholder="Enter client name"
-                                    oninput="updatePreview()"
-                                >
-
-                            </div>
-
-
-                            <div class="field">
-
-                                <label>
-                                    Company / Business
-                                </label>
-
-                                <input
-                                    id="company"
-                                    type="text"
-                                    placeholder="Optional"
-                                    oninput="updatePreview()"
-                                >
-
-                            </div>
-
-
-                            <div class="field">
-
-                                <label>
-                                    Phone
-                                </label>
-
-                                <input
-                                    id="phone"
-                                    type="text"
-                                    placeholder="+91 XXXXX XXXXX"
-                                    oninput="updatePreview()"
-                                >
-
-                            </div>
-
-
-                            <div class="field">
-
-                                <label>
-                                    Email
-                                </label>
-
-                                <input
-                                    id="email"
-                                    type="email"
-                                    placeholder="client@email.com"
-                                    oninput="updatePreview()"
-                                >
-
-                            </div>
-
-
-                            <div class="field">
-
-                                <label>
-                                    Bill Number
-                                </label>
-
-                                <input
-                                    id="billNumber"
-                                    type="text"
-                                    oninput="updatePreview()"
-                                >
-
-                            </div>
-
-
-                            <div class="field">
-
-                                <label>
-                                    Bill Date
-                                </label>
-
-                                <input
-                                    id="billDate"
-                                    type="date"
-                                    onchange="updatePreview()"
-                                >
-
-                            </div>
-
-
-                            <div class="field">
-
-                                <label>
-                                    Due Date
-                                </label>
-
-                                <input
-                                    id="dueDate"
-                                    type="date"
-                                    onchange="updatePreview()"
-                                >
-
-                            </div>
-
-
-                            <div class="field">
-
-                                <label>
-                                    Location
-                                </label>
-
-                                <input
-                                    id="location"
-                                    type="text"
-                                    placeholder="Vijayawada, Andhra Pradesh"
-                                    oninput="updatePreview()"
-                                >
-
-                            </div>
-
-                        </div>
-
                     </div>
 
-
-                    <!-- SERVICES -->
-
                     <div class="card">
+                        <div class="section-title"><span>02</span> Services</div>
 
-                        <div class="section-title">
-                            <span>02</span>
-                            Services
+                        <div class="service-head">
+                            <span>DESCRIPTION</span><span>QTY</span><span>RATE</span><span>AMOUNT</span><span></span>
                         </div>
-
-
-                        <div class="service-header">
-
-                            <div>
-                                Description
-                            </div>
-
-                            <div>
-                                Qty
-                            </div>
-
-                            <div>
-                                Rate
-                            </div>
-
-                            <div>
-                                Amount
-                            </div>
-
-                            <div></div>
-
-                        </div>
-
 
                         <div id="serviceList"></div>
 
+                        <button class="add-service" onclick="addService(true)">＋ Add Service</button>
 
-                        <button
-                            class="add-service"
-                            onclick="addService()"
-                        >
-                            + Add Service
-                        </button>
+                        <div class="editor-totals">
+                            <label>DISCOUNT
+                                <input id="discount" type="number" min="0" value="0" oninput="updatePreview()">
+                            </label>
 
-
-                        <div class="calculation">
-
-
-                            <div class="discount-box">
-
-                                <label>
-                                    Discount
-                                </label>
-
-                                <input
-                                    id="discount"
-                                    type="number"
-                                    min="0"
-                                    value="0"
-                                    oninput="updatePreview()"
-                                >
-
+                            <div class="totals-box">
+                                <div><span>Subtotal</span><strong id="editorSubtotal">₹0</strong></div>
+                                <div><span>Discount</span><strong id="editorDiscount">- ₹0</strong></div>
+                                <div class="editor-grand"><span>Total</span><strong id="editorTotal">₹0</strong></div>
                             </div>
-
-
-                            <div class="calculation-lines">
-
-                                <div>
-
-                                    <span>
-                                        Subtotal
-                                    </span>
-
-                                    <strong id="editorSubtotal">
-                                        ₹0
-                                    </strong>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>
-                                        Discount
-                                    </span>
-
-                                    <strong id="editorDiscount">
-                                        - ₹0
-                                    </strong>
-
-                                </div>
-
-
-                                <div class="grand-total">
-
-                                    <span>
-                                        Total
-                                    </span>
-
-                                    <strong id="editorTotal">
-                                        ₹0
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
                         </div>
-
                     </div>
 
-
-                    <!-- PAYMENT -->
-
                     <div class="card">
+                        <div class="section-title"><span>03</span> Payment & Notes</div>
 
-                        <div class="section-title">
-                            <span>03</span>
-                            Payment & Notes
+                        <div class="payment-editor">
+                            <label>UPI ID
+                                <input id="upi" oninput="updatePreview()" placeholder="yourupi@upi">
+                            </label>
+
+                            <label>PAYMENT REFERENCE
+                                <input id="paymentReference" oninput="updatePreview()" placeholder="Optional">
+                            </label>
+
+                            <div class="qr-upload-wrap">
+                                <label>UPLOAD QR CODE</label>
+                                <div class="qr-upload">
+                                    <input id="qrUpload" type="file" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(event)">
+                                    <div class="qr-file-row">
+                                        <span id="qrFileName">No QR selected</span>
+                                        <button type="button" onclick="removeQR()">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
+                        <div class="upi-support-editor">
+                            <span>ACCEPTED UPI APPS</span>
+                            <div class="upi-badges">
+                                <span class="upi-badge phonepe"><b>पे</b> PhonePe</span>
+                                <span class="upi-badge gpay"><b>G</b> Google Pay</span>
+                                <span class="upi-badge paytm"><b>₹</b> Paytm</span>
+                                <span class="upi-badge bhim"><b>BH</b> BHIM</span>
+                                <span class="upi-badge whatsapp"><b>WA</b> WhatsApp Pay</span>
+                                <span class="upi-badge amazon"><b>A</b> Amazon Pay</span>
+                            </div>
+                        </div>
 
-                        <div class="form-grid">
+                        <div class="notes-grid">
+                            <label>NOTES
+                                <textarea id="notes" oninput="updatePreview()">Thank you for choosing SP Media Works.</textarea>
+                            </label>
+                            <label>TERMS & CONDITIONS
+                                <textarea id="terms" oninput="updatePreview()">• Payment is due as specified on this bill and work may begin after confirmation.
+• Payments made for confirmed services are non-refundable once work has commenced.
+• Additional revisions or services outside the agreed scope may incur extra charges.
+• Delivery timelines depend on project requirements and timely client feedback.
+• By making the payment, the client agrees to these terms and conditions.</textarea>
+                            </label>
+                        </div>
+                    </div>
 
+                    <div class="action-bar">
+                        <button id="saveButton" class="secondary-btn" onclick="saveBill()">Save Bill</button>
+                        <button id="markPaidButton" class="paid-btn" onclick="markPaid()">✓ Mark as Paid</button>
+                        <button class="orange-btn" onclick="downloadPDF()">↓ Download PDF</button>
+                        <button class="secondary-btn" onclick="window.print()">Print</button>
+                    </div>
+                </div>
 
-                            <div class="field">
+                <div class="preview-area">
+                    <div class="preview-title">LIVE PREVIEW • A4</div>
 
-                                <label>
-                                    UPI ID
-                                </label>
+                    <div id="invoice" class="invoice">
+                        <div class="invoice-header">
+                            <div class="invoice-brand">
+                                <img src="assets/sp-logo.jpg" alt="SP Media Works" onerror="this.style.display='none'">
+                                <div>
+                                    <h2>SP MEDIA WORKS</h2>
+                                    <p>MEDIA • DESIGN • DIGITAL</p>
+                                </div>
+                            </div>
+                            <div class="invoice-heading">
+                                <h1 id="invoiceType">PAYMENT BILL</h1>
+                                <strong id="previewBillNumber">#SPMW-0001</strong>
+                            </div>
+                        </div>
 
-                                <input
-                                    id="upi"
-                                    type="text"
-                                    placeholder="yourupi@upi"
-                                    oninput="updatePreview()"
-                                >
+                        <div class="orange-line"></div>
 
+                        <div class="bill-to">
+                            <div>
+                                <span class="label">BILL TO</span>
+                                <h3 id="previewClient">Client Name</h3>
+                                <p id="previewCompany">Company / Business</p>
+                                <p id="previewPhone">+91 XXXXX XXXXX</p>
+                                <p id="previewLocation">Vijayawada, Andhra Pradesh</p>
                             </div>
 
-                            <div class="field">
-                                <label>Upload QR Code</label>
-                                <div class="qr-upload-box">
-                                    <input id="qrUpload" type="file" accept="image/png,image/jpeg,image/webp" onchange="handleQRUpload(event)">
-                                    <div class="qr-upload-actions">
-                                        <span id="qrFileName">No QR selected</span>
-                                        <button type="button" class="remove-qr-btn" onclick="removeQR()">Remove</button>
+                            <div class="bill-meta">
+                                <div><span>Issue Date</span><strong id="previewDate">—</strong></div>
+                                <div><span>Due Date</span><strong id="previewDueDate">—</strong></div>
+                                <div><span>Status</span><strong id="previewStatus" class="status due">PAYMENT DUE</strong></div>
+                            </div>
+                        </div>
+
+                        <table class="invoice-table">
+                            <thead>
+                                <tr><th>#</th><th>DESCRIPTION</th><th>QTY</th><th>RATE</th><th>AMOUNT</th></tr>
+                            </thead>
+                            <tbody id="invoiceItems"></tbody>
+                        </table>
+
+                        <div class="invoice-total-area">
+                            <div class="amount-words">
+                                <span class="label">AMOUNT IN WORDS</span>
+                                <strong id="amountWords">Rupees Zero Only</strong>
+                            </div>
+
+                            <div class="invoice-totals">
+                                <div><span>Subtotal</span><strong id="previewSubtotal">₹0</strong></div>
+                                <div><span>Discount</span><strong id="previewDiscount">- ₹0</strong></div>
+                                <div class="grand"><span>TOTAL</span><strong id="previewTotal">₹0</strong></div>
+                            </div>
+                        </div>
+
+                        <div class="payment-notes">
+                            <div class="payment-box">
+                                <span class="label">PAYMENT DETAILS</span>
+                                <h4>UPI PAYMENT</h4>
+                                <div class="upi-id-label">UPI ID</div>
+                                <strong class="upi-value" id="previewUPI">yourupi@upi</strong>
+
+                                <div class="qr-payment-row">
+                                    <div class="qr-box">
+                                        <img id="previewQR" src="" alt="Payment QR">
+                                        <span id="qrPlaceholder">QR</span>
+                                    </div>
+                                    <div class="scan-copy">
+                                        <strong>SCAN & PAY</strong>
+                                        <p>Use any supported UPI app to complete the payment.</p>
+                                        <div class="upi-badges compact">
+                                            <span class="upi-badge phonepe"><b>पे</b></span>
+                                            <span class="upi-badge gpay"><b>G</b></span>
+                                            <span class="upi-badge paytm"><b>₹</b></span>
+                                            <span class="upi-badge bhim"><b>BH</b></span>
+                                            <span class="upi-badge whatsapp"><b>WA</b></span>
+                                            <span class="upi-badge amazon"><b>A</b></span>
+                                        </div>
+                                        <small>PhonePe • Google Pay • Paytm • BHIM • WhatsApp Pay • Amazon Pay</small>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="field">
-                                <label>Payment Reference</label>
-                                <input id="paymentReference" type="text" placeholder="Optional" oninput="updatePreview()">
-                            </div>
-
-                            <div class="field full">
-                                <label>Notes</label>
-                                <textarea id="notes" oninput="updatePreview()">Thank you for choosing SP Media Works.</textarea>
-                            </div>
-
-                            <div class="field full">
-                                <label>Terms &amp; Conditions</label>
-                                <textarea id="terms" oninput="updatePreview()" placeholder="Enter your terms and conditions...">Payment once made is non-refundable.
-Delivery will begin after payment confirmation.
-Additional revisions may be charged separately.</textarea>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- ACTION BUTTONS -->
-
-                    <div class="actions">
-
-                        <button
-                            class="secondary-btn"
-                            onclick="saveBill()"
-                        >
-                            Save Bill
-                        </button>
-
-
-                        <button
-                            class="paid-btn"
-                            id="markPaidButton"
-                            onclick="markPaid()"
-                        >
-                            ✓ Mark as Paid
-                        </button>
-
-
-                        <button
-                            class="orange-btn"
-                            onclick="downloadPDF()"
-                        >
-                            ↓ Download PDF
-                        </button>
-
-
-                        <button
-                            class="secondary-btn"
-                            onclick="window.print()"
-                        >
-                            Print
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- ================= PREVIEW ================= -->
-
-                <div class="preview-area">
-
-                    <div class="preview-title">
-                        LIVE PREVIEW
-                    </div>
-
-
-                    <div
-                        id="invoice"
-                        class="invoice"
-                    >
-
-
-                        <!-- HEADER -->
-
-                        <div class="invoice-header">
-
-
-                            <div class="invoice-brand">
-
-                                <img
-                                    src="assets/sp-logo.jpg"
-                                    alt="SP Media Works"
-                                >
-
-
-                                <div>
-
-                                    <h2>
-                                        SP MEDIA WORKS
-                                    </h2>
-
-                                    <p>
-                                        MEDIA • DESIGN • DIGITAL
-                                    </p>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="invoice-heading">
-
-                                <h1 id="invoiceType">
-                                    PAYMENT BILL
-                                </h1>
-
-                                <strong id="previewBillNumber">
-                                    #SPMW-0001
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="orange-line"></div>
-
-
-                        <!-- CLIENT INFORMATION -->
-
-                        <div class="invoice-info">
-
-
-                            <div class="bill-to">
-
-                                <span class="label">
-                                    BILL TO
-                                </span>
-
-                                <h3 id="previewClient">
-                                    Client Name
-                                </h3>
-
-                                <p id="previewCompany">
-                                    Company / Business
-                                </p>
-
-                                <p id="previewPhone">
-                                    +91 XXXXX XXXXX
-                                </p>
-
-                                <p id="previewLocation">
-                                    Vijayawada, Andhra Pradesh
-                                </p>
-
-                            </div>
-
-
-                            <div class="bill-meta">
-
-                                <div>
-
-                                    <span>
-                                        Issue Date
-                                    </span>
-
-                                    <strong id="previewDate">
-                                        —
-                                    </strong>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>
-                                        Due Date
-                                    </span>
-
-                                    <strong id="previewDueDate">
-                                        —
-                                    </strong>
-
-                                </div>
-
-
-                                <div>
-
-                                    <span>
-                                        Status
-                                    </span>
-
-                                    <b
-                                        id="previewStatus"
-                                        class="status due"
-                                    >
-                                        PAYMENT DUE
-                                    </b>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- SERVICES TABLE -->
-
-                        <table class="invoice-table">
-
-                            <thead>
-
-                                <tr>
-
-                                    <th>#</th>
-
-                                    <th>
-                                        Description
-                                    </th>
-
-                                    <th>
-                                        Qty
-                                    </th>
-
-                                    <th>
-                                        Rate
-                                    </th>
-
-                                    <th>
-                                        Amount
-                                    </th>
-
-                                </tr>
-
-                            </thead>
-
-
-                            <tbody id="invoiceItems"></tbody>
-
-                        </table>
-
-
-                        <!-- TOTAL -->
-
-                        <div class="invoice-total">
-
-
-                            <div></div>
-
-                            <span>
-                                Subtotal
-                            </span>
-
-                            <strong id="previewSubtotal">
-                                ₹0
-                            </strong>
-
-
-                            <div></div>
-
-                            <span>
-                                Discount
-                            </span>
-
-                            <strong id="previewDiscount">
-                                - ₹0
-                            </strong>
-
-
-                            <div></div>
-
-                            <b>
-                                TOTAL
-                            </b>
-
-                            <b
-                                class="total-number"
-                                id="previewTotal"
-                            >
-                                ₹0
-                            </b>
-
-                        </div>
-
-
-                        <!-- PAYMENT AREA -->
-
-                        <div class="payment-section">
-
-
-                            <div class="payment-details">
-
-                                <span class="label">
-                                    PAYMENT DETAILS
-                                </span>
-
-                                <h4>
-                                    UPI PAYMENT
-                                </h4>
-
-                                <p>
-                                    UPI ID:
-                                    <strong id="previewUPI">
-                                        yourupi@upi
-                                    </strong>
-                                </p>
-
-                                <p>
-                                    Scan & pay using any UPI app.
-                                </p>
-
-
-                                <div class="qr-box">
-
-                                    <img
-                                        id="previewQR"
-                                        src=""
-                                        alt="QR"
-                                        onerror="this.style.display='none'"
-                                    >
-
-                                    <span>
-                                        QR
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="notes-section">
-
+                            <div class="notes-box">
                                 <span class="label">NOTES</span>
-
                                 <p id="previewNotes">Thank you for choosing SP Media Works.</p>
 
-                                <div class="terms-preview">
-                                    <span class="label terms-label">TERMS &amp; CONDITIONS</span>
-                                    <p id="previewTerms">Payment once made is non-refundable.</p>
-                                </div>
+                                <div class="terms-divider"></div>
+                                <span class="label">TERMS & CONDITIONS</span>
+                                <p id="previewTerms" class="terms-text"></p>
 
+                                <div id="paymentReferencePreview" class="reference-row"></div>
                             </div>
-
                         </div>
 
-
-                        <!-- FOOTER -->
-
-                        <div
-                            id="invoiceFooter"
-                            class="invoice-footer"
-                        >
-
+                        <div id="invoiceFooter" class="invoice-footer">
                             <div class="invoice-footer-main">
                                 <strong>PAYMENT DUE</strong>
                                 <span>Please complete payment using the provided UPI details.</span>
                             </div>
-
                             <div class="generated-footer">
-                                <span>This is a computer generated slip and does not require a signature.</span>
+                                <span>This is a computer-generated slip and does not require a signature.</span>
                                 <span id="generatedTime">Generated on: —</span>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </section>
 
-
-        <!-- ================= HISTORY ================= -->
-
-        <section
-            id="historyPage"
-            class="history-page hidden"
-        >
-
+        <section id="historyPage" class="history-page hidden">
             <div class="history-top">
-
                 <div>
-
-                    <p class="small-title">
-                        SAVED DOCUMENTS
-                    </p>
-
-                    <h2>
-                        Bill History
-                    </h2>
-
+                    <p class="small-title">SAVED DOCUMENTS</p>
+                    <h2>Bill History</h2>
                 </div>
-
-
-                <input
-                    id="searchBills"
-                    type="text"
-                    placeholder="Search bills..."
-                    oninput="renderHistory()"
-                >
-
+                <input id="searchBills" oninput="renderHistory()" placeholder="Search bills...">
             </div>
-
-
             <div id="billHistory"></div>
-
         </section>
-
     </main>
-
 </div>
 
-
 <script src="script.js"></script>
-
 </body>
 </html>
